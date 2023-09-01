@@ -1,12 +1,16 @@
 from django.urls import path
 
 from .views import (
+    ClientPayementUpdateIDView,
+    ClientPaymentDetailsListByIdView,
     ClientPaymentDetailsListView,
     PaymentDeleteView,
     PaymentDetailsCreateView,
     PaymentDetailsListByIdView,
     PaymentDetailsListView,
     PaymentDetailsUpdateView,
+    ClientPaymentDeleteByIDView,
+    TotalPaymentCountView,
 )
 
 urlpatterns = [
@@ -29,24 +33,24 @@ urlpatterns = [
         name="Payment-delete",
     ),
     path("details/", ClientPaymentDetailsListView.as_view(), name="client-Nurse-list"),
-    # path(
-    #     "details-By/",
-    #     ClientPaymentDetailsListByIdView.as_view(),
-    #     name="clientId-Payment-list",
-    # ),
-    # path(
-    #     "counter/",
-    #     TotalNurseCountView.as_view(),
-    #     name="Nurse-ClientiD--retrieve-total",
-    # ),
-    # path(
-    #     "delete-By/",
-    #     ClientNurseDeleteByIDView.as_view(),
-    #     name="Nurse-ClientiD--Delete-Data",
-    # ),
-    # path(
-    #     "Updated/",
-    #     ClientNurseUpdateIDView.as_view(),
-    #     name="Nurse-Update-Client",
-    # ),
+     path(
+         "details-By/",
+         ClientPaymentDetailsListByIdView.as_view(),
+         name="clientId-Payment-list",
+     ),
+     path(
+         "counter/",
+         TotalPaymentCountView.as_view(),
+         name="Payment-ClientiD--retrieve-total",
+     ),
+     path(
+         "delete-By/",
+         ClientPaymentDeleteByIDView.as_view(),
+         name="Nurse-ClientiD--Delete-Data",
+     ),
+     path(
+         "Updated/",
+         ClientPayementUpdateIDView.as_view(),
+         name="Nurse-Update-Client",
+     ),
 ]

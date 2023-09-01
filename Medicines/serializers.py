@@ -28,5 +28,4 @@ class MedicineUpdateSerializer(serializers.ModelSerializer):
             "manufacturer",
             "unit_price",
             "stock_quantity",
-            "client",
         ]

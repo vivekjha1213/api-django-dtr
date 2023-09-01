@@ -109,7 +109,7 @@ class PaymentDeleteView(APIView):
         )
 
 
-# +++++++++++++++++++++++++++++++++++++++++++++++
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class ClientPaymentDetailsListView(APIView):
     def post(self, request, *args, **kwargs):
@@ -135,44 +135,46 @@ class ClientPaymentDetailsListView(APIView):
     
 
 
-'''
+
 
 class ClientPaymentDetailsListByIdView(APIView):
     def post(self, request, *args, **kwargs):
         data = request.data
         client_id = data.get("client_id")
-        nurse_id = data.get("nurse_id")
+        payment_id = data.get("payment_id")
 
-        if not (nurse_id and client_id):
+        if not (payment_id and client_id):
             return Response(
                 {
-                    "error": "Both nurse_id and client_id are required in the request data"
+                    "error": "Both payment_id and client_id are required in the request data"
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
         try:
-            client_nurse = Nurse.objects.get(
-                client_id=client_id, nurse_id=nurse_id
+            client_payment = Payment.objects.get(
+                client_id=client_id, payment_id=payment_id
             )
-        except Nurse.DoesNotExist:
+        except Payment.DoesNotExist:
             return Response(
                 {"error": "No nurse found for the given criteria"},
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-        serializer = NurseListSerializer(client_nurse)
+        serializer = PaymentListSerializer(client_payment)
         return Response({"Data": serializer.data})
 
 
 
-# @get Toatl Count Nurse-Api by cliendID
-class TotalNurseCountView(APIView):
+
+
+# @get Toatl Count Payment-Api by cliendID
+class TotalPaymentCountView(APIView):
     def post(self, request):
         client_id = request.data.get("client_id")  # Get client_id from request data
 
         if client_id is not None:
-            total_count = Nurse.objects.filter(client_id=client_id).count()
+            total_count = Payment.objects.filter(client_id=client_id).count()
             return Response(
                 {"success": True, "total_count": total_count}, status=status.HTTP_200_OK
             )
@@ -185,42 +187,40 @@ class TotalNurseCountView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-
-
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-class ClientNurseUpdateIDView(APIView):
-    def get_nurse(self, client_id, nurse_id):
+class ClientPayementUpdateIDView(APIView):
+    def get_Payment(self, client_id, payment_id):
         try:
-            return Nurse.objects.get(client_id=client_id, nurse_id=nurse_id)
-        except Nurse.DoesNotExist:
+            return Payment.objects.get(client_id=client_id, payment_id=payment_id)
+        except Payment.DoesNotExist:
             return None
 
     def put(self, request, *args, **kwargs):
         data = request.data
         client_id = data.get("client_id")
-        nurse_id = data.get("nurse_id")
+        payment_id = data.get("payment_id")
 
-        if not (nurse_id and client_id):
+        if not (payment_id and client_id):
             return Response(
                 {
-                    "error": "Both nurse_id and client_id are required in the request data"
+                    "error": "Both payment_id and client_id are required in the request data"
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        nurse = self.get_nurse(client_id, nurse_id)
-        if not nurse:
+        payment = self.get_Payment(client_id, payment_id)
+        if not payment:
             return Response(
-                {"error": "Nurse not found"}, status=status.HTTP_404_NOT_FOUND
+                {"error": "payment not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
-        serializer = NurseUpdateSerializer(nurse, data=data)
+        serializer = PaymentUpdateSerializer(payment, data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(
-                {"message": "Nurse updated successfully"},
+                {"message": "payment updated successfully"},
                 status=status.HTTP_200_OK,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -228,62 +228,61 @@ class ClientNurseUpdateIDView(APIView):
     def patch(self, request, *args, **kwargs):
         data = request.data
         client_id = data.get("client_id")
-        nurse_id = data.get("nurse_id")
+        payment_id = data.get("payment_id")
 
-        if not (nurse_id and client_id):
+        if not (payment_id and client_id):
             return Response(
                 {
-                    "error": "Both nurse_id and client_id are required in the request data"
+                    "error": "Both payment_id and client_id are required in the request data"
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        nurse = self.get_nurse(client_id, nurse_id)
-        if not nurse:
+        payment = self.get_Payment(client_id, payment_id)
+        if not payment:
             return Response(
-                {"error": "Nurse not found"}, status=status.HTTP_404_NOT_FOUND
+                {"error": "payment not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
-        serializer = NurseUpdateSerializer(nurse, data=data, partial=True)
+        serializer = PaymentUpdateSerializer(payment, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(
-                {"message": "Nurse updated successfully"},
+                {"message": "payment updated successfully"},
                 status=status.HTTP_200_OK,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-class ClientNurseDeleteByIDView(APIView):
+
+class ClientPaymentDeleteByIDView(APIView):
     def post(self, request, *args, **kwargs):
         data = request.data
         client_id = data.get("client_id")
-        nurse_id = data.get("nurse_id")
+        payment_id = data.get("payment_id")
 
-        if not (nurse_id and client_id):
+        if not (payment_id and client_id):
             return Response(
                 {
-                    "error": "Both nurse_id and client_id are required in the request data"
+                    "error": "Both payment_id and client_id are required in the request data"
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
         try:
-            nurse = Nurse.objects.get(client_id=client_id, nurse_id=nurse_id)
-            nurse.delete()
+            payment = Payment.objects.get(client_id=client_id, payment_id=payment_id)
+            payment.delete()
             return Response(
-                {"message": "Nurse deleted successfully"},
+                {"message": "payment deleted successfully"},
                 status=status.HTTP_204_NO_CONTENT,
             )
-        except Nurse.DoesNotExist:
+        except Payment.DoesNotExist:
             return Response(
-                {"error": "Nurse not found"}, status=status.HTTP_404_NOT_FOUND
+                {"error": "payment not found"}, status=status.HTTP_404_NOT_FOUND
             )
             
             
             
-            ''' 

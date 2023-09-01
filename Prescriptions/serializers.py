@@ -31,23 +31,14 @@ class PrescriptionCreateSerializer(serializers.ModelSerializer):
 class PrescriptionListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Prescription
-        fields = [
-            "prescription_id",
-            "prescription_date",
-            "notes",
-            "patient_id",
-            "patient_first_name",
-            "patient_last_name",
-            "doctor_id",
-            "doctor_first_name",
-            "doctor_last_name",
-            "created_at",
-            "updated_at",
-            "client_id",
-        ]
+        fields = "__all__"
 
 
 class PrescriptionUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Prescription
-        fields = ["patient", "doctor", "prescription_date", "notes","client"]
+        fields = ["patient", "doctor", "prescription_date", "notes",]
+
+
+
+

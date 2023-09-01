@@ -40,4 +40,4 @@ class PrescriptionListSerializer(serializers.ModelSerializer):
 class PrescriptionUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = PrescriptionDetail
-        fields = ["prescription", "medicine", "dosage", "frequency","client"]
+        fields = ["prescription", "medicine", "dosage", "frequency",]

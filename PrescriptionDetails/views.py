@@ -114,3 +114,181 @@ class PrescriptionDetailDeleteView(APIView):
             {"message": "Prescription detail deleted successfully"},
             status=status.HTTP_204_NO_CONTENT,
         )
+        
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class ClientPrescriptionDetailsListView(APIView):
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        client_id = data.get("client_id")
+
+        if not client_id:
+            return Response(
+                {"error": "client_id is required in the request data"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        prepsciptions = PrescriptionDetail.objects.filter(client_id=client_id)
+
+        if not prepsciptions.exists():
+            return Response(
+                {"error": f"No prepsciptions found for client with id {client_id}"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        serializer = PrescriptionListSerializer(prepsciptions, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+class ClientPrescriptionDetailsListByIdView(APIView):
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        client_id = data.get("client_id")
+        prescription_detail_id = data.get("prescription_detail_id")
+
+        if not (prescription_detail_id and client_id):
+            return Response(
+                {
+                    "error": "Both prescription_detail_id and client_id are required in the request data"
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            prescriptionDetail = PrescriptionDetail.objects.get(
+                client_id=client_id, prescription_detail_id=prescription_detail_id
+            )
+        except PrescriptionDetail.DoesNotExist:
+            return Response(
+                {"error": "No prescriptionDetails found for the given criteria"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        serializer = PrescriptionListSerializer(prescriptionDetail)
+        return Response({"Data": serializer.data})
+
+
+
+
+
+# @get Toatl Count PrescriptionDetail -Api by cliendID
+class TotalPrescriptionDetailCountView(APIView):
+    def post(self, request):
+        client_id = request.data.get("client_id")  # Get client_id from request data
+
+        if client_id is not None:
+            total_count = PrescriptionDetail.objects.filter(client_id=client_id).count()
+            return Response(
+                {"success": True, "total_count": total_count}, status=status.HTTP_200_OK
+            )
+        else:
+            return Response(
+                {
+                    "success": False,
+                    "message": "client_id is required in the request data",
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+class ClientPrescriptionDetailUpdateIDView(APIView):
+    def get_PrescriptionDetail(self, client_id, prescription_detail_id):
+        try:
+            return PrescriptionDetail.objects.get(client_id=client_id, prescription_detail_id=prescription_detail_id)
+        except PrescriptionDetail.DoesNotExist:
+            return None
+
+    def put(self, request, *args, **kwargs):
+        data = request.data
+        client_id = data.get("client_id")
+        prescription_detail_id = data.get("prescription_detail_id")
+
+        if not (prescription_detail_id and client_id):
+            return Response(
+                {
+                    "error": "Both prescription_detail_id and client_id are required in the request data"
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        payment = self.get_PrescriptionDetail(client_id, prescription_detail_id)
+        if not payment:
+            return Response(
+                {"error": "PrescriptionDetail not found"}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        serializer = PrescriptionUpdateSerializer(payment, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {"message": "PrescriptionDetail updated successfully"},
+                status=status.HTTP_200_OK,
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, *args, **kwargs):
+        data = request.data
+        client_id = data.get("client_id")
+        prescription_detail_id = data.get("prescription_detail_id")
+
+        if not (prescription_detail_id and client_id):
+            return Response(
+                {
+                    "error": "Both prescription_detail_id and client_id are required in the request data"
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        prescriptionDetail = self.get_PrescriptionDetail(client_id, prescription_detail_id)
+        if not prescriptionDetail:
+            return Response(
+                {"error": "PrescriptionDetail not found"}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        serializer = PrescriptionUpdateSerializer(prescriptionDetail, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {"message": "PrescriptionDetail updated successfully"},
+                status=status.HTTP_200_OK,
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+class ClientPrescriptionDetailDeleteByIDView(APIView):
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        client_id = data.get("client_id")
+        prescription_detail_id = data.get("prescription_detail_id")
+
+        if not (prescription_detail_id and client_id):
+            return Response(
+                {
+                    "error": "Both prescription_detail_id and client_id are required in the request data"
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            prescriptionDetail = PrescriptionDetail.objects.get(client_id=client_id, prescription_detail_id=prescription_detail_id)
+            prescriptionDetail.delete()
+            return Response(
+                {"message": "PrescriptionDetail deleted successfully"},
+                status=status.HTTP_204_NO_CONTENT,
+            )
+        except PrescriptionDetail.DoesNotExist:
+            return Response(
+                {"error": "PrescriptionDetail not found"}, status=status.HTTP_404_NOT_FOUND
+            )
+            

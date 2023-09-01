@@ -223,6 +223,11 @@ class JoinListAppointmentView(generics.ListAPIView):
         )
 
 
+
+
+
+
+
 class CountClientAppointmentView(APIView):
     def post(self, request):
         client_id = request.data.get("client_id")  # Get client_id from request data

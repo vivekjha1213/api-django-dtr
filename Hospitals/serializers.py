@@ -188,7 +188,8 @@ class SendPasswordResetEmailSerializer(serializers.Serializer):
         else:
             raise serializers.ValidationError("You are not a Registered User")
 
-"""
+
+
 
 
 class SendPasswordResetEmailSerializer(serializers.Serializer):
@@ -229,8 +230,57 @@ class SendPasswordResetEmailSerializer(serializers.Serializer):
         return attrs
 
 
-# Hospital PasswordReset Serializer............................................
+"""
 
+
+class SendPasswordResetEmailSerializer(serializers.Serializer):
+    email = serializers.EmailField(max_length=255)
+
+    class Meta:
+        fields = ["email"]
+
+    def validate(self, attrs):
+        email = attrs.get("email")
+        
+        try:
+            hospital = Hospital.objects.get(email=email)
+        except Hospital.DoesNotExist:
+            raise serializers.ValidationError("You are not a Registered User")
+
+        # Generate a unique identifier (uid) and password reset token (token)
+        uid = urlsafe_base64_encode(force_bytes(hospital.client_id))
+        token = PasswordResetTokenGenerator().make_token(hospital)
+
+        # Create the reset link URL
+        reset_url = f"http://localhost:3000/Hospital/reset/{uid}/{token}"
+
+        # Render HTML content using the template and hospital data
+        context = {
+            "owner_name": hospital.owner_name,
+            "reset_url": reset_url,
+        }
+        html_content = render_to_string("password_reset_email.html", context)
+
+        # ------------->>>>>>   Include the reset URL and HTML content in the response data <<<<<<<<<<<<<<<-------------------------
+        attrs["reset_url"] = reset_url
+        attrs["html_content"] = html_content
+
+        # Prepare data for sending email
+        email_data = {
+            "subject": "Reset Your Password",
+            "body": html_content,
+            "to_email": hospital.email,
+        }
+
+        # Use your email sending utility to send the email
+        Util.send_email(email_data)
+
+        return attrs
+
+
+
+
+# Hospital PasswordReset Serializer............................................
 
 class HospitalPasswordResetSerializer(serializers.Serializer):
     password = serializers.CharField(
