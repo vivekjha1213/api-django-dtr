@@ -1,0 +1,44 @@
+from django.db import models
+
+from Hospitals.models import Hospital
+
+
+class Doctor(models.Model):
+    SPECIALTY_CHOICES = [
+        ("Cardiology", "Cardiology"),
+        ("Dermatology", "Dermatology"),
+        ("Neurology", "Neurology"),
+        ("Orthopedics", "Orthopedics"),
+        ("Pediatrics", "Pediatrics"),
+        ("Ophthalmology", "Ophthalmology"),
+        ("Gynecology", "Gynecology"),
+        ("Urology", "Urology"),
+        ("Oncology", "Oncology"),
+        ("Psychiatry", "Psychiatry"),
+        ("ENT", "ENT"),
+    ]
+
+    GENDER_CHOICES = [
+        ("male", "Male"),
+        ("female", "Female"),
+        ("other", "Other"),
+    ]
+
+    doctor_id = models.AutoField(primary_key=True)
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
+    email = models.EmailField()
+    contact_number = models.CharField(max_length=20)
+    date_of_birth = models.DateField()
+    specialty = models.CharField(max_length=255, choices=SPECIALTY_CHOICES)
+    qualifications = models.TextField()
+    address = models.CharField(max_length=255)
+    department = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    client = models.ForeignKey(Hospital, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"

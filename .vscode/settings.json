@@ -1,0 +1,16 @@
+{
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "python.formatting.provider": "none",
+    "python.analysis.disabled": [
+        "reportMissingModuleSource"
+    ],
+    "git.ignoreLimitWarning": true,
+    "python.analysis.disabled": [
+        "reportMissingImports" // Ignore unresolved import for 'dotenv'
+    ],
+    "python.analysis.extraPaths": [
+        // Add paths to directories containing your external modules (e.g., 'pymysql')
+    ]
+}
