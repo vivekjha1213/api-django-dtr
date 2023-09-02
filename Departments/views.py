@@ -17,12 +17,23 @@ from .serializers import (
 class DepartmentRegisterView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = DepartmentRegisterSerializer(data=request.data)
-        if Department.objects.filter(department_name=request.data.get('department_name')).exists():
-            return Response({"error": "Department with the same name already exists"}, status=status.HTTP_400_BAD_REQUEST)
-        
+
+        # Extract the client_id and department_name from the request
+        client_id = request.data.get('client_id')  # Adjust this based on your actual client identification method
+        department_name = request.data.get('department_name')
+
+        # Check if a department with the same name already exists for the same client
+        existing_department = Department.objects.filter(client_id=client_id, department_name=department_name).first()
+
+        if existing_department:
+            return Response({"error": "Department with the same name already exists for this client"},
+                            status=status.HTTP_400_BAD_REQUEST)
+
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({"message": "Department added successfully"}, status=status.HTTP_201_CREATED)
+
+
 
 
 class DepartmentListView(APIView):

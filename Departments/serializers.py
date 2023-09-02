@@ -10,6 +10,19 @@ class DepartmentRegisterSerializer(serializers.ModelSerializer):
             "department_name",
         ]
 
+    def validate(self, data):
+        # Extract the client and department_name from the validated data
+        client = data.get('client')
+        department_name = data.get('department_name')
+
+        # Check if a department with the same name already exists for the same client
+        existing_department = Department.objects.filter(client=client, department_name=department_name).first()
+
+        if existing_department:
+            raise serializers.ValidationError("Department with the same name already exists for this client")
+
+        return data
+
 
 class DepartmentListSerializer(serializers.ModelSerializer):
     class Meta:
