@@ -5,9 +5,7 @@ from django.conf.urls.static import static
 from django.views.static import serve
 from rest_framework.permissions import IsAuthenticated
 
-from django.contrib.auth.decorators import login_required
 # drf_yasg code starts here
-from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
@@ -17,16 +15,15 @@ schema_view = get_schema_view(
         default_version="v1",
         description="This API is only for Testing..",
         terms_of_service="Hms",
-        contact=openapi.Contact(email="ex@gmail.com"),
+        contact=openapi.Contact(email="vivek.jha@dtroffle.com"),
         license=openapi.License(name="RestFul API's"),
     ),
     public=True,
     permission_classes=(IsAuthenticated,),  # Require authentication to access
 )
-# ends here
+
 
 # ... rest of your code ...
-
 urlpatterns = [
     re_path(
         r"^doc(?P<format>\.json|\.yaml)$",
@@ -41,7 +38,7 @@ urlpatterns = [
     path(
         "redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"
     ),
-    path("admin/", admin.site.urls),
+    path("platform/", admin.site.urls),
     path("Hospital/", include("Hospitals.urls")),
     path("Patient/", include("patients.urls")),
     path("Doctor/", include("doctors.urls")),
@@ -55,6 +52,9 @@ urlpatterns = [
     path("Invoice/", include("Invoices.urls")),
     path("Payment/", include("Payments.urls")),
     path("LabTest/", include("LabTests.urls")),
+    path("Feedback/", include("feedbacks.urls")),
+    
+    
     
     re_path(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),

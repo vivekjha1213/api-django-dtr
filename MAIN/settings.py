@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     "django_filters",
     "corsheaders",
     "rest_framework_swagger",
-    "drf_yasg",  # <-- Here
+    "drf_yasg",  # <-- Swagger-ui
     # Internal Apps,
     "Hospitals",
     "patients",
@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     "Invoices",
     "Payments",
     "LabTests",
+    "feedbacks",
 ]
 
 
