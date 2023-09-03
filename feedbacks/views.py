@@ -41,6 +41,15 @@ class RetrieveFeedbackView(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
         
         
+    
+
+class TotalFeedbackView(APIView):
+    def get(self, request, format=None):
+        total_feedback_count = Feedback.objects.count()
+        return Response({"total_count": total_feedback_count})    
+        
+        
+        
 class UpdateFeedbackView(APIView):
     def put(self, request, pk, format=None):
         try:
@@ -72,7 +81,14 @@ class UpdateFeedbackView(APIView):
     
     
 
-class TotalFeedbackView(APIView):
-    def get(self, request, format=None):
-        total_feedback_count = Feedback.objects.count()
-        return Response({"total_count": total_feedback_count})
+class DeleteFeedbackView(APIView):
+    def delete(self, request, pk, format=None):
+        try:
+            feedback = Feedback.objects.get(pk=pk)
+            deleted_feedback = feedback.delete()
+            if deleted_feedback:
+                return Response({"message": "Feedback deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+            else:
+                return Response({"message": "Feedback could not be deleted"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Feedback.DoesNotExist:
+            return Response({"error": "Feedback with this ID does not exist"}, status=status.HTTP_404_NOT_FOUND)
