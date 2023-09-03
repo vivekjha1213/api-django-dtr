@@ -8,6 +8,7 @@ from .views import (
     BedRemovePatientView,
     BedUpdateView,
     BedDeleteView,
+    ClienBedsListByClientIdView,
     ClienBedsListView,
     ClientBedDeleteByIDView,
     ClientBedListByIDView,
@@ -27,6 +28,7 @@ urlpatterns = [
         ClientBedListByIDView.as_view(),
         name="client-ID-Bed_list",
     ),
+        path("detail/", ClienBedsListByClientIdView.as_view(), name="bed-list"),
     path(
         "counter/",
         TotalBedCountView.as_view(),
@@ -53,4 +55,11 @@ urlpatterns = [
         BedRemovePatientView.as_view(),
         name="remove-patient-from-bed",
     ),
+    
+    
+
+    
+    
+    
+    
 ]

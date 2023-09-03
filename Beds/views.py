@@ -138,6 +138,20 @@ class ClienBedsListView(APIView):
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
+            
+
+
+
+def get_Bed_by_client_and_department(client_id, department_id):
+    return Bed.objects.filter(
+        department__client_id=client_id, department_id=department_id
+    )
+
+
+
+
+            
+                
 
 
 # Get all Beds Data by client_id &  bed_id
@@ -383,3 +397,37 @@ class BedRemovePatientView(APIView):
         bed.save()
         
         return Response({"message": "Patient removed from bed successfully"}, status=status.HTTP_200_OK)
+
+
+
+
+
+#################++++++++++++++++++++++#######################+++++++++++++++++++
+
+
+def get_Bed_by_client(client_id):
+    beds = Bed.objects.filter(client_id=client_id)
+    return beds
+
+
+class ClienBedsListByClientIdView(APIView):
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        client_id = data.get("client_id")
+
+        if client_id:
+            beds = get_Bed_by_client(client_id)
+
+            if beds.exists():
+                serializer = BedListSerializer(beds, many=True)
+                return Response({"Data": serializer.data})
+            else:
+                return Response(
+                    {"error": "No beds found for the given client_id"},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+        else:
+            return Response(
+                {"error": "client_id is required in the request data"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
