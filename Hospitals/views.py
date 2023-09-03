@@ -18,6 +18,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate  # Import the authenticate function
 from django.contrib.auth import logout  # for logout
+from django.shortcuts import render
 
 # from .backends import EmailAuthBackend  # Import your custom authentication backend
 
@@ -34,6 +35,16 @@ from .serializers import (
 )
 
 logger = logging.getLogger(__name__)
+
+
+
+
+
+
+# Create your views here.
+def index(request):
+    return render(request, 'index.html')
+
 
 
 class HospitalRegistrationView(APIView):

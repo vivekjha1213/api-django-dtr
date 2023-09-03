@@ -1,5 +1,5 @@
 from django.urls import path
-from Hospitals.serializers import HospitalNewChangePasswordSerializer
+
 
 from Hospitals.views import (
     HospitalChangePasswordView,
