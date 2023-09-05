@@ -3,11 +3,7 @@ from .views import (
     AvailableBedsView,
     BedAssignPatientView,
     BedRegisterView,
-    BedListView,
-    BedListIdView,
     BedRemovePatientView,
-    BedUpdateView,
-    BedDeleteView,
     ClienBedsListByClientIdView,
     ClienBedsListView,
     ClientBedDeleteByIDView,
@@ -18,17 +14,13 @@ from .views import (
 
 urlpatterns = [
     path("register/", BedRegisterView.as_view(), name="bed-register"),
-    path("list/", BedListView.as_view(), name="bed-list"),
-    path("list/<int:bed_id>/", BedListIdView.as_view(), name="bed-detail"),
-    path("update/<int:bed_id>/", BedUpdateView.as_view(), name="bed-update"),
-    path("delete/<int:bed_id>/", BedDeleteView.as_view(), name="bed-delete"),
     path("details/", ClienBedsListView.as_view(), name="client-Bed_list"),
     path(
         "details-By/",
         ClientBedListByIDView.as_view(),
         name="client-ID-Bed_list",
     ),
-        path("detail/", ClienBedsListByClientIdView.as_view(), name="bed-list"),
+    path("detail/", ClienBedsListByClientIdView.as_view(), name="bed-list"),
     path(
         "counter/",
         TotalBedCountView.as_view(),
@@ -55,11 +47,4 @@ urlpatterns = [
         BedRemovePatientView.as_view(),
         name="remove-patient-from-bed",
     ),
-    
-    
-
-    
-    
-    
-    
 ]

@@ -6,32 +6,11 @@ from .views import (
     ClientLabTestUpdateIDView,
     ClientTestDetailsListByIdView,
     LabTestCreateView,
-    LabTestListView,
-    LabTestListIdView,
-    LabTestDeleteView,
-    LabTestUpdateView,
     TotalLabTestCountView,
 )
 
 urlpatterns = [
     path("add/", LabTestCreateView.as_view(), name="add"),
-    path("list/", LabTestListView.as_view(), name="LabTest-Details-list"),
-    # URL pattern to retrieve a specific prescription by prescription_id
-    path(
-        "list/<int:lab_test_id>/",
-        LabTestListIdView.as_view(),
-        name="LabTest-detail",
-    ),
-    path(
-        "update/<int:pk>/",
-        LabTestUpdateView.as_view(),
-        name="LabTest-update",
-    ),
-    path(
-        "delete/<int:pk>/",
-        LabTestDeleteView.as_view(),
-        name="Payment-delete",
-    ),
     path(
         "details/", ClientLabTestDetailsListView.as_view(), name="client-Lab-test_list"
     ),

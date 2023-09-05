@@ -22,55 +22,6 @@ class LabTestCreateView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class LabTestListView(APIView):
-    def get(self, request, format=None):
-        lab_tests = LabTest.objects.all()
-        serializer = LabTestListSerializer(lab_tests, many=True)
-        return Response(serializer.data)
-
-
-class LabTestListIdView(APIView):
-    def get(self, request, lab_test_id, format=None):
-        try:
-            lab_test = LabTest.objects.get(pk=lab_test_id)
-        except LabTest.DoesNotExist:
-            return Response(
-                {"message": "Lab test not found"}, status=status.HTTP_404_NOT_FOUND
-            )
-
-        serializer = LabTestListSerializer(lab_test)
-        return Response(serializer.data)
-
-
-class LabTestUpdateView(generics.UpdateAPIView):
-    queryset = LabTest.objects.all()
-    serializer_class = LabTestUpdateSerializer
-
-    def put(self, request, *args, **kwargs):
-        response = super().update(request, *args, **kwargs)
-        return Response(
-            {"message": "Lab test updated successfully"}, status=status.HTTP_200_OK
-        )
-
-    def patch(self, request, *args, **kwargs):
-        response = super().partial_update(request, *args, **kwargs)
-        return Response(
-            {"message": "Lab test updated successfully"}, status=status.HTTP_200_OK
-        )
-
-
-class LabTestDeleteView(generics.DestroyAPIView):
-    queryset = LabTest.objects.all()
-
-    def delete(self, request, *args, **kwargs):
-        instance = self.get_object()
-        self.perform_destroy(instance)
-        return Response(
-            {"message": "Lab test deleted successfully"},
-            status=status.HTTP_204_NO_CONTENT,
-        )
-
-
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 

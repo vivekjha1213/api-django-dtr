@@ -2,15 +2,12 @@
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-from Hospitals.models import Hospital
 from patients.models import Patient
 from patients.serializers import (
-    PatientListIdSerializer,
     PatientListSerializer,
     PatientRegistrationSerializer,
     PatientSearchSerializer,
     PatientUpdateSerializer,
-    TotalPatientCountSerializer,
 )
 
 # - Endpoint: POST `/api/patients/register`
@@ -42,150 +39,6 @@ class PatientRegistrationView(APIView):
 
 
 ########################################################################################################################################################################
-
-
-# **List Patients**:
-#    - Endpoint: GET `/api/patients/list`
-#    - Description: Retrieves a list of all patients.
-class PatientListView(APIView):
-    def get(self, request, format=None):
-        patients = Patient.objects.all()
-        serializer = PatientListSerializer(patients, many=True)
-        return Response(
-            {"success": True, "data": serializer.data}, status=status.HTTP_200_OK
-        )
-
-
-#  **Retrieve Patient**:
-#    - Endpoint: GET `/api/patients/{id}/`
-#    - Description: Retrieves a specific patient by their ID.
-
-
-class PatientListIdView(APIView):
-    def get(self, request, patient_id, format=None):
-        try:
-            patient = Patient.objects.get(patient_id=patient_id)
-            serializer = PatientListIdSerializer(patient)
-            return Response(
-                {"success": True, "data": serializer.data}, status=status.HTTP_200_OK
-            )
-        except Patient.DoesNotExist:
-            return Response(
-                {"success": False, "message": "Patient not found"},
-                status=status.HTTP_404_NOT_FOUND,
-            )
-
-
-# **Update Patient**:
-#    - Endpoint: PUT `/api/patients/{id}/`
-#    - Description: Updates the details of a specific patient by their ID.
-
-
-class PatientUpdateViewId(APIView):
-    queryset = Patient.objects.all()
-    serializer_class = PatientUpdateSerializer
-    lookup_url_kwarg = "patient_id"
-
-    def put(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
-
-    def patch(self, request, *args, **kwargs):
-        return self.partial_update(request, *args, **kwargs)
-
-    def update(self, request, *args, **kwargs):
-        patient_id = kwargs.get(self.lookup_url_kwarg)
-        try:
-            patient = self.queryset.get(patient_id=patient_id)
-        except Patient.DoesNotExist:
-            return Response(
-                {"success": False, "message": "Patient not found"},
-                status=status.HTTP_404_NOT_FOUND,
-            )
-        serializer = self.serializer_class(patient, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {"success": True, "message": "Profile update success"},
-                status=status.HTTP_200_OK,
-            )
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def partial_update(self, request, *args, **kwargs):
-        patient_id = kwargs.get(self.lookup_url_kwarg)
-        try:
-            patient = self.queryset.get(patient_id=patient_id)
-        except Patient.DoesNotExist:
-            return Response(
-                {"success": False, "message": "Patient not found"},
-                status=status.HTTP_404_NOT_FOUND,
-            )
-        serializer = self.serializer_class(patient, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {"success": True, "message": "Profile update success"},
-                status=status.HTTP_200_OK,
-            )
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-#  **Delete Patient**:
-#    - Endpoint: DELETE `/api/patients/{id}/`
-#    - Description: Deletes a specific patient by their ID.
-
-
-class PatientDeleteViewId(APIView):
-    def delete(self, request, patient_id=None):
-        try:
-            patient = Patient.objects.get(patient_id=patient_id)
-            patient.delete()
-            return Response(
-                {"success": True, "message": "Profile deleted successfully"},
-                status=status.HTTP_204_NO_CONTENT,
-            )
-        except Patient.DoesNotExist:
-            return Response(
-                {"success": False, "message": "Profile does not exist"},
-                status=status.HTTP_404_NOT_FOUND,
-            )
-
-
-# **Search Patients**:
-# - Endpoint: GET http://127.0.0.1:8000/api/patient/search/?query=rahul
-# - Description: Searches for patients based on specific criteria, such as name, age, gender, etc.
-class PatientSearchView(APIView):
-    def get(self, request):
-        search_query = request.GET.get("query")
-        if not search_query:
-            return Response(
-                {"success": False, "message": "Search query parameter is required."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        patients = Patient.objects.filter(first_name__icontains=search_query)
-        if not patients:
-            return Response(
-                {"success": False, "message": "No patients found."},
-                status=status.HTTP_404_NOT_FOUND,
-            )
-        serializer = PatientSearchSerializer(patients, many=True)
-        response_data = {
-            "success": True,
-            "count": len(patients),
-            "results": serializer.data,
-        }
-        return Response(response_data, status=status.HTTP_200_OK)
-
-
-# @get Total Count  api
-class TotalPateintCountView(APIView):
-    def get(self, request):
-        total_count = Patient.objects.count()
-        serializer = TotalPatientCountSerializer(
-            {"success": True, "total_count": total_count}
-        )
-        return Response(serializer.data)
-
-
 ###############################################################################################################################################################################
 
 #@Get Data by Client Id.....

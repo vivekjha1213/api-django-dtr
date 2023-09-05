@@ -24,88 +24,8 @@ class InvoiceDetailsCreateView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class InvoiceDetailsListView(APIView):
-    def get(self, request, *args, **kwargs):
-        prescriptions = Invoice.objects.all()
-        serializer = InvoiceListSerializer(prescriptions, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class InvoiceDetailsListByIdView(APIView):
-    def get(self, request, pk, format=None):
-        try:
-            Invoices = Invoice.objects.filter(invoice_id=pk)
-            serializer = InvoiceListSerializer(Invoices, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except PrescriptionDetail.DoesNotExist:
-            return Response(
-                {"error": "Invoice details not found"},
-                status=status.HTTP_404_NOT_FOUND,
-            )
-
-
-class InvoiceDetailsUpdateView(APIView):
-    def get_object(self, pk):
-        try:
-            return Invoice.objects.get(pk=pk)
-        except Invoice.DoesNotExist:
-            return None
-
-    def put(self, request, pk, format=None):
-        Invoice = self.get_object(pk)
-        if Invoice is None:
-            return Response(
-                {"error": "Invoice detail not found"},
-                status=status.HTTP_404_NOT_FOUND,
-            )
-
-        serializer = InvoiceUpdateSerializer(Invoice, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {"message": "Invoice detail updated successfully"},
-                status=status.HTTP_200_OK,
-            )
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def patch(self, request, pk, format=None):
-        Invoice = self.get_object(pk)
-        if Invoice is None:
-            return Response(
-                {"error": "Invoice detail not found"},
-                status=status.HTTP_404_NOT_FOUND,
-            )
-
-        serializer = InvoiceUpdateSerializer(Invoice, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {"message": "Invoice detail updated successfully"},
-                status=status.HTTP_200_OK,
-            )
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class InvoiceDeleteView(APIView):
-    def get_object(self, pk):
-        try:
-            return Invoice.objects.get(pk=pk)
-        except Invoice.DoesNotExist:
-            return None
-
-    def delete(self, request, pk, format=None):
-        Invoice = self.get_object(pk)
-        if Invoice is None:
-            return Response(
-                {"error": "Invoice detail not found"},
-                status=status.HTTP_404_NOT_FOUND,
-            )
-
-        Invoice.delete()
-        return Response(
-            {"message": "Invoice detail deleted successfully"},
-            status=status.HTTP_204_NO_CONTENT,
-        )
 
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

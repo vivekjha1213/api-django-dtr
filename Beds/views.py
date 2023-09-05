@@ -34,73 +34,6 @@ class BedRegisterView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class BedListView(APIView):
-    def get(self, request, *args, **kwargs):
-        beds = Bed.objects.all()
-        serializer = BedListSerializer(beds, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-class BedListIdView(APIView):
-    def get(self, request, *args, **kwargs):
-        bed_id = kwargs.get("bed_id")  # Get the bed ID from the URL
-
-        try:
-            bed = Bed.objects.get(bed_id=bed_id)
-            serializer = BedListSerializer(bed)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except Bed.DoesNotExist:
-            return Response(
-                {"error": "Bed not found"}, status=status.HTTP_404_NOT_FOUND
-            )
-
-
-
-class BedUpdateView(APIView):
-    def get_bed(self, bed_id):
-        try:
-            return Bed.objects.get(bed_id=bed_id)
-        except Bed.DoesNotExist:
-            raise Response({"detail": "Bed not found"})
-
-    def put(self, request, bed_id, *args, **kwargs):
-        bed = self.get_bed(bed_id)
-        serializer = BedUpdateSerializer(bed, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {"message": "Bed updated successfully"}, status=status.HTTP_200_OK
-            )
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def patch(self, request, bed_id, *args, **kwargs):
-        bed = self.get_bed(bed_id)
-        serializer = BedUpdateSerializer(bed, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {"message": "Bed updated successfully"}, status=status.HTTP_200_OK
-            )
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class BedDeleteView(APIView):
-    def delete(self, request, bed_id, *args, **kwargs):
-        try:
-            bed = Bed.objects.get(bed_id=bed_id)
-        except Bed.DoesNotExist:
-            return Response(
-                {"error": "Bed not found"}, status=status.HTTP_404_NOT_FOUND
-            )
-
-        bed.delete()
-        return Response(
-            {"message": "Bed deleted successfully"}, status=status.HTTP_204_NO_CONTENT
-        )
-
-
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 # Get all Beds Data by client_id
@@ -138,20 +71,6 @@ class ClienBedsListView(APIView):
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
-            
-
-
-
-def get_Bed_by_client_and_department(client_id, department_id):
-    return Bed.objects.filter(
-        department__client_id=client_id, department_id=department_id
-    )
-
-
-
-
-            
-                
 
 
 # Get all Beds Data by client_id &  bed_id
@@ -372,34 +291,47 @@ class BedAssignPatientView(APIView):
             return None
 
 
-
 class BedRemovePatientView(APIView):
     def post(self, request, *args, **kwargs):
         data = request.data
         client_id = data.get("client_id")
         department_id = data.get("department_id")
         bed_id = data.get("bed_id")
-        
+
         if not (client_id and department_id and bed_id):
-            return Response({"error": "client_id, department_id, and bed_id are required in the request data"}, status=status.HTTP_400_BAD_REQUEST)
-        
+            return Response(
+                {
+                    "error": "client_id, department_id, and bed_id are required in the request data"
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         try:
-            bed = Bed.objects.get(department__client_id=client_id, department_id=department_id, bed_id=bed_id)
+            bed = Bed.objects.get(
+                department__client_id=client_id,
+                department_id=department_id,
+                bed_id=bed_id,
+            )
         except Bed.DoesNotExist:
-            return Response({"error": "Bed not found"}, status=status.HTTP_404_NOT_FOUND)
-        
+            return Response(
+                {"error": "Bed not found"}, status=status.HTTP_404_NOT_FOUND
+            )
+
         # Check if patient is present in the bed
         if bed.patient_id is None:
-            return Response({"error": "No patient found in the bed"}, status=status.HTTP_404_NOT_FOUND)
-        
+            return Response(
+                {"error": "No patient found in the bed"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
         bed.patient_id = None
         bed.is_occupied = False
         bed.save()
-        
-        return Response({"message": "Patient removed from bed successfully"}, status=status.HTTP_200_OK)
 
-
-
+        return Response(
+            {"message": "Patient removed from bed successfully"},
+            status=status.HTTP_200_OK,
+        )
 
 
 #################++++++++++++++++++++++#######################+++++++++++++++++++

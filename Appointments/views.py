@@ -2,25 +2,17 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.generics import DestroyAPIView
-from rest_framework.generics import RetrieveAPIView
 from rest_framework import generics
 from Appointments.utils import Util
-import Hospitals
 
-from doctors.models import Doctor
-from patients.models import Patient
 from .models import Appointment
 from .serializers import (
-    AppointmentListSerializer,
     AppointmentRegisterSerializer,
     CancelAppointmentSerializer,
-    CountBookingSerializer,
-    deleteAppointmentSerializer,
     UpdateAppointmentSerializer,
 )
 
 
-''' 
 class AppointmentRegisterView(APIView):
     def post(self, request, format=None):
         serializer = AppointmentRegisterSerializer(data=request.data)
@@ -43,7 +35,6 @@ class AppointmentRegisterView(APIView):
 
             # Create the appointment and set status to "Scheduled"
             appointment = serializer.save(status="Scheduled")
-            
 
             return Response(
                 {"message": "Appointment booked successfully"},
@@ -52,7 +43,9 @@ class AppointmentRegisterView(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-'''
+
+""
+
 
 class AppointmentRegisterView(APIView):
     def post(self, request, format=None):
@@ -78,11 +71,15 @@ class AppointmentRegisterView(APIView):
             appointment = serializer.save(status="Scheduled")
 
             # Get hospital information (you need to implement this)
-            hospital = appointment.client  
+            hospital = appointment.client
 
             # Send confirmation emails to doctor and patient
-            Util.send_doctor_appointment_confirmation(doctor, appointment, patient, hospital)
-            Util.send_patient_appointment_confirmation(patient, appointment, doctor, hospital)
+            Util.send_doctor_appointment_confirmation(
+                doctor, appointment, patient, hospital
+            )
+            Util.send_patient_appointment_confirmation(
+                patient, appointment, doctor, hospital
+            )
 
             return Response(
                 {"message": "Appointment booked successfully"},
@@ -92,151 +89,8 @@ class AppointmentRegisterView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
-
-
-
-
-
-
-
-
-class AppointmentListView(APIView):
-    def get(self, request, *args, **kwargs):
-        appointments = Appointment.objects.all()
-        serializer = AppointmentListSerializer(appointments, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-# @get api  RetrieveAPIView its handle automatically....
-class AppointmentListByIdView(RetrieveAPIView):
-    queryset = Appointment.objects.all()
-    serializer_class = AppointmentListSerializer
-
-
-# cancel apointment view.........
-class CancelAppointmentView(APIView):
-    def put(self, request, appointment_id):
-        try:
-            appointment = Appointment.objects.get(appointment_id=appointment_id)
-        except Appointment.DoesNotExist:
-            return Response(
-                {"success": False, "message": "Appointment not found."},
-                status=status.HTTP_404_NOT_FOUND,
-            )
-
-        serializer = CancelAppointmentSerializer(
-            instance=appointment, data=request.data, partial=True
-        )
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {"success": True, "message": "Appointment successfully cancelled."}
-            )
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-# Delete Apointment view..........
-class DeleteAppointmentView(DestroyAPIView):
-    queryset = Appointment.objects.all()
-    serializer_class = deleteAppointmentSerializer
-
-    def delete(self, request, *args, **kwargs):
-        instance = self.get_object()
-        instance.delete()
-        return Response(
-            {"message": "Appointment delete successfully."},
-            status=status.HTTP_204_NO_CONTENT,
-        )
-
-
-# Total Appointment booking.......
-class CountBookingView(APIView):
-    def get(self, request):
-        serializer = CountBookingSerializer()
-        total_count = serializer.get_total_count(None)
-        return Response({"success": True, "total": total_count})
-
-
-class AppointmentUpdateView(APIView):
-    def put(self, request, *args, **kwargs):
-        appointment_id = kwargs.get(
-            "appointment_id"
-        )  # Get the appointment ID from the URL
-        try:
-            appointment = Appointment.objects.get(appointment_id=appointment_id)
-        except Appointment.DoesNotExist:
-            return Response(
-                {"error": "Appointment not found"}, status=status.HTTP_404_NOT_FOUND
-            )
-
-        serializer = UpdateAppointmentSerializer(appointment, data=request.data)
-        if serializer.is_valid():
-            # Save the updated appointment
-            updated_appointment = serializer.save()
-            updated_appointment.status = "Rescheduled"  # Set status to "Rescheduled"
-            updated_appointment.save()  # Save the status change
-
-            return Response(
-                {"message": "Appointment updated and rescheduled successfully"},
-                status=status.HTTP_200_OK,
-            )
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def patch(self, request, *args, **kwargs):
-        appointment_id = kwargs.get(
-            "appointment_id"
-        )  # Get the appointment ID from the URL
-        try:
-            appointment = Appointment.objects.get(appointment_id=appointment_id)
-        except Appointment.DoesNotExist:
-            return Response(
-                {"error": "Appointment not found"}, status=status.HTTP_404_NOT_FOUND
-            )
-
-        serializer = UpdateAppointmentSerializer(
-            appointment, data=request.data, partial=True
-        )
-        if serializer.is_valid():
-            # Save the updated appointment
-            updated_appointment = serializer.save()
-            updated_appointment.status = "Rescheduled"  # Set status to "Rescheduled"
-            updated_appointment.save()  # Save the status change
-
-            return Response(
-                {"message": "Appointment updated and rescheduled successfully"},
-                status=status.HTTP_200_OK,
-            )
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-# class JoinListAppointmentView(generics.ListAPIView):
-#     serializer_class = None  # Set serializer_class to None
-
-#     def get_queryset(self):
-#         queryset = Appointment.objects.select_related("patient", "doctor").values(
-#             "appointment_id",
-#             "patient_id",  # Include patient_id
-#             "patient__first_name",
-#             "patient__last_name",
-#             "doctor_id",  # Include doctor_id
-#             "doctor__first_name",
-#             "doctor__last_name",
-#             "appointment_date",
-#             "start_time",
-#             "end_time",
-#         )
-#         return queryset
-
-#     def list(self, request, *args, **kwargs):
-#         queryset = self.get_queryset()  # Call get_queryset to retrieve the queryset
-#         data = list(queryset)
-#         return Response(data)
-
-
 # @ get all data by pasisinG, CLient-Id
+
 
 class JoinListAppointmentView(generics.ListAPIView):
     serializer_class = None
@@ -276,11 +130,6 @@ class JoinListAppointmentView(generics.ListAPIView):
             {"detail": "No client_id provided in the request."},
             status=status.HTTP_400_BAD_REQUEST,
         )
-
-
-
-
-
 
 
 class CountClientAppointmentView(APIView):
@@ -425,5 +274,3 @@ class ClientAppointmentUpdateView(APIView):
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
-            
-    
