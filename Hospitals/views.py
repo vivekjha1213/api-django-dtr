@@ -1,26 +1,24 @@
 import logging
+
 from rest_framework.views import APIView
 from rest_framework.generics import UpdateAPIView
-
 from rest_framework.response import Response
 from rest_framework import status
-
 from Hospitals.utils import Util
-
 from Hospitals.renderers import UserRenderer
 
-# from Hospitals.permissions import UnrestrictedPermission
+
 from .models import Hospital
 from rest_framework import generics
 from rest_framework.response import Response
-from django.contrib.auth.hashers import check_password
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate  # Import the authenticate function
 from django.contrib.auth import logout  # for logout
 from django.shortcuts import render
 
-# from .backends import EmailAuthBackend  # Import your custom authentication backend
+#from .backends import EmailAuthBackend  # Import your custom authentication backend
+
 
 
 from .models import Hospital
@@ -34,8 +32,8 @@ from .serializers import (
     SendPasswordResetEmailSerializer,
 )
 
-logger = logging.getLogger(__name__)
 
+logger = logging.getLogger(__name__)
 
 
 
@@ -43,7 +41,9 @@ logger = logging.getLogger(__name__)
 
 # Create your views here.
 def index(request):
-    return render(request, 'index.html')
+    return render(request, "index.html")
+
+
 
 
 
@@ -63,7 +63,6 @@ class HospitalRegistrationView(APIView):
 
 
 class HospitalUpdateView(UpdateAPIView):
-    permission_classes = [IsAuthenticated]
     queryset = Hospital.objects.all()
     serializer_class = HospitalUpdateSerializer
     lookup_field = "client_id"  # Replace with the actual lookup field
@@ -86,7 +85,7 @@ class HospitalUpdateView(UpdateAPIView):
 
 
 class HospitalDeleteView(APIView):
-    permission_classes = [IsAuthenticated]
+
 
     def delete(self, request, client_id, format=None):
         try:
@@ -104,7 +103,7 @@ class HospitalDeleteView(APIView):
 
 
 class HospitalListAPIView(generics.ListAPIView):
-    permission_classes = [IsAuthenticated]
+
     queryset = Hospital.objects.all()
     serializer_class = HospitalSerializer
 
@@ -117,15 +116,16 @@ class HospitalRetrieveAPIView(generics.RetrieveAPIView):
 
 
 class TotalHospitalView(APIView):
-    permission_classes = [IsAuthenticated]
+
 
     def get(self, request, format=None):
         total_hospitals = Hospital.objects.count()
         return Response({"total_hospitals": total_hospitals}, status=status.HTTP_200_OK)
 
 
-#login api 
+# login api
 class HospitalLoginView(APIView):
+
     def post(self, request):
         serializer = HospitalLoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -149,7 +149,7 @@ class HospitalLoginView(APIView):
             hospital.access_token = access_token
             hospital.refresh_token = refresh_token
             hospital.save()
-            
+
             Util.send_welcome_email(hospital)  # Call send_welcome_email here
 
             return Response(
@@ -167,12 +167,11 @@ class HospitalLoginView(APIView):
                 {"error": "Invalid email or password. Please check your credentials."},
                 status=status.HTTP_401_UNAUTHORIZED,
             )
-            
-       
-            
+
+
 # logout api.....
 class HospitalLogoutAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+
 
     def delete(self, request, format=None):
         logger.info("Logout requested for user")
@@ -183,15 +182,12 @@ class HospitalLogoutAPIView(APIView):
 
 
 class HospitalChangePasswordView(APIView):
-  #  permission_classes = [IsAuthenticated]
-    serializer_class = HospitalNewChangePasswordSerializer
-
     def post(self, request, format=None):
         serializer = HospitalNewChangePasswordSerializer(
             data=request.data, context={"user": request.user}
         )
         serializer.is_valid(raise_exception=True)
-        
+
         # Send password change success email
         Util.send_password_change_email(request.user)
         return Response(
@@ -199,31 +195,26 @@ class HospitalChangePasswordView(APIView):
         )
 
 
-
 # @email @Post api for send reset link in front end view ....
 class SendPasswordResetEmailView(APIView):
-    # renderer_classes = [UserRenderer]
-
     def post(self, request, format=None):
         logger.info("Password reset email requested")
-        
+
         # Create the serializer instance with the 'request' object in the context
         serializer = SendPasswordResetEmailSerializer(
-            data=request.data,
-            context={'request': request}
+            data=request.data, context={"request": request}
         )
-        
+
         serializer.is_valid(raise_exception=True)
         return Response(
             {"message": "Password Reset link sent. Please check your Email"},
             status=status.HTTP_200_OK,
         )
 
-#@email for change password redirect 
+
+# @email for change password redirect
 class HospitalPasswordResetView(APIView):
-   renderer_classes = [UserRenderer]
-   
-   def post(self, request, uid, token, format=None):
+    def post(self, request, uid, token, format=None):
         logger.info("Password reset requested for user with UID: %s", uid)
         serializer = HospitalPasswordResetSerializer(
             data=request.data, context={"uid": uid, "token": token}
@@ -232,4 +223,3 @@ class HospitalPasswordResetView(APIView):
         return Response(
             {"message": "Password Reset Successfully"}, status=status.HTTP_200_OK
         )
-

@@ -5,6 +5,7 @@ from rest_framework.generics import DestroyAPIView
 from rest_framework import generics
 from Appointments.utils import Util
 
+
 from .models import Appointment
 from .serializers import (
     AppointmentRegisterSerializer,

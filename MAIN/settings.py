@@ -177,27 +177,21 @@ DATABASES = {
 
 
 SWAGGER_SETTINGS = {
-    'DOC_EXPANSION': 'list',
-    'APIS_SORTER': 'alpha',
-    'USE_SESSION_AUTH': False,
-    'SECURITY_DEFINITIONS': {
-        'Bearer': {  # <<-- is for JWT access token
-            'type': 'apiKey',
-            'name': 'Authorization',
-            'in': 'header'
+    "DOC_EXPANSION": "list",
+    "APIS_SORTER": "alpha",
+    "USE_SESSION_AUTH": False,
+    "SECURITY_DEFINITIONS": {
+        "Bearer": {  # <<-- is for JWT access token
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
         },
-        'basic': {  # <<-- is for djagno authentication 
-            'type': 'basic'
-        },
+        "basic": {"type": "basic"},  # <<-- is for djagno authentication
     },
 }
 
 
-LOGIN_URL = 'http://127.0.0.1:8000/swagger/'
-
-
-
-
+LOGIN_URL = "http://127.0.0.1:8000/swagger/"
 
 
 REST_FRAMEWORK = {
@@ -208,6 +202,9 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
     "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
 }
 
 
@@ -367,6 +364,5 @@ EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASS")
 EMAIL_USE_TLS = True
 
 
-
-# EMAIL_HOST_USER = "vivek.jha@dtroffle.com" 
+# EMAIL_HOST_USER = "vivek.jha@dtroffle.com"
 # EMAIL_HOST_PASSWORD = "gsyvamddfrpihzdo"
