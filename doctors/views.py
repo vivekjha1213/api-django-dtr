@@ -1,18 +1,21 @@
-from rest_framework import filters, generics
+import logging
 from rest_framework.response import Response
 from rest_framework import status
 
 from rest_framework.views import APIView
-from rest_framework.generics import UpdateAPIView
 from doctors.models import Doctor
 from doctors.serializers import (
     DoctorListSerializer,
     DoctorRegistrationSerializer,
     DoctorSearchSerializer,
     DoctorUpdateSerializer,
-    FilterSearchNameSerializer,
-    TotalDoctorCountSerializer,
 )
+
+logger = logging.getLogger("doctors.doctor")
+
+
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 # Rest-Api---DRF.......
@@ -47,7 +50,6 @@ class DoctorRegistrationView(APIView):
 
 ##################################################################################################################################################################################################
 
-
 #################################################################################################################################################
 
 
@@ -74,6 +76,8 @@ class ClientDoctorListView(APIView):
             return Response({"error": "client_id is missing in the request data"}, status=status.HTTP_400_BAD_REQUEST)
         
         
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         
         
         
@@ -96,6 +100,8 @@ class TotalClientDoctorCountView(APIView):
             )
             
             
+            
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             
           
   #@ Patient Delete By Client ID and Patient ID...          
@@ -124,7 +130,7 @@ class ClientDoctorDeleteViewId(APIView):
             )
             
             
-
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 
@@ -176,6 +182,9 @@ class ClientDoctorUpdateView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
     
+    
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++    
+    
 class ClientDoctorListByIDView(APIView):
     def post(self, request, *args, **kwargs):
         data = request.data
@@ -194,6 +203,7 @@ class ClientDoctorListByIDView(APIView):
         return Response({"Data": serializer.data})
     
     
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     
  # Search Api...................... by client id and    patient id and patient firstname, last_name..
 class ClientDoctorSearchView(APIView):
@@ -216,3 +226,5 @@ class ClientDoctorSearchView(APIView):
             "results": serializer.data,
         }
         return Response(response_data, status=status.HTTP_200_OK)
+    
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

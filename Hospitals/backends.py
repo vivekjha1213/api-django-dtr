@@ -1,11 +1,10 @@
-# import logging
 # from django.contrib.auth.backends import ModelBackend
 # from django.contrib.auth.hashers import check_password
 # from django.utils.encoding import force_bytes
 
 # from Hospitals.models import Hospital
 
-# logger = logging.getLogger(__name__)
+
 
 # class EmailAuthBackend(ModelBackend):
 #     def authenticate(self, request, username=None, password=None):

@@ -1,3 +1,4 @@
+import logging
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -13,7 +14,10 @@ from .serializers import (
     UpdateAppointmentSerializer,
 )
 
+logger = logging.getLogger("Appointments.Appointment")
 
+
+"""
 class AppointmentRegisterView(APIView):
     def post(self, request, format=None):
         serializer = AppointmentRegisterSerializer(data=request.data)
@@ -45,7 +49,8 @@ class AppointmentRegisterView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-""
+"""
+
 
 
 class AppointmentRegisterView(APIView):
@@ -90,6 +95,10 @@ class AppointmentRegisterView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
 # @ get all data by pasisinG, CLient-Id
 
 
@@ -132,6 +141,7 @@ class JoinListAppointmentView(generics.ListAPIView):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class CountClientAppointmentView(APIView):
     def post(self, request):
@@ -149,6 +159,8 @@ class CountClientAppointmentView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 # @delete Appointment by clientId and Appointment Id .....
 class ClientDeleteAppointmentView(DestroyAPIView):
@@ -180,6 +192,8 @@ class ClientDeleteAppointmentView(DestroyAPIView):
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 # @cancel Appontment by Appointment id and client id.................................
@@ -217,6 +231,8 @@ class ClientCancelAppointmentView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 # @ Update Appointment by client id and appointment Id
 class ClientAppointmentUpdateView(APIView):
@@ -275,3 +291,4 @@ class ClientAppointmentUpdateView(APIView):
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -1,3 +1,4 @@
+import logging
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -11,6 +12,9 @@ from .serializers import (
 )
 
 
+logger = logging.getLogger("PrescriptionDetails.PrescriptionDetail")
+
+
 class PrescriptionDetailsCreateView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = PrescriptionCreateSerializer(data=request.data)
@@ -18,14 +22,13 @@ class PrescriptionDetailsCreateView(APIView):
             serializer.save()
             return Response(
                 {"message": "Prescription detail added successfully"},
-                status=status.HTTP_201_CREATED
+                status=status.HTTP_201_CREATED,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-        
-
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 
 class ClientPrescriptionDetailsListView(APIView):
     def post(self, request, *args, **kwargs):
@@ -48,7 +51,9 @@ class ClientPrescriptionDetailsListView(APIView):
 
         serializer = PrescriptionListSerializer(prepsciptions, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class ClientPrescriptionDetailsListByIdView(APIView):
     def post(self, request, *args, **kwargs):
@@ -79,7 +84,7 @@ class ClientPrescriptionDetailsListByIdView(APIView):
 
 
 
-
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 # @get Toatl Count PrescriptionDetail -Api by cliendID
 class TotalPrescriptionDetailCountView(APIView):
@@ -101,14 +106,15 @@ class TotalPrescriptionDetailCountView(APIView):
             )
 
 
-
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 class ClientPrescriptionDetailUpdateIDView(APIView):
     def get_PrescriptionDetail(self, client_id, prescription_detail_id):
         try:
-            return PrescriptionDetail.objects.get(client_id=client_id, prescription_detail_id=prescription_detail_id)
+            return PrescriptionDetail.objects.get(
+                client_id=client_id, prescription_detail_id=prescription_detail_id
+            )
         except PrescriptionDetail.DoesNotExist:
             return None
 
@@ -128,7 +134,8 @@ class ClientPrescriptionDetailUpdateIDView(APIView):
         payment = self.get_PrescriptionDetail(client_id, prescription_detail_id)
         if not payment:
             return Response(
-                {"error": "PrescriptionDetail not found"}, status=status.HTTP_404_NOT_FOUND
+                {"error": "PrescriptionDetail not found"},
+                status=status.HTTP_404_NOT_FOUND,
             )
 
         serializer = PrescriptionUpdateSerializer(payment, data=data)
@@ -153,13 +160,18 @@ class ClientPrescriptionDetailUpdateIDView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        prescriptionDetail = self.get_PrescriptionDetail(client_id, prescription_detail_id)
+        prescriptionDetail = self.get_PrescriptionDetail(
+            client_id, prescription_detail_id
+        )
         if not prescriptionDetail:
             return Response(
-                {"error": "PrescriptionDetail not found"}, status=status.HTTP_404_NOT_FOUND
+                {"error": "PrescriptionDetail not found"},
+                status=status.HTTP_404_NOT_FOUND,
             )
 
-        serializer = PrescriptionUpdateSerializer(prescriptionDetail, data=data, partial=True)
+        serializer = PrescriptionUpdateSerializer(
+            prescriptionDetail, data=data, partial=True
+        )
         if serializer.is_valid():
             serializer.save()
             return Response(
@@ -169,10 +181,7 @@ class ClientPrescriptionDetailUpdateIDView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
-
-#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 class ClientPrescriptionDetailDeleteByIDView(APIView):
@@ -190,7 +199,9 @@ class ClientPrescriptionDetailDeleteByIDView(APIView):
             )
 
         try:
-            prescriptionDetail = PrescriptionDetail.objects.get(client_id=client_id, prescription_detail_id=prescription_detail_id)
+            prescriptionDetail = PrescriptionDetail.objects.get(
+                client_id=client_id, prescription_detail_id=prescription_detail_id
+            )
             prescriptionDetail.delete()
             return Response(
                 {"message": "PrescriptionDetail deleted successfully"},
@@ -198,6 +209,9 @@ class ClientPrescriptionDetailDeleteByIDView(APIView):
             )
         except PrescriptionDetail.DoesNotExist:
             return Response(
-                {"error": "PrescriptionDetail not found"}, status=status.HTTP_404_NOT_FOUND
+                {"error": "PrescriptionDetail not found"},
+                status=status.HTTP_404_NOT_FOUND,
             )
-            
+
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

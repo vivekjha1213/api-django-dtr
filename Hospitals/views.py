@@ -4,9 +4,10 @@ from rest_framework.views import APIView
 from rest_framework.generics import UpdateAPIView
 from rest_framework.response import Response
 from rest_framework import status
+from Hospitals.permissions import UnrestrictedPermission
 from Hospitals.utils import Util
-from Hospitals.renderers import UserRenderer
 
+from django.utils import timezone  #Import timezone from django.utils
 
 from .models import Hospital
 from rest_framework import generics
@@ -16,9 +17,6 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate  # Import the authenticate function
 from django.contrib.auth import logout  # for logout
 from django.shortcuts import render
-
-#from .backends import EmailAuthBackend  # Import your custom authentication backend
-
 
 
 from .models import Hospital
@@ -33,23 +31,18 @@ from .serializers import (
 )
 
 
-logger = logging.getLogger(__name__)
-
-
-
+logger = logging.getLogger("Hospitals.Hospital")
 
 
 # Create your views here.
 def index(request):
+    logger.info('Accessing the index view.')
     return render(request, "index.html")
 
 
-
-
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class HospitalRegistrationView(APIView):
-    permission_classes = [IsAuthenticated]
-
     def post(self, request):
         serializer = HospitalRegisterSerializer(data=request.data)
         if serializer.is_valid():
@@ -61,6 +54,7 @@ class HospitalRegistrationView(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class HospitalUpdateView(UpdateAPIView):
     queryset = Hospital.objects.all()
@@ -84,9 +78,9 @@ class HospitalUpdateView(UpdateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 class HospitalDeleteView(APIView):
-
-
     def delete(self, request, client_id, format=None):
         try:
             hospital = Hospital.objects.get(client_id=client_id)
@@ -102,10 +96,14 @@ class HospitalDeleteView(APIView):
         )
 
 
-class HospitalListAPIView(generics.ListAPIView):
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+class HospitalListAPIView(generics.ListAPIView):
     queryset = Hospital.objects.all()
     serializer_class = HospitalSerializer
+
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 class HospitalRetrieveAPIView(generics.RetrieveAPIView):
@@ -115,16 +113,21 @@ class HospitalRetrieveAPIView(generics.RetrieveAPIView):
     lookup_field = "client_id"
 
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
 class TotalHospitalView(APIView):
-
-
     def get(self, request, format=None):
         total_hospitals = Hospital.objects.count()
         return Response({"total_hospitals": total_hospitals}, status=status.HTTP_200_OK)
 
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 # login api
 class HospitalLoginView(APIView):
+    permission_classes = [UnrestrictedPermission]
 
     def post(self, request):
         serializer = HospitalLoginSerializer(data=request.data)
@@ -136,6 +139,12 @@ class HospitalLoginView(APIView):
         hospital = authenticate(email=email, password=password)
 
         if hospital is not None:
+            # Manually update the last_login field
+            hospital.last_login = (
+                timezone.now()
+            )  # Import timezone if not already imported
+            hospital.save()  # Save the user instance to update last_login
+
             # Generate tokens
             refresh = RefreshToken.for_user(hospital)
             access_token = str(refresh.access_token)
@@ -168,11 +177,10 @@ class HospitalLoginView(APIView):
                 status=status.HTTP_401_UNAUTHORIZED,
             )
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 # logout api.....
 class HospitalLogoutAPIView(APIView):
-
-
     def delete(self, request, format=None):
         logger.info("Logout requested for user")
         if request.user.is_authenticated:
@@ -180,6 +188,8 @@ class HospitalLogoutAPIView(APIView):
             logout(request)  # Logout the user
         return Response({"message": "Logout success"}, status=status.HTTP_200_OK)
 
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class HospitalChangePasswordView(APIView):
     def post(self, request, format=None):
@@ -193,6 +203,9 @@ class HospitalChangePasswordView(APIView):
         return Response(
             {"message": "Password Changed Successfully"}, status=status.HTTP_200_OK
         )
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 
 
 # @email @Post api for send reset link in front end view ....
@@ -211,6 +224,8 @@ class SendPasswordResetEmailView(APIView):
             status=status.HTTP_200_OK,
         )
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 
 # @email for change password redirect
 class HospitalPasswordResetView(APIView):
@@ -223,3 +238,6 @@ class HospitalPasswordResetView(APIView):
         return Response(
             {"message": "Password Reset Successfully"}, status=status.HTTP_200_OK
         )
+
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

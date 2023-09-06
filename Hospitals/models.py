@@ -32,7 +32,6 @@ class UserManager(BaseUserManager):
 
 
 # custom usermodel..
-
 class Hospital(AbstractBaseUser):
     USER_TYPES = [
         ("Admin", "admin"),

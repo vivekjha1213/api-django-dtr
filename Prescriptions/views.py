@@ -1,3 +1,4 @@
+import logging
 from Prescriptions.models import Prescription
 from Prescriptions.serializers import (
     PrescriptionCreateSerializer,
@@ -10,6 +11,10 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from rest_framework import generics
+
+
+logger = logging.getLogger("Prescriptions.Prescription")
+
 
 
 
@@ -53,6 +58,8 @@ class ClientPrescriptionsListView(APIView):
 
 
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 class ClientPrescriptionsListByIdView(APIView):
     def post(self, request, *args, **kwargs):
         data = request.data
@@ -81,7 +88,7 @@ class ClientPrescriptionsListByIdView(APIView):
         return Response({"Data": serializer.data})
 
 
-
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 # @get Toatl Count PrescriptionDetail -Api by cliendID
@@ -180,7 +187,6 @@ class ClientPrescriptionUpdateIDView(APIView):
 
 
 
-
 class ClientPrescriptionDeleteByIDView(APIView):
     def post(self, request, *args, **kwargs):
         data = request.data
@@ -246,3 +252,6 @@ class JoinListPrescriptionsListView(generics.ListAPIView):
             )
 
         return Response(data)
+
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

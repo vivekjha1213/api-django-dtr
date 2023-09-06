@@ -1,3 +1,4 @@
+import logging
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -10,6 +11,7 @@ from .serializers import (
     BedUpdateSerializer,
 )
 
+logger = logging.getLogger("Beds.Bed")
 
 class BedRegisterView(APIView):
     def post(self, request, *args, **kwargs):
@@ -73,6 +75,11 @@ class ClienBedsListView(APIView):
             )
 
 
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
 # Get all Beds Data by client_id &  bed_id
 class ClientBedListByIDView(APIView):
     def post(self, request, *args, **kwargs):
@@ -109,6 +116,10 @@ class ClientBedListByIDView(APIView):
         return Response({"Data": serializer.data})
 
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
 # @get Total Count Beds api by cliendID
 class TotalBedCountView(APIView):
     def post(self, request):
@@ -127,6 +138,11 @@ class TotalBedCountView(APIView):
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
+
+
+
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 # Update Beds Data by client_id &  bed_id
@@ -182,6 +198,10 @@ class ClientBedUpdateView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 # Delete Bed by clientID , DepartementId and bedId
 class ClientBedDeleteByIDView(APIView):
     def post(self, request, *args, **kwargs):
@@ -214,6 +234,8 @@ class ClientBedDeleteByIDView(APIView):
 
     # Bed-Avail True or not  request
 
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class AvailableBedsView(APIView):
     def get_available_beds(self, client_id, department_id):
@@ -249,6 +271,8 @@ class AvailableBedsView(APIView):
                 {"message": "No available beds"}, status=status.HTTP_404_NOT_FOUND
             )
 
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class BedAssignPatientView(APIView):
     def post(self, request, *args, **kwargs):
@@ -289,6 +313,8 @@ class BedAssignPatientView(APIView):
             )
         except Bed.DoesNotExist:
             return None
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 class BedRemovePatientView(APIView):
@@ -334,7 +360,7 @@ class BedRemovePatientView(APIView):
         )
 
 
-#################++++++++++++++++++++++#######################+++++++++++++++++++
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 def get_Bed_by_client(client_id):
@@ -363,3 +389,5 @@ class ClienBedsListByClientIdView(APIView):
                 {"error": "client_id is required in the request data"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

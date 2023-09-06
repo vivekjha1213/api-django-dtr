@@ -1,3 +1,4 @@
+import logging
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -9,6 +10,8 @@ from .serializers import (
     PaymentListSerializer,
     PaymentUpdateSerializer,
 )
+
+logger = logging.getLogger("Payments.Payment")
 
 
 class PaymentDetailsCreateView(APIView):
@@ -24,7 +27,7 @@ class PaymentDetailsCreateView(APIView):
 
 
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class ClientPaymentDetailsListView(APIView):
     def post(self, request, *args, **kwargs):
@@ -50,7 +53,7 @@ class ClientPaymentDetailsListView(APIView):
     
 
 
-
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class ClientPaymentDetailsListByIdView(APIView):
     def post(self, request, *args, **kwargs):
@@ -82,6 +85,7 @@ class ClientPaymentDetailsListByIdView(APIView):
 
 
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 # @get Toatl Count Payment-Api by cliendID
 class TotalPaymentCountView(APIView):
@@ -201,3 +205,4 @@ class ClientPaymentDeleteByIDView(APIView):
             
             
             
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

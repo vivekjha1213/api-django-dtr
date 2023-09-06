@@ -1,4 +1,5 @@
 
+import logging
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
@@ -9,6 +10,11 @@ from patients.serializers import (
     PatientSearchSerializer,
     PatientUpdateSerializer,
 )
+
+
+logger = logging.getLogger("patients.patient")
+
+
 
 # - Endpoint: POST `/api/patients/register`
 # -Description: Creates a new patient with the provided details.
@@ -108,6 +114,7 @@ class ClientPatientDeleteViewId(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
           
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
           
   #@ Patient Update  By Client ID and Patient ID.....         
 class ClientPatientUpdateView(APIView):
@@ -156,7 +163,10 @@ class ClientPatientUpdateView(APIView):
                 {"error": "Both patient_id and client_id are required in the request data."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-            
+         
+         
+    
+ # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++      
             
 #@get seprate patient By- clientId & Patient_id...      
 class ClientPatientsListByIDView(APIView):
@@ -176,6 +186,10 @@ class ClientPatientsListByIDView(APIView):
         serializer = PatientListSerializer(patients, many=True)
         return Response({"Data": serializer.data})
     
+   
+  # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+   
+   
    
  # Search Api...................... by client id and    patient id and patient firstname, last_name..
  
@@ -199,3 +213,5 @@ class ClientPatientSearchView(APIView):
             "results": serializer.data,
         }
         return Response(response_data, status=status.HTTP_200_OK)
+    
+    # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

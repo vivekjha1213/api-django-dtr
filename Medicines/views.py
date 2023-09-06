@@ -1,3 +1,4 @@
+import logging
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -10,6 +11,12 @@ from .serializers import (
     MedicineRegisterSerializer,
     MedicineUpdateSerializer,
 )
+
+
+
+logger = logging.getLogger("Medicines.Medicine")
+
+
 
 
 class MedicineRegisterView(APIView):
@@ -31,11 +38,7 @@ class MedicineRegisterView(APIView):
     
     
     
- #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   
-
-
-    
-#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 class ClientMedicineListView(APIView):
@@ -62,7 +65,7 @@ class ClientMedicineListView(APIView):
     
 
 
-
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class ClientMedicineListByIdView(APIView):
     def post(self, request, *args, **kwargs):
@@ -92,7 +95,7 @@ class ClientMedicineListByIdView(APIView):
         return Response({"Data": serializer.data})
 
 
-
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 # @get Toatl Count Medicine -Api by cliendID
@@ -116,9 +119,7 @@ class ClientTotalMedicineCountView(APIView):
 
 
 
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 class ClientMedicineUpdateIDView(APIView):
@@ -187,8 +188,7 @@ class ClientMedicineUpdateIDView(APIView):
 
 
 
-#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class ClientMedicineDeleteByIDView(APIView):
     def post(self, request, *args, **kwargs):

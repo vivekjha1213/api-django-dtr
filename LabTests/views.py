@@ -1,3 +1,4 @@
+import logging
 from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework.response import Response
@@ -8,6 +9,11 @@ from .serializers import (
     LabTestListSerializer,
     LabTestUpdateSerializer,
 )
+
+
+
+logger = logging.getLogger("LabTests.LabTest")
+
 
 
 class LabTestCreateView(APIView):
@@ -22,7 +28,7 @@ class LabTestCreateView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 class ClientLabTestDetailsListView(APIView):
@@ -48,6 +54,7 @@ class ClientLabTestDetailsListView(APIView):
         serializer = LabTestListSerializer(labTest, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class ClientTestDetailsListByIdView(APIView):
     def post(self, request, *args, **kwargs):
@@ -76,6 +83,7 @@ class ClientTestDetailsListByIdView(APIView):
         serializer = LabTestListSerializer(client_lab_test)
         return Response({"Data": serializer.data})
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 # @get Toatl Count LABTEST api by cliendID
 class TotalLabTestCountView(APIView):
@@ -95,6 +103,8 @@ class TotalLabTestCountView(APIView):
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 class ClientLabTestUpdateIDView(APIView):
@@ -161,6 +171,11 @@ class ClientLabTestUpdateIDView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
 class ClientLabTestDeleteByIDView(APIView):
     def post(self, request, *args, **kwargs):
         data = request.data
@@ -186,3 +201,5 @@ class ClientLabTestDeleteByIDView(APIView):
             return Response(
                 {"error": "Lab test not found"}, status=status.HTTP_404_NOT_FOUND
             )
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

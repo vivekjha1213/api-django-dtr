@@ -1,9 +1,18 @@
+import logging
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
 from .serializers import NurseListSerializer, NurseRegisterSerializer, NurseUpdateSerializer
 from .models import Nurse
+
+
+
+
+
+logger = logging.getLogger("Nurses.Nurse")
+
+
 
 class NurseRegisterView(APIView):
     def post(self, request, *args, **kwargs):
@@ -17,7 +26,7 @@ class NurseRegisterView(APIView):
         return Response({"message": "Nurse registered successfully"}, status=status.HTTP_201_CREATED)
 
 
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class ClientNurseDetailsListView(APIView):
     def post(self, request, *args, **kwargs):
@@ -41,7 +50,8 @@ class ClientNurseDetailsListView(APIView):
         serializer = NurseListSerializer(nurses, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-    
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class ClientNurseDetailsListByIdView(APIView):
     def post(self, request, *args, **kwargs):
@@ -69,7 +79,9 @@ class ClientNurseDetailsListByIdView(APIView):
 
         serializer = NurseListSerializer(client_nurse)
         return Response({"Data": serializer.data})
+    
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 # @get Toatl Count Nurse-Api by cliendID
@@ -93,7 +105,7 @@ class TotalNurseCountView(APIView):
 
 
 
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 class ClientNurseUpdateIDView(APIView):
@@ -161,7 +173,7 @@ class ClientNurseUpdateIDView(APIView):
 
 
 
-#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 class ClientNurseDeleteByIDView(APIView):
@@ -191,3 +203,5 @@ class ClientNurseDeleteByIDView(APIView):
             )
             
             
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

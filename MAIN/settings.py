@@ -1,12 +1,13 @@
 import os
 from datetime import timedelta
-
-
 from pathlib import Path
+import os.path
+
 
 import pymysql
 
 pymysql.install_as_MySQLdb()
+
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-b&2z!x5fequ-qc2hm*czn04yj#akrkst52al*g==0n&n#d&m27"
@@ -169,13 +170,6 @@ DATABASES = {
 }
 
 
-# SWAGGER_SETTINGS = {
-#     "SECURITY_DEFINITIONS": {
-#         "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}
-#     }
-# }
-
-
 SWAGGER_SETTINGS = {
     "DOC_EXPANSION": "list",
     "APIS_SORTER": "alpha",
@@ -207,7 +201,6 @@ REST_FRAMEWORK = {
     ],
 }
 
-
 # Set the custom payload handler
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
@@ -221,8 +214,8 @@ SIMPLE_JWT = {
     "SIGNING_KEY": SECRET_KEY,
     "VERIFYING_KEY": None,
     "AUTH_HEADER_TYPES": ("Bearer",),
-    "USER_ID_FIELD": "client_id",  # Use your primary key field here
-    "USER_ID_CLAIM": "client_id",  # Use your primary key field here
+    "USER_ID_FIELD": "client_id",  #  primary key field here...
+    "USER_ID_CLAIM": "client_id",  #  primary key field here.....
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
     "ACCESS_TOKEN_LIFETIME": timedelta(days=20),
     "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
@@ -256,103 +249,24 @@ PASSWORD_RESET_TIMEOUT = 900  # 900 Sec = 15 Min
 
 
 # logger: config
+
+
 # LOGGING = {
 #     "version": 1,
 #     "disable_existing_loggers": False,
 #     "handlers": {
-#         "Debug_file": {
+#         "file": {
 #             "level": "DEBUG",
 #             "class": "logging.FileHandler",
-#             "filename": os.path.join(BASE_DIR, "logs/debug.log"),
-#             "formatter": "verbose",
-#         },
-#         "auth_file": {
-#             "level": "DEBUG",
-#             "class": "logging.FileHandler",
-#             "filename": os.path.join(BASE_DIR, "logs/auth.log"),
-#             "formatter": "verbose",
-#         },
-#         "doctor_file": {
-#             "level": "DEBUG",
-#             "class": "logging.FileHandler",
-#             "filename": os.path.join(BASE_DIR, "logs/doctor.log"),
-#             "formatter": "verbose",
-#         },
-#         "patient_file": {
-#             "level": "DEBUG",
-#             "class": "logging.FileHandler",
-#             "filename": os.path.join(BASE_DIR, "logs/patient.log"),
-#             "formatter": "verbose",
-#         },
-#         "booking_file": {
-#             "level": "DEBUG",
-#             "class": "logging.FileHandler",
-#             "filename": os.path.join(BASE_DIR, "logs/Appointment.log"),
-#             "formatter": "verbose",
-#         },
-#         "BookingSlotAvailability_file": {
-#             "level": "DEBUG",
-#             "class": "logging.FileHandler",
-#             "filename": os.path.join(BASE_DIR, "logs/BookingSlotAvailability.log"),
-#             "formatter": "verbose",
+#            "filename": "api.log",
 #         },
 #     },
-#     "formatters": {
-#         "verbose": {
-#             "format": "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
-#             "style": "{",
-#         },
-#     },
-#     "loggers": {
-#         "django": {
-#             "handlers": ["Debug_file"],
-#             "level": "DEBUG",
-#             "propagate": False,
-#         },
-#         "account.auth": {
-#             "handlers": ["auth_file"],
-#             "level": "DEBUG",
-#             "propagate": False,
-#         },
-#         "doctor.doctor": {
-#             "handlers": ["doctor_file"],
-#             "level": "DEBUG",
-#             "propagate": False,
-#         },
-#         "patients.patient": {
-#             "handlers": ["patient_file"],
-#             "level": "DEBUG",
-#             "propagate": False,
-#         },
-#         "appointment.booking": {
-#             "handlers": ["booking_file"],
-#             "level": "DEBUG",
-#             "propagate": False,
-#         },
-#         "BookingSlotAvailability.BookingSlot": {
-#             "handlers": ["BookingSlotAvailability_file"],
-#             "level": "DEBUG",
-#             "propagate": False,
-#         },
+#     "root": {
+#         "handlers": ["file"],
+#         "level": "DEBUG",
 #     },
 # }
 
-
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "file": {
-            "level": "DEBUG",
-            "class": "logging.FileHandler",
-            "filename": "debug.log",
-        },
-    },
-    "root": {
-        "handlers": ["file"],
-        "level": "DEBUG",
-    },
-}
 
 # Email-Configuration......
 
@@ -366,3 +280,210 @@ EMAIL_USE_TLS = True
 
 # EMAIL_HOST_USER = "vivek.jha@dtroffle.com"
 # EMAIL_HOST_PASSWORD = "gsyvamddfrpihzdo"
+
+
+# import os
+
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "formatters": {
+#         "verbose": {
+#             "format": "{levelname} {asctime} {module} {message}",
+#             "style": "{",
+#         },
+#     },
+#     "handlers": {
+#         "file": {
+#             "level": "DEBUG",
+#             "class": "logging.FileHandler",
+#             "filename": os.path.join(BASE_DIR, "logs/api.log"),  # Specify the 'logs' directory
+#             "formatter": "verbose",
+#         },
+#         "rotating_file": {
+#             "level": "INFO",
+#             "class": "logging.handlers.TimedRotatingFileHandler",
+#             "filename": os.path.join(BASE_DIR, "logs/api.log"),  # Specify the 'logs' directory
+#             "when": "D",
+#             "interval": 1,
+#             "backupCount": 5,
+#             "formatter": "verbose",
+#         },
+#     },
+#     "root": {
+#         "handlers": ["file", "rotating_file"],
+#         "level": "DEBUG",
+#     },
+# }
+
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "Debug_file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "logs/api.log"),
+            "formatter": "verbose",
+        },
+        "Hospital_file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "logs/Hospitals.log"),
+            "formatter": "verbose",
+        },
+        "doctor_file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "logs/doctors.log"),
+            "formatter": "verbose",
+        },
+        "patient_file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "logs/patients.log"),
+            "formatter": "verbose",
+        },
+        "booking_file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "logs/Appointment.log"),
+            "formatter": "verbose",
+        },
+        "Bed_file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "logs/Beds.log"),
+            "formatter": "verbose",
+        },
+        "feedbacks_file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "logs/feedbacks.log"),
+            "formatter": "verbose",
+        },
+        "Medicines_file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "logs/Medicines.log"),
+            "formatter": "verbose",
+        },
+        "Nurses_file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "logs/Nurses.log"),
+            "formatter": "verbose",
+        },
+        "PrescriptionDetails_file": {  # Corrected handler name
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "logs/PrescriptionDetails.log"),
+            "formatter": "verbose",
+        },
+        "Prescriptions_file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "logs/Prescriptions.log"),
+            "formatter": "verbose",
+        },
+        "LabTest_file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "logs/LabTest.log"),
+            "formatter": "verbose",
+        },
+        "Payment_file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "logs/Payments.log"),
+            "formatter": "verbose",
+        },
+        "Invoice_file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "logs/Invoices.log"),
+            "formatter": "verbose",
+        },
+    },
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
+            "style": "{",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["Debug_file"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+        "Hospitals.Hospital": {
+            "handlers": ["Hospital_file"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "doctors.doctor": {
+            "handlers": ["doctor_file"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "patients.patient": {
+            "handlers": ["patient_file"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "Appointments.Appointment": {
+            "handlers": ["booking_file"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "Beds.Bed": {
+            "handlers": ["Bed_file"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "feedbacks.feedback": {
+            "handlers": ["feedbacks_file"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "Medicines.Medicine": {
+            "handlers": ["Medicines_file"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "Nurses.Nurse": {
+            "handlers": ["Nurses_file"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "PrescriptionDetails.PrescriptionDetail": {  # Corrected logger name
+            "handlers": ["PrescriptionDetails_file"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "Prescriptions.Prescription": {
+            "handlers": ["Prescriptions_file"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "LabTests.LabTest": {
+            "handlers": ["LabTest_file"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "Payments.Payment": {
+            "handlers": ["Payment_file"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "Invoices.Invoice": {
+            "handlers": ["Invoice_file"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+    },
+}

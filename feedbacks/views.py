@@ -1,8 +1,18 @@
+import logging
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Feedback
 from .serializers import FeedbackSerializerCreate, FeedbackSerializerList, FeedbackSerializerUpdate
+
+
+
+
+logger = logging.getLogger("feedbacks.feedback")
+
+
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class CreateFeedbackView(APIView):
     def post(self, request, format=None):
@@ -15,6 +25,7 @@ class CreateFeedbackView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class ListFeedbackView(APIView):
     def get(self, request, id=None, format=None):
@@ -25,6 +36,7 @@ class ListFeedbackView(APIView):
             return Response(serializer.data)
         
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     
 class RetrieveFeedbackView(APIView):
     def get(self, request, format=None):
@@ -41,15 +53,16 @@ class RetrieveFeedbackView(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
         
         
-    
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class TotalFeedbackView(APIView):
     def get(self, request, format=None):
         total_feedback_count = Feedback.objects.count()
         return Response({"total_count": total_feedback_count})    
         
-        
-        
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++        
+
 class UpdateFeedbackView(APIView):
     def put(self, request, pk, format=None):
         try:
@@ -78,7 +91,8 @@ class UpdateFeedbackView(APIView):
             return Response({"message": "Feedback updated successfully"}, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     
 
 class DeleteFeedbackView(APIView):
@@ -92,3 +106,5 @@ class DeleteFeedbackView(APIView):
                 return Response({"message": "Feedback could not be deleted"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except Feedback.DoesNotExist:
             return Response({"error": "Feedback with this ID does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
