@@ -119,8 +119,27 @@ celerybeat.pid
 # SageMath parsed files
 *.sage.py
 
+
+
+# Ignore Django static files
+/static/
+
+
+# Ignore compiled Python files
+__pycache__/
+*.pyc
+
+# Ignore IDE or editor-specific files
+.vscode/
+.idea/
+.pycharm/
+.DS_Store
+
+
+
+
 # Environments
-.env
+# .env
 .venv
 env/
 venv/
