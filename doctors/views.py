@@ -2,7 +2,9 @@ import logging
 from rest_framework.response import Response
 from rest_framework import status
 
+
 from rest_framework.views import APIView
+from Hospitals.permissions import UnrestrictedPermission
 from doctors.models import Doctor
 from doctors.serializers import (
     DoctorListSerializer,
@@ -228,3 +230,39 @@ class ClientDoctorSearchView(APIView):
         return Response(response_data, status=status.HTTP_200_OK)
     
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+class DoctorListView(APIView):
+    permission_classes = [UnrestrictedPermission]
+    def get(self, request, format=None):
+        doctors = Doctor.objects.all()
+        serializer = DoctorListSerializer(doctors, many=True)
+        # Return the serialized data as a JSON response
+        return Response({"Data": serializer.data})
+    
+
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++    
+
+def get_doctors_by_client_id(client_id):
+    return Doctor.objects.filter(client_id=client_id)
+
+class AllClientDoctorListView(APIView):
+    permission_classes = [UnrestrictedPermission]
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        client_id = data.get("client_id")
+        
+        if client_id:
+            doctors = get_doctors_by_client_id(client_id)
+            
+            if doctors.exists():
+                serializer = DoctorListSerializer(doctors, many=True)
+                return Response({"Data": serializer.data})
+            else:
+                return Response({"error": "No doctors found for the given client_id"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({"error": "client_id is missing in the request data"}, status=status.HTTP_400_BAD_REQUEST)
+        

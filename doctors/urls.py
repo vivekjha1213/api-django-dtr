@@ -1,10 +1,12 @@
 from django.urls import path
 from doctors.views import (
+    AllClientDoctorListView,
     ClientDoctorDeleteViewId,
     ClientDoctorListByIDView,
     ClientDoctorListView,
     ClientDoctorSearchView,
     ClientDoctorUpdateView,
+    DoctorListView,
     TotalClientDoctorCountView,
     DoctorRegistrationView,
 )
@@ -12,6 +14,12 @@ from doctors.views import (
 
 urlpatterns = [
     path("register/", DoctorRegistrationView.as_view(), name="register"),
+    path("list/", DoctorListView.as_view(), name="ALl-doctor_list"),
+    
+        path("All/", AllClientDoctorListView.as_view(), name="ALl-doctor_list"),
+    
+    
+    
     path("details/", ClientDoctorListView.as_view(), name="client_doctor_list"),
     path(
         "counter/",

@@ -9,6 +9,7 @@ class DoctorRegistrationSerializer(serializers.ModelSerializer):
         fields = [
             "first_name",
             "last_name",
+            "profile_image",
             "gender",
             "email",
             "contact_number",
@@ -17,7 +18,7 @@ class DoctorRegistrationSerializer(serializers.ModelSerializer):
             "qualifications",
             "address",
             "department",
-            "client"
+            "client",
         ]
 
         def validate(self, attrs):
@@ -46,6 +47,7 @@ class DoctorUpdateSerializer(serializers.ModelSerializer):
         fields = [
             "first_name",
             "last_name",
+            "profile_image",
             "gender",
             "email",
             "contact_number",
@@ -54,7 +56,6 @@ class DoctorUpdateSerializer(serializers.ModelSerializer):
             "qualifications",
             "address",
             "department",
-
         ]
 
     def update(self, instance, validated_data):
@@ -101,6 +102,7 @@ class DoctorListSerializer(serializers.ModelSerializer):
             "doctor_id",
             "first_name",
             "last_name",
+            "profile_image",
             "gender",
             "email",
             "contact_number",
@@ -113,5 +115,3 @@ class DoctorListSerializer(serializers.ModelSerializer):
             "updated_at",
             "client_id",
         ]
-        
-        
