@@ -149,7 +149,7 @@ class CountClientAppointmentView(APIView):
 
         if client_id is not None:
             total_count = Appointment.objects.filter(client_id=client_id).count()
-            return Response({"success": True, "total": total_count})
+            return Response({"success": True, "total_count": total_count})
         else:
             return Response(
                 {

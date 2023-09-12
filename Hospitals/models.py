@@ -78,6 +78,11 @@ class Hospital(AbstractBaseUser):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["name", "password"]
+    
+    
+    # to ensure unique entries based on 'email' and 'user_type'
+    class Meta:  
+        unique_together = ('email', 'user_type')  
 
     def __str__(self):
         return self.email

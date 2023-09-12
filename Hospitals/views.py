@@ -156,6 +156,7 @@ class HospitalLoginView(APIView):
             # Include client_id and is_admin in the response
             client_id = hospital.client_id
             is_admin = hospital.is_admin
+            user_type=hospital.user_type
 
             # Save tokens to the hospital instance and then save the instance
             hospital.access_token = access_token
@@ -171,6 +172,7 @@ class HospitalLoginView(APIView):
                     "refresh_token": refresh_token,
                     "client_id": client_id,
                     "is_admin": is_admin,  # Include the is_admin flag
+                    "user_type":user_type,
                 },
                 status=status.HTTP_200_OK,
             )
