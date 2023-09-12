@@ -125,6 +125,9 @@ class TotalHospitalView(APIView):
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+
+
 # login api
 class HospitalLoginView(APIView):
     permission_classes = [UnrestrictedPermission]
@@ -210,6 +213,7 @@ class HospitalChangePasswordView(APIView):
 
 # @email @Post api for send reset link in front end view ....
 class SendPasswordResetEmailView(APIView):
+    permission_classes = [UnrestrictedPermission]
     def post(self, request, format=None):
         logger.info("Password reset email requested")
 

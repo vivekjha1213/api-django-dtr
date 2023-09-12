@@ -36,10 +36,8 @@ urlpatterns = [
         schema_view.with_ui("swagger", cache_timeout=0),
         name="schema-swagger-ui",
     ),
-    path(
-        "redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"
-    ),
-     path('', index, name='index'),  # Add this line for the root URL     
+    path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
+    path("", index, name="index"),  # Add this line for the root URL
     path("platform/", admin.site.urls),
     path("Hospital/", include("Hospitals.urls")),
     path("Patient/", include("patients.urls")),
@@ -55,11 +53,11 @@ urlpatterns = [
     path("Payment/", include("Payments.urls")),
     path("LabTest/", include("LabTests.urls")),
     path("Feedback/", include("feedbacks.urls")),
+   
     
     
-    
-    re_path(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
-    re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
+    re_path(r"^media/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
+    re_path(r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}),
 ]
 
 if settings.DEBUG:
