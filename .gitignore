@@ -60,6 +60,8 @@ cover/
 
 # Django stuff:
 *.log
+logs/*
+!logs/.gitkeep
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
@@ -132,12 +134,14 @@ staticfiles/
 # Ignore compiled Python files
 __pycache__/
 *.pyc
+__pycache__
 
 # Ignore IDE or editor-specific files
 .vscode/
 .idea/
 .pycharm/
 .DS_Store
+.vscode
 
 
 
