@@ -20,8 +20,4 @@ class Prescription(models.Model):
         return f"Prescription {self.prescription_id} for Patient {self.patient}"
     
     def save(self, *args, **kwargs):
-        # Split the datetime field into date and time fields when saving
-        if self.prescription_datetime:
-            self.prescription_date = self.prescription_datetime.date()
-            self.prescription_time = self.prescription_datetime.time()
         super().save(*args, **kwargs)
