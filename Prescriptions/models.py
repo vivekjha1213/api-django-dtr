@@ -1,7 +1,7 @@
 from django.db import models
 from Hospitals.models import Hospital
-from patients.models import Patient  #  a Patient model
-from doctors.models import Doctor  # a Doctor model
+from patients.models import Patient  # Patient model
+from doctors.models import Doctor  #  Doctor model
 
 class Prescription(models.Model):
     prescription_id = models.AutoField(primary_key=True)
