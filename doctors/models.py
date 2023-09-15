@@ -1,5 +1,4 @@
 from django.db import models
-
 from Hospitals.models import Hospital
 
 
@@ -30,7 +29,7 @@ class Doctor(models.Model):
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
     email = models.EmailField()
     contact_number = models.CharField(max_length=20)
-    date_of_birth = models.DateField()
+    date_of_birth = models.DateField(null=True)
     specialty = models.CharField(max_length=255, choices=SPECIALTY_CHOICES)
     qualifications = models.TextField()
     address = models.CharField(max_length=255)

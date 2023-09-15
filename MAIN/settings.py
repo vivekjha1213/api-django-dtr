@@ -158,16 +158,25 @@ STATIC_URL = "/static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.mysql",
+#         "NAME": "u714077623_HMS_API_TEST",
+#         "USER": "u714077623_HMS_API_TEST",
+#         "PASSWORD": "n46Q@6&XLh3nd5N",
+#         "HOST": "217.21.88.8",  # Change if your MySQL server is running on a different host
+#         "PORT": "3306",  # Change if your MySQL server is running on a different port
+#     }
+# }
+
+
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "u714077623_HMS_API_TEST",
-        "USER": "u714077623_HMS_API_TEST",
-        "PASSWORD": "n46Q@6&XLh3nd5N",
-        "HOST": "217.21.88.8",  # Change if your MySQL server is running on a different host
-        "PORT": "3306",  # Change if your MySQL server is running on a different port
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
 
 
 SWAGGER_SETTINGS = {
@@ -185,7 +194,6 @@ SWAGGER_SETTINGS = {
 }
 
 
-LOGIN_URL = "http://127.0.0.1:8000/swagger/"
 
 
 REST_FRAMEWORK = {

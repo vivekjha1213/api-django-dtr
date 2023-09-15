@@ -10,22 +10,22 @@ from Appointments.views import (
 )
 
 urlpatterns = [
-    path("book/", AppointmentRegisterView.as_view(), name="book-appointment"),
-    path("All/", JoinListAppointmentView.as_view(), name="appointment-list"),
+    path("book/", AppointmentRegisterView.as_view(), name="register-appointment"),
+    path("All/", JoinListAppointmentView.as_view(), name="join-list-appointment"),
     path(
         "counter/",
         CountClientAppointmentView.as_view(),
-        name="total-appointment",
+        name="count-client-appointment",
     ),
-    path("deleteBy/", ClientDeleteAppointmentView.as_view(), name="appointment-delete"),
+    path("deleteBy/", ClientDeleteAppointmentView.as_view(), name="client-delete-appointment"),
     path(
         "cancelled/",
         ClientCancelAppointmentView.as_view(),
-        name="Clien-cancelled-appointment",
+        name="client-cancel-appointment",
     ),
     path(
         "updateBy/",
         ClientAppointmentUpdateView.as_view(),
-        name="update-appointment-ClientId",
+        name="client-appointment-update",
     ),
 ]

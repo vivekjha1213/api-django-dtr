@@ -16,7 +16,7 @@ class Patient(models.Model):
     email = models.EmailField(unique=True)
     contact_number = models.CharField(max_length=20)
     address = models.CharField(max_length=255)
-    date_of_birth = models.DateField()
+    date_of_birth = models.DateField(null=True, blank=True)
     medical_history = models.TextField()
     client = models.ForeignKey(Hospital, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
