@@ -129,6 +129,8 @@ celerybeat.pid
 staticfiles/
 
 
+
+
 # Ignore compiled Python files
 __pycache__/
 *.pyc
