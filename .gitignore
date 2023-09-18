@@ -125,8 +125,8 @@ celerybeat.pid
 
 
 # Ignore Django static files
-static
-staticfiles
+/static/
+/staticfiles/
 
 
 

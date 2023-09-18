@@ -28,7 +28,7 @@ class HospitalRegisterSerializer(serializers.ModelSerializer):
             "address",
             "email",
             "phone",
-            "password",  # Include the password field here
+            "password",  
             "user_type",
         ]
 
@@ -40,19 +40,23 @@ class HospitalRegisterSerializer(serializers.ModelSerializer):
         return email
 
     def create(self, validated_data):
-        password = validated_data.pop(
-            "password"
-        )  # Pop the password from validated_data
-
+        password = validated_data.pop("password")
         hospital_manager = Hospital.objects.db_manager("default")
         hospital = hospital_manager.create_user(
-            email=validated_data["email"],
-            name=validated_data["hospital_name"],
-            password=password,
-            # Include other fields as needed
-        )
-
+        email=validated_data["email"],
+        hospital_name=validated_data["hospital_name"],
+        owner_name=validated_data["owner_name"],
+        password=password,
+        profile_image=validated_data.get("profile_image"),  #
+        city=validated_data.get("city"),
+        address=validated_data.get("address"),
+        phone=validated_data.get("phone"),
+        user_logo=validated_data.get("user_logo"),
+        user_type=validated_data.get("user_type"),
+        name=validated_data["owner_name"],
+    )
         return hospital
+
 
 
 class HospitalSerializer(serializers.ModelSerializer):
