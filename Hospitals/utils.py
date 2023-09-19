@@ -3,15 +3,6 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 import os
 
-from rest_framework_simplejwt.settings import api_settings
-
-
-def custom_payload_handler(user):
-    payload = api_settings.JWT_PAYLOAD_HANDLER(user)
-    payload[
-        "client_id"
-    ] = user.client_id  # Assuming client_id is your primary key field
-    return payload
 
 
 # send email by using EmailMessage Class..

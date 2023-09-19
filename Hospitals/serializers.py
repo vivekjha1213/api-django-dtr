@@ -79,6 +79,7 @@ class HospitalUpdateSerializer(serializers.ModelSerializer):
             "phone",
             "password",
             "user_type",
+            "name",
         ]
 
     def validate(self, data):
@@ -236,6 +237,7 @@ class SendPasswordResetEmailSerializer(serializers.Serializer):
 """
 
 
+
 class SendPasswordResetEmailSerializer(serializers.Serializer):
     email = serializers.EmailField(max_length=255)
 
@@ -277,6 +279,7 @@ class SendPasswordResetEmailSerializer(serializers.Serializer):
 
         # Use your email sending utility to send the email
         Util.send_email(email_data)
+      
 
         return attrs
 
