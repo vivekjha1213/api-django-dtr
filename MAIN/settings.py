@@ -109,6 +109,22 @@ TEMPLATES = [
 WSGI_APPLICATION = "MAIN.wsgi.application"
 
 
+
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+
+
+
+
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -256,7 +272,6 @@ CORS_ALLOW_METHODS = [
 
 
 CORS_ALLOWED_ORIGINS = [
-    "http://192.168.1.61:3000",  # -> ravi
     "http://194.163.40.231:8080",  # -> production
     "http://127.0.0.1:8000",  # -> local
     "http://172.20.10.11:3000",  # -> pragati
@@ -266,8 +281,6 @@ PASSWORD_RESET_TIMEOUT = 900  # 900 Sec = 15 Min
 
 
 # logger: config
-
-
 # LOGGING = {
 #     "version": 1,
 #     "disable_existing_loggers": False,
@@ -286,7 +299,6 @@ PASSWORD_RESET_TIMEOUT = 900  # 900 Sec = 15 Min
 
 
 # Email-Configuration......
-
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
@@ -299,41 +311,6 @@ EMAIL_USE_TLS = True
 # EMAIL_HOST_PASSWORD = "gsyvamddfrpihzdo"
 
 
-# import os
-
-# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# LOGGING = {
-#     "version": 1,
-#     "disable_existing_loggers": False,
-#     "formatters": {
-#         "verbose": {
-#             "format": "{levelname} {asctime} {module} {message}",
-#             "style": "{",
-#         },
-#     },
-#     "handlers": {
-#         "file": {
-#             "level": "DEBUG",
-#             "class": "logging.FileHandler",
-#             "filename": os.path.join(BASE_DIR, "logs/api.log"),  # Specify the 'logs' directory
-#             "formatter": "verbose",
-#         },
-#         "rotating_file": {
-#             "level": "INFO",
-#             "class": "logging.handlers.TimedRotatingFileHandler",
-#             "filename": os.path.join(BASE_DIR, "logs/api.log"),  # Specify the 'logs' directory
-#             "when": "D",
-#             "interval": 1,
-#             "backupCount": 5,
-#             "formatter": "verbose",
-#         },
-#     },
-#     "root": {
-#         "handlers": ["file", "rotating_file"],
-#         "level": "DEBUG",
-#     },
-# }
 
 
 LOGGING = {

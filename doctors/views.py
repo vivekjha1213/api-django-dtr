@@ -1,6 +1,9 @@
 import logging
 from rest_framework.response import Response
 from rest_framework import status
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+
 
 
 from rest_framework.views import APIView
@@ -234,14 +237,25 @@ class ClientDoctorSearchView(APIView):
 
 
 
+# class DoctorListView(APIView):
+#     permission_classes = [UnrestrictedPermission]
+#     def get(self, request, format=None):
+#         doctors = Doctor.objects.all()
+#         serializer = DoctorListSerializer(doctors, many=True)
+#         # Return the serialized data as a JSON response
+#         return Response({"Data": serializer.data})
+    
+    
+    #cache redis implement here 
+@method_decorator(cache_page(60), name="get")
 class DoctorListView(APIView):
     permission_classes = [UnrestrictedPermission]
+
     def get(self, request, format=None):
         doctors = Doctor.objects.all()
         serializer = DoctorListSerializer(doctors, many=True)
         # Return the serialized data as a JSON response
         return Response({"Data": serializer.data})
-    
 
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++    
