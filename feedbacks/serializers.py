@@ -6,7 +6,7 @@ from .models import Feedback
 class FeedbackSerializerCreate(serializers.ModelSerializer):
     class Meta:
         model = Feedback
-        fields = '__all__'
+        fields = ['email', 'notes','client']
 
     def validate_email(self, value):
         # Check if an existing feedback with the same email already exists
@@ -27,4 +27,4 @@ class FeedbackSerializerList(serializers.ModelSerializer):
 class FeedbackSerializerUpdate(serializers.ModelSerializer):
     class Meta:
         model = Feedback
-        fields = ['email', 'notes']
+        fields = ['email', 'notes','client']
