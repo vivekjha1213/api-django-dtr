@@ -115,3 +115,6 @@ class DoctorListSerializer(serializers.ModelSerializer):
             "updated_at",
             "client_id",
         ]
+
+
+#join doctor and hospital.....

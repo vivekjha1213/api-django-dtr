@@ -2,6 +2,7 @@ from django.urls import path
 
 
 from Hospitals.views import (
+    DeatilsHospitalView,
     HospitalChangePasswordView,
     HospitalDeleteView,
     HospitalListAPIView,
@@ -53,5 +54,9 @@ urlpatterns = [
          HospitalPasswordResetView.as_view(),
          name="reset-password",
      ),
+       path(
+        "hospitals-doctorts-patients/", DeatilsHospitalView.as_view(), name="Doctor_With-Hospital"
+    ),
+    
     
 ]

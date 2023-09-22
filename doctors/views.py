@@ -19,7 +19,6 @@ from doctors.serializers import (
 logger = logging.getLogger("doctors.doctor")
 
 
-
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -52,69 +51,71 @@ class DoctorRegistrationView(APIView):
         )
 
 
-
 ##################################################################################################################################################################################################
 
 #################################################################################################################################################
 
 
-
-
-#@Get Data by Client Id.....
+# @Get Data by Client Id.....
 def get_doctors_by_client_id(client_id):
     return Doctor.objects.filter(client_id=client_id)
+
 
 class ClientDoctorListView(APIView):
     def post(self, request, *args, **kwargs):
         data = request.data
         client_id = data.get("client_id")
-        
+
         if client_id:
             doctors = get_doctors_by_client_id(client_id)
-            
+
             if doctors.exists():
                 serializer = DoctorListSerializer(doctors, many=True)
                 return Response({"Data": serializer.data})
             else:
-                return Response({"error": "No doctors found for the given client_id"}, status=status.HTTP_404_NOT_FOUND)
+                return Response(
+                    {"error": "No doctors found for the given client_id"},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
         else:
-            return Response({"error": "client_id is missing in the request data"}, status=status.HTTP_400_BAD_REQUEST)
-        
-        
+            return Response(
+                {"error": "client_id is missing in the request data"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        
-        
-        
 
-# @get Toatl Count doctor api by clidID 
+
+# @get Toatl Count doctor api by clidID
 class TotalClientDoctorCountView(APIView):
     def post(self, request):
         client_id = request.data.get("client_id")  # Get client_id from request data
-        
+
         if client_id is not None:
             total_count = Doctor.objects.filter(client_id=client_id).count()
             return Response(
-                {"success": True, "total_count": total_count},
-                status=status.HTTP_200_OK
+                {"success": True, "total_count": total_count}, status=status.HTTP_200_OK
             )
         else:
             return Response(
-                {"success": False, "message": "client_id is required in the request data"},
-                status=status.HTTP_400_BAD_REQUEST
+                {
+                    "success": False,
+                    "message": "client_id is required in the request data",
+                },
+                status=status.HTTP_400_BAD_REQUEST,
             )
-            
-            
-            
+
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-            
-          
-  #@ Patient Delete By Client ID and Patient ID...          
+
+
+# @ Patient Delete By Client ID and Patient ID...
 class ClientDoctorDeleteViewId(APIView):
     def post(self, request):
         doctor_id = request.data.get("doctor_id")  # Get doctor_id from request data
         client_id = request.data.get("client_id")  # Get client_id from request data
-        
+
         if doctor_id is not None and client_id is not None:
             try:
                 patient = Doctor.objects.get(doctor_id=doctor_id, client_id=client_id)
@@ -130,13 +131,15 @@ class ClientDoctorDeleteViewId(APIView):
                 )
         else:
             return Response(
-                {"success": False, "message": "Both doctor_id and client_id are required in the request data"},
+                {
+                    "success": False,
+                    "message": "Both doctor_id and client_id are required in the request data",
+                },
                 status=status.HTTP_400_BAD_REQUEST,
             )
-            
-            
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 # Update all dr by doctor_id  and client Id......:
@@ -154,7 +157,7 @@ class ClientDoctorUpdateView(APIView):
     def put(self, request, *args, **kwargs):
         doctor_id = request.data.get("doctor_id")
         client_id = request.data.get("client_id")
-        
+
         if doctor_id and client_id:
             try:
                 doctor = Doctor.objects.get(doctor_id=doctor_id, client_id=client_id)
@@ -165,14 +168,16 @@ class ClientDoctorUpdateView(APIView):
             return self.update_doctor(doctor, request.data)
         else:
             return Response(
-                {"error": "Both doctor_id and client_id are required in the request data."},
+                {
+                    "error": "Both doctor_id and client_id are required in the request data."
+                },
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
     def patch(self, request, *args, **kwargs):
         doctor_id = request.data.get("doctor_id")
         client_id = request.data.get("client_id")
-        
+
         if doctor_id and client_id:
             try:
                 doctor = Doctor.objects.get(doctor_id=doctor_id, client_id=client_id)
@@ -183,47 +188,58 @@ class ClientDoctorUpdateView(APIView):
             return self.update_doctor(doctor, request.data)
         else:
             return Response(
-                {"error": "Both doctor_id and client_id are required in the request data."},
+                {
+                    "error": "Both doctor_id and client_id are required in the request data."
+                },
                 status=status.HTTP_400_BAD_REQUEST,
             )
-    
-    
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++    
-    
+
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
 class ClientDoctorListByIDView(APIView):
     def post(self, request, *args, **kwargs):
         data = request.data
         client_id = data.get("client_id")
         doctor_id = data.get("doctor_id")
-        
+
         if not (doctor_id and client_id):
-            return Response({"error": "Both doctor_id and client_id are required in the request data"}, status=status.HTTP_400_BAD_REQUEST)
-        
+            return Response(
+                {
+                    "error": "Both doctor_id and client_id are required in the request data"
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         doctors = Doctor.objects.filter(client_id=client_id)
-        
+
         if doctor_id:
             doctors = doctors.filter(doctor_id=doctor_id)
-            
+
         serializer = DoctorListSerializer(doctors, many=True)
         return Response({"Data": serializer.data})
-    
-    
+
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    
- # Search Api...................... by client id and    patient id and patient firstname, last_name..
+
+
+# Search Api...................... by client id and    patient id and patient firstname, last_name..
 class ClientDoctorSearchView(APIView):
     def get(self, request):
         search_query = request.GET.get("query")
         client_id = request.GET.get("client_id")  # New client_id parameter
-        
+
         if not search_query:
             return Response(
                 {"success": False, "message": "Search query parameter is required."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        
-        doctors = Doctor.objects.filter(first_name__icontains=search_query, client=client_id)
-        
+
+        doctors = Doctor.objects.filter(
+            first_name__icontains=search_query, client=client_id
+        )
+
         serializer = DoctorSearchSerializer(doctors, many=True)
         response_data = {
             "success": True,
@@ -231,10 +247,9 @@ class ClientDoctorSearchView(APIView):
             "results": serializer.data,
         }
         return Response(response_data, status=status.HTTP_200_OK)
-    
+
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
 
 
 # class DoctorListView(APIView):
@@ -244,9 +259,9 @@ class ClientDoctorSearchView(APIView):
 #         serializer = DoctorListSerializer(doctors, many=True)
 #         # Return the serialized data as a JSON response
 #         return Response({"Data": serializer.data})
-    
-    
-    #cache redis implement here 
+
+
+# cache redis implement here
 @method_decorator(cache_page(60), name="get")
 class DoctorListView(APIView):
     permission_classes = [UnrestrictedPermission]
@@ -258,25 +273,37 @@ class DoctorListView(APIView):
         return Response({"Data": serializer.data})
 
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++    
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 
 def get_doctors_by_client_id(client_id):
     return Doctor.objects.filter(client_id=client_id)
 
+
 class AllClientDoctorListView(APIView):
     permission_classes = [UnrestrictedPermission]
+
     def post(self, request, *args, **kwargs):
         data = request.data
         client_id = data.get("client_id")
-        
+
         if client_id:
             doctors = get_doctors_by_client_id(client_id)
-            
+
             if doctors.exists():
                 serializer = DoctorListSerializer(doctors, many=True)
                 return Response({"Data": serializer.data})
             else:
-                return Response({"error": "No doctors found for the given client_id"}, status=status.HTTP_404_NOT_FOUND)
+                return Response(
+                    {"error": "No doctors found for the given client_id"},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
         else:
-            return Response({"error": "client_id is missing in the request data"}, status=status.HTTP_400_BAD_REQUEST)
-        
+            return Response(
+                {"error": "client_id is missing in the request data"},
+                status=status.HTTP_400_BAD_REQUEST,
+     
+            )
+            
+            
+            

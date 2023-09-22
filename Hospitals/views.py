@@ -1,3 +1,4 @@
+from importlib.abc import PathEntryFinder
 import logging
 
 from rest_framework.views import APIView
@@ -7,7 +8,12 @@ from rest_framework import status
 from Hospitals.permissions import UnrestrictedPermission
 from Hospitals.utils import Util
 
-from django.utils import timezone  #Import timezone from django.utils
+from django.utils import timezone
+
+from doctors.models import Doctor  #Import timezone from django.utils
+
+
+from patients.models import Patient
 
 from .models import Hospital
 from rest_framework import generics
@@ -247,3 +253,69 @@ class HospitalPasswordResetView(APIView):
 
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+class DeatilsHospitalView(generics.ListAPIView):
+    serializer_class = None
+    
+    def get_queryset(self):
+        hospital = Hospital.objects.values(
+            "client_id",
+            "hospital_name",
+            "name",
+            "owner_name",
+            "city",
+            "address",
+            "email",
+            "phone",
+            "password",
+            "user_type",
+            "profile_image",
+            "user_logo",
+            "last_login",
+            "created_at",
+            "updated_at",
+            "is_active",
+        ).first()  # Assuming there's only one hospital
+        
+        # Query the Doctor model for one doctor
+        doctor = Doctor.objects.values(
+            "client_id",
+            "first_name",
+            "last_name",
+            "profile_image",
+            "gender",
+            "email",
+            "contact_number",
+            "date_of_birth",
+            "specialty",
+            "qualifications",
+            "address",
+            "department",
+        ).first()
+        
+        # Query the Patient model for one patient
+        patient = Patient.objects.values(
+            "client_id",
+            "first_name",
+            "last_name",
+            "gender",
+            "email",
+            "contact_number",
+            "address",
+            "date_of_birth",
+            "medical_history",
+        ).first()
+        
+        # Create a dictionary to hold the data
+        combined_data = {
+            "hospital": hospital,
+            "doctor": doctor,
+            "patient": patient,
+        }
+        
+        return [combined_data]  # Return as a list of dictionaries
+    
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        return Response(queryset)
