@@ -4,6 +4,7 @@ from django.urls import path
 from Hospitals.views import (
     DeatilsHospitalView,
     HospitalChangePasswordView,
+    HospitalDataJoinView,
     HospitalDeleteView,
     HospitalListAPIView,
     HospitalLoginView,
@@ -57,6 +58,12 @@ urlpatterns = [
        path(
         "hospitals-doctorts-patients/", DeatilsHospitalView.as_view(), name="Doctor_With-Hospital"
     ),
+       
+          path(
+        "hospitals-details-all/", HospitalDataJoinView.as_view(), name="Doctor_With-Hospital"
+    ),
+    
+    
     
     
 ]

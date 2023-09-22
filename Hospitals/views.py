@@ -7,6 +7,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from Hospitals.permissions import UnrestrictedPermission
 from Hospitals.utils import Util
+from django.db.models import F
+from django.db.models import CharField, Value
 
 from django.utils import timezone
 
@@ -319,3 +321,83 @@ class DeatilsHospitalView(generics.ListAPIView):
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         return Response(queryset)
+    
+
+
+
+
+
+
+class HospitalDataJoinView(generics.ListAPIView):
+    serializer_class = None
+    
+    def get_queryset(self):
+        # Query the Hospital model and join with Doctor and Patient models
+        queryset = Hospital.objects.annotate(
+            doctor_client_id=F('doctor__client_id'),
+            doctor_first_name=F('doctor__first_name'),
+            doctor_last_name=F('doctor__last_name'),
+            doctor_profile_image=F('doctor__profile_image'),
+            doctor_gender=F('doctor__gender'),
+            doctor_email=F('doctor__email'),
+            doctor_contact_number=F('doctor__contact_number'),
+            doctor_date_of_birth=F('doctor__date_of_birth'),
+            doctor_specialty=F('doctor__specialty'),
+            doctor_qualifications=F('doctor__qualifications'),
+            doctor_address=F('doctor__address'),
+            doctor_department=F('doctor__department'),
+            patient_client_id=F('patient__client_id'),
+            patient_first_name=F('patient__first_name'),
+            patient_last_name=F('patient__last_name'),
+            patient_gender=F('patient__gender'),
+            patient_email=F('patient__email'),
+            patient_contact_number=F('patient__contact_number'),
+            patient_address=F('patient__address'),
+            patient_date_of_birth=F('patient__date_of_birth'),
+            patient_medical_history=F('patient__medical_history'),
+        ).values(
+            "client_id",
+            "hospital_name",
+            "name",
+            "owner_name",
+            "city",
+            "address",
+            "email",
+            "phone",
+            "password",
+            "user_type",
+            "profile_image",
+            "user_logo",
+            "last_login",
+            "created_at",
+            "updated_at",
+            "is_active",
+            "doctor_client_id",
+            "doctor_first_name",
+            "doctor_last_name",
+            "doctor_profile_image",
+            "doctor_gender",
+            "doctor_email",
+            "doctor_contact_number",
+            "doctor_date_of_birth",
+            "doctor_specialty",
+            "doctor_qualifications",
+            "doctor_address",
+            "doctor_department",
+            "patient_client_id",
+            "patient_first_name",
+            "patient_last_name",
+            "patient_gender",
+            "patient_email",
+            "patient_contact_number",
+            "patient_address",
+            "patient_date_of_birth",
+            "patient_medical_history",
+        ).first()  # Assuming there's only one hospital
+        
+        return [queryset]  # Return as a list of dictionaries
+    
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        return Response(queryset)
+
