@@ -9,6 +9,9 @@ class Department(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     client= models.ForeignKey(Hospital, on_delete=models.CASCADE)
+    
+    class Meta:
+        unique_together = ['department_name', 'client']
 
     def __str__(self):
         return self.department_name

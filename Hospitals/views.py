@@ -1,6 +1,7 @@
 from importlib.abc import PathEntryFinder
 import logging
 
+from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.generics import UpdateAPIView
 from rest_framework.response import Response
@@ -11,8 +12,9 @@ from django.db.models import F
 from django.db.models import CharField, Value
 
 from django.utils import timezone
+from Nurses.models import Nurse
 
-from doctors.models import Doctor  #Import timezone from django.utils
+from doctors.models import Doctor  # Import timezone from django.utils
 
 
 from patients.models import Patient
@@ -44,11 +46,12 @@ logger = logging.getLogger("Hospitals.Hospital")
 
 # Create your views here.
 def index(request):
-    logger.info('Accessing the index view.')
+    logger.info("Accessing the index view.")
     return render(request, "index.html")
 
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 
 class HospitalRegistrationView(APIView):
     def post(self, request):
@@ -62,7 +65,9 @@ class HospitalRegistrationView(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 
 class HospitalUpdateView(UpdateAPIView):
     queryset = Hospital.objects.all()
@@ -88,6 +93,7 @@ class HospitalUpdateView(UpdateAPIView):
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
 class HospitalDeleteView(APIView):
     def delete(self, request, client_id, format=None):
         try:
@@ -105,6 +111,7 @@ class HospitalDeleteView(APIView):
 
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 
 class HospitalListAPIView(generics.ListAPIView):
     queryset = Hospital.objects.all()
@@ -124,7 +131,6 @@ class HospitalRetrieveAPIView(generics.RetrieveAPIView):
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-
 class TotalHospitalView(APIView):
     def get(self, request, format=None):
         total_hospitals = Hospital.objects.count()
@@ -132,8 +138,6 @@ class TotalHospitalView(APIView):
 
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
 
 
 # login api
@@ -164,7 +168,7 @@ class HospitalLoginView(APIView):
             # Include client_id and is_admin in the response
             client_id = hospital.client_id
             is_admin = hospital.is_admin
-            user_type=hospital.user_type
+            user_type = hospital.user_type
 
             # Save tokens to the hospital instance and then save the instance
             hospital.access_token = access_token
@@ -180,7 +184,7 @@ class HospitalLoginView(APIView):
                     "refresh_token": refresh_token,
                     "client_id": client_id,
                     "is_admin": is_admin,  # Include the is_admin flag
-                    "user_type":user_type,
+                    "user_type": user_type,
                 },
                 status=status.HTTP_200_OK,
             )
@@ -190,7 +194,9 @@ class HospitalLoginView(APIView):
                 status=status.HTTP_401_UNAUTHORIZED,
             )
 
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 
 # logout api.....
 class HospitalLogoutAPIView(APIView):
@@ -203,6 +209,7 @@ class HospitalLogoutAPIView(APIView):
 
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 
 class HospitalChangePasswordView(APIView):
     def post(self, request, format=None):
@@ -217,13 +224,14 @@ class HospitalChangePasswordView(APIView):
             {"message": "Password Changed Successfully"}, status=status.HTTP_200_OK
         )
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 # @email @Post api for send reset link in front end view ....
 class SendPasswordResetEmailView(APIView):
     permission_classes = [UnrestrictedPermission]
+
     def post(self, request, format=None):
         logger.info("Password reset email requested")
 
@@ -237,6 +245,7 @@ class SendPasswordResetEmailView(APIView):
             {"message": "Password Reset link sent. Please check your Email"},
             status=status.HTTP_200_OK,
         )
+
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -259,7 +268,7 @@ class HospitalPasswordResetView(APIView):
 
 class DeatilsHospitalView(generics.ListAPIView):
     serializer_class = None
-    
+
     def get_queryset(self):
         hospital = Hospital.objects.values(
             "client_id",
@@ -279,7 +288,7 @@ class DeatilsHospitalView(generics.ListAPIView):
             "updated_at",
             "is_active",
         ).first()  # Assuming there's only one hospital
-        
+
         # Query the Doctor model for one doctor
         doctor = Doctor.objects.values(
             "client_id",
@@ -295,7 +304,7 @@ class DeatilsHospitalView(generics.ListAPIView):
             "address",
             "department",
         ).first()
-        
+
         # Query the Patient model for one patient
         patient = Patient.objects.values(
             "client_id",
@@ -308,96 +317,133 @@ class DeatilsHospitalView(generics.ListAPIView):
             "date_of_birth",
             "medical_history",
         ).first()
-        
+
         # Create a dictionary to hold the data
         combined_data = {
             "hospital": hospital,
             "doctor": doctor,
             "patient": patient,
         }
-        
+
         return [combined_data]  # Return as a list of dictionaries
-    
+
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         return Response(queryset)
-    
-
-
-
-
 
 
 class HospitalDataJoinView(generics.ListAPIView):
     serializer_class = None
-    
+
     def get_queryset(self):
         # Query the Hospital model and join with Doctor and Patient models
-        queryset = Hospital.objects.annotate(
-            doctor_client_id=F('doctor__client_id'),
-            doctor_first_name=F('doctor__first_name'),
-            doctor_last_name=F('doctor__last_name'),
-            doctor_profile_image=F('doctor__profile_image'),
-            doctor_gender=F('doctor__gender'),
-            doctor_email=F('doctor__email'),
-            doctor_contact_number=F('doctor__contact_number'),
-            doctor_date_of_birth=F('doctor__date_of_birth'),
-            doctor_specialty=F('doctor__specialty'),
-            doctor_qualifications=F('doctor__qualifications'),
-            doctor_address=F('doctor__address'),
-            doctor_department=F('doctor__department'),
-            patient_client_id=F('patient__client_id'),
-            patient_first_name=F('patient__first_name'),
-            patient_last_name=F('patient__last_name'),
-            patient_gender=F('patient__gender'),
-            patient_email=F('patient__email'),
-            patient_contact_number=F('patient__contact_number'),
-            patient_address=F('patient__address'),
-            patient_date_of_birth=F('patient__date_of_birth'),
-            patient_medical_history=F('patient__medical_history'),
-        ).values(
-            "client_id",
-            "hospital_name",
-            "name",
-            "owner_name",
-            "city",
-            "address",
-            "email",
-            "phone",
-            "password",
-            "user_type",
-            "profile_image",
-            "user_logo",
-            "last_login",
-            "created_at",
-            "updated_at",
-            "is_active",
-            "doctor_client_id",
-            "doctor_first_name",
-            "doctor_last_name",
-            "doctor_profile_image",
-            "doctor_gender",
-            "doctor_email",
-            "doctor_contact_number",
-            "doctor_date_of_birth",
-            "doctor_specialty",
-            "doctor_qualifications",
-            "doctor_address",
-            "doctor_department",
-            "patient_client_id",
-            "patient_first_name",
-            "patient_last_name",
-            "patient_gender",
-            "patient_email",
-            "patient_contact_number",
-            "patient_address",
-            "patient_date_of_birth",
-            "patient_medical_history",
-        ).first()  # Assuming there's only one hospital
-        
+        queryset = (
+            Hospital.objects.annotate(
+                doctor_client_id=F("doctor__client_id"),
+                doctor_first_name=F("doctor__first_name"),
+                doctor_last_name=F("doctor__last_name"),
+                doctor_profile_image=F("doctor__profile_image"),
+                doctor_gender=F("doctor__gender"),
+                doctor_email=F("doctor__email"),
+                doctor_contact_number=F("doctor__contact_number"),
+                doctor_date_of_birth=F("doctor__date_of_birth"),
+                doctor_specialty=F("doctor__specialty"),
+                doctor_qualifications=F("doctor__qualifications"),
+                doctor_address=F("doctor__address"),
+                doctor_department=F("doctor__department"),
+                patient_client_id=F("patient__client_id"),
+                patient_first_name=F("patient__first_name"),
+                patient_last_name=F("patient__last_name"),
+                patient_gender=F("patient__gender"),
+                patient_email=F("patient__email"),
+                patient_contact_number=F("patient__contact_number"),
+                patient_address=F("patient__address"),
+                patient_date_of_birth=F("patient__date_of_birth"),
+                patient_medical_history=F("patient__medical_history"),
+            )
+            .values(
+                "client_id",
+                "hospital_name",
+                "name",
+                "owner_name",
+                "city",
+                "address",
+                "email",
+                "phone",
+                "password",
+                "user_type",
+                "profile_image",
+                "user_logo",
+                "last_login",
+                "created_at",
+                "updated_at",
+                "is_active",
+                "doctor_client_id",
+                "doctor_first_name",
+                "doctor_last_name",
+                "doctor_profile_image",
+                "doctor_gender",
+                "doctor_email",
+                "doctor_contact_number",
+                "doctor_date_of_birth",
+                "doctor_specialty",
+                "doctor_qualifications",
+                "doctor_address",
+                "doctor_department",
+                "patient_client_id",
+                "patient_first_name",
+                "patient_last_name",
+                "patient_gender",
+                "patient_email",
+                "patient_contact_number",
+                "patient_address",
+                "patient_date_of_birth",
+                "patient_medical_history",
+            )
+            .first()
+        )  # Assuming there's only one hospital
+
         return [queryset]  # Return as a list of dictionaries
-    
+
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         return Response(queryset)
+
+
+
+
+class DepartmentNursrDataJoinView(generics.ListAPIView):
+
+    def get_queryset(self):
+        queryset = Nurse.objects.select_related('department__client').annotate(
+            department_id_alias=F('department__department_id'), 
+            department_name=F('department__department_name'),
+            department_created_at=F('department__created_at'),
+            department_updated_at=F('department__updated_at'),
+            hospital_name=F('department__client__hospital_name') 
+        ).values(
+            'client_id',
+             'hospital_name', 
+            'nurse_id',
+            'first_name',
+            'last_name',
+            'gender',
+            'date_of_birth',
+            'contact_number',
+            'created_at',
+            'updated_at',
+            'department__department_id',  
+            'department_name',
+            'department_created_at',
+            'department_updated_at',
+           
+        )
+
+        return queryset
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        return Response(queryset)
+
+
 

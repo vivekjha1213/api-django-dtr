@@ -1,4 +1,5 @@
 from django.db import models
+from Departments.models import Department
 
 from Hospitals.models import Hospital
 
@@ -17,11 +18,16 @@ class Nurse(models.Model):
 
     date_of_birth = models.DateField()
     contact_number = models.CharField(max_length=20)
-    department = models.CharField(max_length=20)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE)
     client = models.ForeignKey(Hospital, on_delete=models.CASCADE)
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    
+    
+    class Meta:
+        unique_together = ['first_name', 'last_name', 'date_of_birth']
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
