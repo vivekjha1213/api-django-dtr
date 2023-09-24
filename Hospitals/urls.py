@@ -3,7 +3,7 @@ from django.urls import path
 
 from Hospitals.views import (
     DeatilsHospitalView,
-    DepartmentNursrDataJoinView,
+    DepartmentNurseDataJoinView,
     HospitalChangePasswordView,
     HospitalDataJoinView,
     HospitalDeleteView,
@@ -65,7 +65,7 @@ urlpatterns = [
     ),
           
                  path(
-        "Nurse-department-all/", DepartmentNursrDataJoinView.as_view(), name="Nurse_With-Hospital"
+        "Nurse-department-all/", DepartmentNurseDataJoinView.as_view(), name="Nurse_With-Hospital"
     ),
     
     

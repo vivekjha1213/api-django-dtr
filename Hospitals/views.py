@@ -412,7 +412,7 @@ class HospitalDataJoinView(generics.ListAPIView):
 
 
 
-class DepartmentNursrDataJoinView(generics.ListAPIView):
+class DepartmentNurseDataJoinView(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = Nurse.objects.select_related('department__client').annotate(
@@ -423,7 +423,6 @@ class DepartmentNursrDataJoinView(generics.ListAPIView):
             hospital_name=F('department__client__hospital_name') 
         ).values(
             'client_id',
-             'hospital_name', 
             'nurse_id',
             'first_name',
             'last_name',
@@ -436,9 +435,9 @@ class DepartmentNursrDataJoinView(generics.ListAPIView):
             'department_name',
             'department_created_at',
             'department_updated_at',
+            'hospital_name', 
            
         )
-
         return queryset
 
     def list(self, request, *args, **kwargs):
