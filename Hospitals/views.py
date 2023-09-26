@@ -513,14 +513,22 @@ class PrescriptionDataJoinView(generics.ListAPIView):
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         return Response(queryset)
-
-
+    
+    
+    
+    
+    
+    
+    
+    
 
 class PrescriptionDetailPrescriptionsJoinHospital(generics.ListAPIView):
     def get_queryset(self):
         queryset = PrescriptionDetail.objects.select_related(
             "prescription",
-            "medicine"
+            "medicine",
+            "prescription__patient",
+            "prescription__doctor",
         ).values(
             "prescription_detail_id",
             "prescription__prescription_id",
@@ -530,7 +538,20 @@ class PrescriptionDetailPrescriptionsJoinHospital(generics.ListAPIView):
             "prescription__created_at",
             "prescription__updated_at",
             "prescription__patient__patient_id",
+            "prescription__patient__first_name",
+            "prescription__patient__last_name",
+            "prescription__patient__gender",
+            "prescription__patient__email",
+            "prescription__patient__contact_number",
+            "prescription__patient__date_of_birth",
             "prescription__doctor__doctor_id",
+            "prescription__doctor__first_name",
+            "prescription__doctor__last_name",
+            "prescription__doctor__profile_image", 
+            "prescription__doctor__gender",
+            "prescription__doctor__email",
+            "prescription__doctor__contact_number",
+            "prescription__doctor__date_of_birth",
             "prescription__client__client_id",
             "medicine_id",
             "medicine__medicine_name", 
