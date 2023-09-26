@@ -14,6 +14,7 @@ from django.db.models import CharField, Value
 from django.utils import timezone
 from Medicines.models import Medicine
 from Nurses.models import Nurse
+from PrescriptionDetails.models import PrescriptionDetail
 from Prescriptions.models import Prescription
 
 from doctors.models import Doctor  # Import timezone from django.utils
@@ -506,6 +507,38 @@ class PrescriptionDataJoinView(generics.ListAPIView):
             'prescription_time',
             'notes',
            
+        )
+        return queryset
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        return Response(queryset)
+
+
+
+class PrescriptionDetailPrescriptionsJoinHospital(generics.ListAPIView):
+    def get_queryset(self):
+        queryset = PrescriptionDetail.objects.select_related(
+            "prescription",
+            "medicine"
+        ).values(
+            "prescription_detail_id",
+            "prescription__prescription_id",
+            "prescription__prescription_date",
+            "prescription__prescription_time",
+            "prescription__notes",
+            "prescription__created_at",
+            "prescription__updated_at",
+            "prescription__patient__patient_id",
+            "prescription__doctor__doctor_id",
+            "prescription__client__client_id",
+            "medicine_id",
+            "medicine__medicine_name", 
+            "medicine__unit_price",
+            "medicine__stock_quantity",  
+            "dosage",
+            "frequency",
+            "client_id",
         )
         return queryset
 

@@ -6,6 +6,7 @@ from .views import (
     ClientPrescriptionDetailUpdateIDView,
     ClientPrescriptionDetailsListByIdView,
     ClientPrescriptionDetailsListView,
+    PrescriptionDetailPrescriptionsJoin,
     PrescriptionDetailsCreateView,
     TotalPrescriptionDetailCountView,
 )
@@ -35,6 +36,11 @@ urlpatterns = [
     path(
         "Updated/",
         ClientPrescriptionDetailUpdateIDView.as_view(),
-        name="PrescriptionsDetails-Update-Client",
+        name="PrescriptionsDetails-Update-prescriptions",
     ),
+    
+    
+  path('prescriptiondetails/<str:client_id>/', PrescriptionDetailPrescriptionsJoin.as_view(), name='prescriptiondetails-prescriptions'),
+  
+    
 ]

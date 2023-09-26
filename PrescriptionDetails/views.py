@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
+from rest_framework import generics
 from PrescriptionDetails.models import PrescriptionDetail
 
 from .serializers import (
@@ -55,6 +56,7 @@ class ClientPrescriptionDetailsListView(APIView):
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
 class ClientPrescriptionDetailsListByIdView(APIView):
     def post(self, request, *args, **kwargs):
         data = request.data
@@ -83,8 +85,8 @@ class ClientPrescriptionDetailsListByIdView(APIView):
         return Response({"Data": serializer.data})
 
 
-
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 
 # @get Toatl Count PrescriptionDetail -Api by cliendID
 class TotalPrescriptionDetailCountView(APIView):
@@ -215,3 +217,40 @@ class ClientPrescriptionDetailDeleteByIDView(APIView):
 
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+class PrescriptionDetailPrescriptionsJoin(generics.ListAPIView):
+    def get_queryset(self):
+        client_id = self.kwargs.get('client_id')        
+        queryset = PrescriptionDetail.objects.select_related(
+            "prescription",
+            "medicine"
+        ).values(
+            "prescription_detail_id",
+            "prescription__prescription_id",
+            "prescription__prescription_date",
+            "prescription__prescription_time",
+            "prescription__notes",
+            "prescription__created_at",
+            "prescription__updated_at",
+            "prescription__patient__patient_id",
+            "prescription__doctor__doctor_id",
+            "prescription__doctor__first_name",
+            "prescription__doctor__last_name",
+            "prescription__patient__first_name",
+            "prescription__patient__last_name",
+            "prescription__client__client_id",
+            "medicine_id",
+            "medicine__medicine_name",
+            "medicine__unit_price",
+            "medicine__stock_quantity",
+            "dosage",
+            "frequency",
+            "client_id",
+        ).filter(client_id=client_id) 
+
+        return queryset
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        if not queryset.exists():
+            return Response({"message": "client_id not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(queryset)
