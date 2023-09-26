@@ -12,6 +12,7 @@ from django.db.models import F
 from django.db.models import CharField, Value
 
 from django.utils import timezone
+from Medicines.models import Medicine
 from Nurses.models import Nurse
 
 from doctors.models import Doctor  # Import timezone from django.utils
@@ -401,7 +402,7 @@ class HospitalDataJoinView(generics.ListAPIView):
                 "patient_medical_history",
             )
             .first()
-        )  # Assuming there's only one hospital
+        ) 
 
         return [queryset]  # Return as a list of dictionaries
 
@@ -445,4 +446,22 @@ class DepartmentNurseDataJoinView(generics.ListAPIView):
         return Response(queryset)
 
 
+class MedicinesHospitalDataJoinView(generics.ListAPIView):
 
+    def get_queryset(self):
+        queryset = Medicine.objects.select_related('client').values(
+            'medicine_name',
+            'manufacturer',
+            'unit_price',
+            'stock_quantity',
+            'client__client_id',
+            'client__hospital_name',
+            'client__created_at',
+            'client__updated_at',
+           
+        )
+        return queryset
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        return Response(queryset)

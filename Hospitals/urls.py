@@ -14,6 +14,7 @@ from Hospitals.views import (
     HospitalRegistrationView,
     HospitalRetrieveAPIView,
     HospitalUpdateView,
+    MedicinesHospitalDataJoinView,
     SendPasswordResetEmailView,
     TotalHospitalView,
 )
@@ -67,8 +68,11 @@ urlpatterns = [
                  path(
         "Nurse-department-all/", DepartmentNurseDataJoinView.as_view(), name="Nurse_With-Hospital"
     ),
-    
-    
+                 
+                        
+                 path(
+        "medicines-hospital-all/", MedicinesHospitalDataJoinView.as_view(), name="medicines-hospital-all"
+    ),
     
     
     

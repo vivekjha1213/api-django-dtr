@@ -109,20 +109,15 @@ TEMPLATES = [
 WSGI_APPLICATION = "MAIN.wsgi.application"
 
 
-
-
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
+        },
     }
 }
-
-
-
 
 
 # Database
@@ -196,11 +191,11 @@ DATABASES = {
 
 # Celery settings
 
-CELERY_BROKER_URL = "redis://127.0.0.1:6379"   #mac air -> redis server 
+CELERY_BROKER_URL = "redis://127.0.0.1:6379"  # mac air -> redis server
 CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379"
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TASK_SERIALIZER= 'json'
+CELERY_ACCEPT_CONTENT = ["application/json"]
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TASK_SERIALIZER = "json"
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
 
@@ -217,8 +212,6 @@ SWAGGER_SETTINGS = {
         "basic": {"type": "basic"},  # <<-- is for djagno authentication
     },
 }
-
-
 
 
 REST_FRAMEWORK = {
@@ -270,12 +263,19 @@ CORS_ALLOW_METHODS = [
     "OPTIONS",
 ]
 
+''' 
 
 CORS_ALLOWED_ORIGINS = [
     "http://194.163.40.231:8080",  # -> production
     "http://127.0.0.1:8000",  # -> local
     "http://172.20.10.11:3000",  # -> pragati
+    "http://localhost:8000",
 ]
+
+'''
+
+CORS_ALLOW_ALL_ORIGINS = True
+
 
 PASSWORD_RESET_TIMEOUT = 900  # 900 Sec = 15 Min
 
@@ -309,8 +309,6 @@ EMAIL_USE_TLS = True
 
 # EMAIL_HOST_USER = "vivek.jha@dtroffle.com"
 # EMAIL_HOST_PASSWORD = "gsyvamddfrpihzdo"
-
-
 
 
 LOGGING = {
