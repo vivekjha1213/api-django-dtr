@@ -15,6 +15,7 @@ from Hospitals.views import (
     HospitalRetrieveAPIView,
     HospitalUpdateView,
     MedicinesHospitalDataJoinView,
+    PrescriptionDataJoinView,
     SendPasswordResetEmailView,
     TotalHospitalView,
 )
@@ -44,37 +45,42 @@ urlpatterns = [
     ),
     path("login/", HospitalLoginView.as_view(), name="Login"),
     path("logout/", HospitalLogoutAPIView.as_view(), name="hospital-logout"),
-     path(
-         "change-password/", HospitalChangePasswordView.as_view(), name="change-password"
-     ),
-     path(
+    path(
+        "change-password/", HospitalChangePasswordView.as_view(), name="change-password"
+    ),
+    path(
         "send-reset-password-email/",
         SendPasswordResetEmailView.as_view(),
         name="send-reset-password-email",
     ),
-     path(
-         "reset-password/<uid>/<token>/",
-         HospitalPasswordResetView.as_view(),
-         name="reset-password",
-     ),
-       path(
-        "hospitals-doctorts-patients/", DeatilsHospitalView.as_view(), name="Doctor_With-Hospital"
+    path(
+        "reset-password/<uid>/<token>/",
+        HospitalPasswordResetView.as_view(),
+        name="reset-password",
     ),
-       
-          path(
-        "hospitals-details-all/", HospitalDataJoinView.as_view(), name="Doctor_With-Hospital"
+    path(
+        "hospitals-doctorts-patients/",
+        DeatilsHospitalView.as_view(),
+        name="Doctor_With-Hospital",
     ),
-          
-                 path(
-        "Nurse-department-all/", DepartmentNurseDataJoinView.as_view(), name="Nurse_With-Hospital"
+    path(
+        "hospitals-details-all/",
+        HospitalDataJoinView.as_view(),
+        name="Doctor_With-Hospital",
     ),
-                 
-                        
-                 path(
-        "medicines-hospital-all/", MedicinesHospitalDataJoinView.as_view(), name="medicines-hospital-all"
+    path(
+        "Nurse-department-all/",
+        DepartmentNurseDataJoinView.as_view(),
+        name="Nurse_With-Hospital",
     ),
-    
-    
-    
-    
+    path(
+        "medicines-hospital-all/",
+        MedicinesHospitalDataJoinView.as_view(),
+        name="medicines-hospital-all",
+    ),
+    path(
+        "prescription-hospital-all/",
+        PrescriptionDataJoinView.as_view(),
+        name="prescription-hospital-all",
+    ),
 ]
