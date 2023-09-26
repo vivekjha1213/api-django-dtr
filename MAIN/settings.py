@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     "Payments",
     "LabTests",
     "feedbacks",
+    "notifications",
 ]
 
 

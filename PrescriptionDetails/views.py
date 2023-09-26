@@ -218,6 +218,8 @@ class ClientPrescriptionDetailDeleteByIDView(APIView):
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 class PrescriptionDetailPrescriptionsJoin(generics.ListAPIView):
+    serializer_class = None
+    
     def get_queryset(self):
         client_id = self.kwargs.get('client_id')        
         queryset = PrescriptionDetail.objects.select_related(

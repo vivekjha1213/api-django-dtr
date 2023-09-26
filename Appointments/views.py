@@ -5,6 +5,7 @@ from rest_framework import status
 from rest_framework.generics import DestroyAPIView
 from rest_framework import generics
 from Appointments.utils import Util
+from notifications.models import Notification
 
 
 from .models import Appointment
@@ -86,7 +87,18 @@ class AppointmentRegisterView(APIView):
             Util.send_patient_appointment_confirmation(
                 patient, appointment, doctor, hospital
             )
-
+            
+            
+            # Create a notification for the appointment booking
+            
+            notification = Notification.objects.create(
+                recipient=hospital,  # The hospital receives the notification
+                notification_type='appointment_booking',  # Set the notification type
+                message=f'Appointment booked for {patient} with {doctor} on {appointment_date}.',  
+            )
+            # Save the notification instance
+            notification.save()
+            
             return Response(
                 {"message": "Appointment booked successfully"},
                 status=status.HTTP_201_CREATED,
