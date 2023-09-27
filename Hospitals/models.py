@@ -71,6 +71,9 @@ class Hospital(AbstractBaseUser):
 
     access_token = models.CharField(max_length=1000, blank=True)
     refresh_token = models.CharField(max_length=1000, blank=True)
+    
+    otp = models.CharField(max_length=6)
+    is_verified = models.BooleanField(default=False)
 
     objects = UserManager()
     

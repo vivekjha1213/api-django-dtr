@@ -2,7 +2,7 @@
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 import os
-
+import random
 
 
 # send email by using EmailMessage Class..
@@ -64,10 +64,25 @@ class Util:
         "from_email": from_email,  # Pass the sender email to the send_email method
     }
          Util.send_email(data)
-
+         
         
-      
-      
+    
+    def send_otp_email(email, otp_code):
+        subject = "Your OTP Code"
+        from_email = os.environ.get("EMAIL_FROM")  # Use the sender email address from environment
+        context = {
+        "otp_code": otp_code,
+        }
+         # Call the send_email function with the required data
+        html_template = "otp_email_template.html"  
+        data = {
+        "subject": subject,
+        "body": render_to_string(html_template, context),
+        "from_email": from_email,
+        "to_email": email,
+    }
+        Util.send_email(data)
+  
         
    
    

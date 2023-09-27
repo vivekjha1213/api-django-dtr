@@ -1,3 +1,4 @@
+import random
 from rest_framework import serializers
 
 import logging
@@ -11,8 +12,9 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 
 from django.template.loader import render_to_string
-from django.urls import reverse
 
+
+from datetime import datetime, timedelta
 
 class HospitalRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)  # Adding this field
@@ -319,3 +321,46 @@ class HospitalPasswordResetSerializer(serializers.Serializer):
         except DjangoUnicodeDecodeError as identifier:
             PasswordResetTokenGenerator().check_token(user, token)
             raise serializers.ValidationError("Token is not Valid or Expired")
+
+
+class SendOTPSerializer(serializers.Serializer):
+    email = serializers.EmailField(max_length=255)
+
+    def generate_and_send_otp(self):
+        email = self.validated_data['email']
+
+        # Generate a random OTP
+        otp = str(random.randint(100000, 999999))
+        
+        
+         # Calculate the OTP expiration time (15 minutes from now)
+        expiration_time = datetime.now() + timedelta(minutes=2)
+
+        # Save the OTP code to the Hospital model
+        hospital_instance, created = Hospital.objects.get_or_create(email=email)
+        hospital_instance.otp = otp
+        hospital_instance.save()        
+        Util.send_otp_email(email, otp)
+      
+
+        return hospital_instance
+
+
+
+
+class VerifyOTPSerializer(serializers.Serializer):
+    otp = serializers.CharField(max_length=6)
+    def verify_otp(self):
+        otp = self.validated_data['otp']
+
+       
+        hospital_instance = Hospital.objects.filter(otp=otp).first()
+
+        if not hospital_instance:
+            raise serializers.ValidationError({'message': 'Invalid OTP'})
+        
+        # Mark the OTP as verifie
+        hospital_instance.is_verified = True
+        hospital_instance.save()
+
+        return {'message': 'OTP verified successfully'}

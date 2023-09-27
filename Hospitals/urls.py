@@ -1,7 +1,7 @@
 from django.urls import path
 
 
-from Hospitals.views import (
+from .views import (
     DeatilsHospitalView,
     DepartmentNurseDataJoinView,
     HospitalChangePasswordView,
@@ -17,8 +17,11 @@ from Hospitals.views import (
     MedicinesHospitalDataJoinView,
     PrescriptionDataJoinView,
     PrescriptionDetailPrescriptionsJoinHospital,
+    SendOTPView,
     SendPasswordResetEmailView,
     TotalHospitalView,
+    VerifyOTPView,
+
 )
 
 urlpatterns = [
@@ -84,15 +87,11 @@ urlpatterns = [
         PrescriptionDataJoinView.as_view(),
         name="prescription-hospital-all",
     ),
-    
-      path(
+    path(
         "PrescriptionDetail-Hospital-all/",
         PrescriptionDetailPrescriptionsJoinHospital.as_view(),
         name="PrescriptionDetail-hospital-all",
     ),
-    
-    
-    
-    
+    path("send-otp/", SendOTPView.as_view(), name="send_otp"),
+    path("verify-otp/", VerifyOTPView.as_view(), name="verify_otp"),
 ]
-

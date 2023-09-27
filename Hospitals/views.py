@@ -1,7 +1,5 @@
-from importlib.abc import PathEntryFinder
 import logging
 
-from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.generics import UpdateAPIView
 from rest_framework.response import Response
@@ -9,7 +7,6 @@ from rest_framework import status
 from Hospitals.permissions import UnrestrictedPermission
 from Hospitals.utils import Util
 from django.db.models import F
-from django.db.models import CharField, Value
 
 from django.utils import timezone
 from Medicines.models import Medicine
@@ -41,6 +38,8 @@ from .serializers import (
     HospitalSerializer,
     HospitalUpdateSerializer,
     SendPasswordResetEmailSerializer,
+    SendOTPSerializer,
+    VerifyOTPSerializer,
 )
 
 
@@ -566,3 +565,89 @@ class PrescriptionDetailPrescriptionsJoinHospital(generics.ListAPIView):
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         return Response(queryset)
+    
+    
+    
+    
+    #send otp via mail 
+    
+class SendOTPView(APIView):
+    permission_classes = [UnrestrictedPermission]
+    
+    def post(self, request):
+        serializer = SendOTPSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.generate_and_send_otp()
+            return Response({'message': 'OTP sent successfully'}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+    ''' 
+    
+class VerifyOTPView(APIView):
+    permission_classes = [UnrestrictedPermission]
+    
+    def post(self, request):
+        serializer = VerifyOTPSerializer(data=request.data)
+        if serializer.is_valid():
+            response_data = serializer.verify_otp()
+            return Response({'message': 'OTP verification successful', **response_data}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+    ''' 
+    
+    
+    
+    
+class VerifyOTPView(APIView):
+    permission_classes = [UnrestrictedPermission]
+    
+    def post(self, request):
+        serializer = VerifyOTPSerializer(data=request.data)
+        if serializer.is_valid():
+            # OTP verification is successful, proceed to generate tokens
+
+            # Get the hospital instance using the OTP
+            hospital = Hospital.objects.filter(otp=request.data.get('otp')).first()
+
+            if hospital:
+                # Generate tokens
+                refresh = RefreshToken.for_user(hospital)
+                access_token = str(refresh.access_token)
+                refresh_token = str(refresh)
+
+                # Save tokens to the hospital instance and then save the instance
+                hospital.access_token = access_token
+                hospital.refresh_token = refresh_token
+                is_admin = hospital.is_admin
+                hospital.save()
+                
+
+              #  Util.send_welcome_email(hospital)  # Call send_welcome_email here
+              
+                # Check if is_admin is True
+                if hospital.is_admin:
+                    return Response(
+                        {
+                            "message": "Admin login successful",
+                            "access_token": access_token,
+                            "refresh_token": refresh_token,
+                            "client_id": hospital.client_id,
+                            "is_admin":is_admin,
+                        },
+                        status=status.HTTP_200_OK,
+                    )
+                else:
+                    return Response(
+                        {
+                            "message": "Login successful",
+                            "access_token": access_token,
+                            "refresh_token": refresh_token,
+                            "client_id": hospital.client_id,
+                            "user_type": hospital.user_type,
+                        },
+                        status=status.HTTP_200_OK,
+                    )
+
+        return Response({"errors":"Invalid OTP"}, status=status.HTTP_400_BAD_REQUEST)
