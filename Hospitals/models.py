@@ -74,6 +74,7 @@ class Hospital(AbstractBaseUser):
     
     otp = models.CharField(max_length=6)
     is_verified = models.BooleanField(default=False)
+    first_login = models.BooleanField(default=True) #for 1st time login message
 
     objects = UserManager()
     

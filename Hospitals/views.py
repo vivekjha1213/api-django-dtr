@@ -612,6 +612,15 @@ class VerifyOTPView(APIView):
             hospital = Hospital.objects.filter(otp=request.data.get('otp')).first()
 
             if hospital:
+                
+                if hospital.first_login:
+                    
+                    Util.send_welcome_email(hospital)  # Call send_welcome_email here
+                   
+                    # Update the first_login flag
+                    hospital.first_login = False
+                
+                
                 # Generate tokens
                 refresh = RefreshToken.for_user(hospital)
                 access_token = str(refresh.access_token)
@@ -623,8 +632,6 @@ class VerifyOTPView(APIView):
                 is_admin = hospital.is_admin
                 hospital.save()
                 
-
-              #  Util.send_welcome_email(hospital)  # Call send_welcome_email here
               
                 # Check if is_admin is True
                 if hospital.is_admin:
