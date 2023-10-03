@@ -1,4 +1,5 @@
 from rest_framework import serializers
+import re
 from patients.models import Patient
 
 
@@ -89,3 +90,42 @@ class PatientListSerializer(serializers.ModelSerializer):
             "client_id",
         ]
         
+
+
+
+#This api is for compaign Run...
+
+class PatientCompaignSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Patient
+        fields = [
+            "first_name",
+            "last_name",
+            "gender",
+            "email",
+            "address",
+            "contact_number",
+            "date_of_birth",
+            "client", #hard code depends up on hospital id..
+        ]
+    def validate(self, data):
+        email = data.get('email')
+        contact_number = data.get('contact_number')
+
+        if email:
+            # Validate email format using a regular expression
+            if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+                raise serializers.ValidationError("Invalid email format.")
+
+        if contact_number:
+            # Validate phone number format using a regular expression
+            if not re.match(r'^\+?[1-9]\d{1,14}$', contact_number):
+                raise serializers.ValidationError("Invalid phone number format.")
+
+        return data
+
+
+
+
+
+  

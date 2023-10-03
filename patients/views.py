@@ -3,8 +3,10 @@ import logging
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+from Hospitals.permissions import UnrestrictedPermission
 from patients.models import Patient
 from patients.serializers import (
+    PatientCompaignSerializer,
     PatientListSerializer,
     PatientRegistrationSerializer,
     PatientSearchSerializer,
@@ -215,3 +217,24 @@ class ClientPatientSearchView(APIView):
         return Response(response_data, status=status.HTTP_200_OK)
     
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    
+    
+class PatientCompaignAPIView(APIView):
+    permission_classes = [UnrestrictedPermission]
+
+    def post(self, request, format=None):
+        email = request.data.get('email')
+        
+        # Check if a patient with the same email already exists
+        existing_patient = Patient.objects.filter(email=email).first()
+
+        if existing_patient:
+            return Response({"message": "Registration successful (email already exists)"}, status=status.HTTP_201_CREATED)
+
+        serializer = PatientCompaignSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Registration successful"}, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

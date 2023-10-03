@@ -1,6 +1,6 @@
 from django.urls import path
 
-from patients.views import (
+from .views import (
     ClientPatientDeleteViewId,
     ClientPatientUpdateView,
     ClientPatientsListByIDView,
@@ -8,6 +8,7 @@ from patients.views import (
     PatientRegistrationView,
     TotalClientPatientsCountView,
     ClientPatientSearchView,
+    PatientCompaignAPIView,
 )
 
 
@@ -39,4 +40,10 @@ urlpatterns = [
         ClientPatientSearchView.as_view(),
         name="patient-search-client-Id",
     ),
+    path(
+        "add",
+        PatientCompaignAPIView.as_view(),
+        name="Patients-Compaign",
+    ),
 ]
+

@@ -16,7 +16,7 @@ urlpatterns = [
     path("register/", DoctorRegistrationView.as_view(), name="register"),
     path("list/", DoctorListView.as_view(), name="ALl-doctor_list"),
     
-        path("All/", AllClientDoctorListView.as_view(), name="ALl-doctor_list"),
+    path("All/", AllClientDoctorListView.as_view(), name="ALl-doctor_list"),
     
     
     

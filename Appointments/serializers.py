@@ -159,3 +159,18 @@ class ClientUpdateAppointmentSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
+
+
+
+
+class CompaignBookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Appointment
+        fields = [
+            "client",
+            "patient",
+            "doctor",
+            "appointment_date",
+            "start_time",
+            "end_time",
+        ]

@@ -568,9 +568,7 @@ class PrescriptionDetailPrescriptionsJoinHospital(generics.ListAPIView):
     
     
     
-    
-    #send otp via mail 
-    
+    #send otp via mail  
 class SendOTPView(APIView):
     permission_classes = [UnrestrictedPermission]
     
@@ -594,10 +592,8 @@ class VerifyOTPView(APIView):
             return Response({'message': 'OTP verification successful', **response_data}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    
     ''' 
-    
-    
+       
     
     
 class VerifyOTPView(APIView):
@@ -657,4 +653,6 @@ class VerifyOTPView(APIView):
                         status=status.HTTP_200_OK,
                     )
 
-        return Response({"errors":"Invalid OTP"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"errors":" Invalid OTP"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    

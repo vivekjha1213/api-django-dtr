@@ -2,11 +2,27 @@ import os
 from datetime import timedelta
 from pathlib import Path
 import os.path
-
-
 import pymysql
 
 pymysql.install_as_MySQLdb()
+
+
+from .base import *
+
+if 'DJANGO_ENV' in os.environ and os.environ['DJANGO_ENV'] == 'production':
+    from .production import *
+elif 'DJANGO_ENV' in os.environ and os.environ['DJANGO_ENV'] == 'development':
+    from .development import *
+elif 'DJANGO_ENV' in os.environ and os.environ['DJANGO_ENV'] == 'testing':
+    from .testing import *
+
+try:
+    from .development import *  
+except ImportError as e:
+    pass
+
+
+
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -24,6 +40,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+
+
+# ALLOWED_HOSTS = ["iyrajewels.com", "www.iyrajewels.com", "194.163.40.231"]
 
 ALLOWED_HOSTS = ["*"]
 
