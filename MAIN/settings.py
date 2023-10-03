@@ -7,20 +7,6 @@ import pymysql
 pymysql.install_as_MySQLdb()
 
 
-from .base import *
-
-if 'DJANGO_ENV' in os.environ and os.environ['DJANGO_ENV'] == 'production':
-    from .production import *
-elif 'DJANGO_ENV' in os.environ and os.environ['DJANGO_ENV'] == 'development':
-    from .development import *
-elif 'DJANGO_ENV' in os.environ and os.environ['DJANGO_ENV'] == 'testing':
-    from .testing import *
-
-try:
-    from .development import *  
-except ImportError as e:
-    pass
-
 
 
 

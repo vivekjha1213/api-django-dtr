@@ -1,4 +1,5 @@
-from settings.base import *
+from settings import BASE_DIR
+from .base import *
 
 
 DEBUG = True
@@ -12,24 +13,18 @@ DATABASES = {
     }
 }
 
-# Enable Django Debug Toolbar for development
-INSTALLED_APPS += [
-    'debug_toolbar',
-]
 
-if DEBUG:
-    MIDDLEWARE += [
-        'debug_toolbar.middleware.DebugToolbarMiddleware',
-    ]
 
-# Allow localhost for Django Debug Toolbar
+
+
+
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
 
 
 
-# CORS settings for development (allow all origins)
+
 CORS_ALLOW_ALL_ORIGINS = True
 
 # Set up logging for development (customize as needed)
