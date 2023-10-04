@@ -1,4 +1,7 @@
 {
+    "workbench.colorCustomizations": {
+        "terminal.foreground": "#00FF02"
+    },
     "[python]": {
         "editor.defaultFormatter": "ms-python.black-formatter"
     },

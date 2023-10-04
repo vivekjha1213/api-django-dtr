@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     'drf_yasg',  # <-- Swagger-ui
     
-    # Your custom apps
+    # custom apps
     'Hospitals',
     'patients',
     'doctors',
@@ -170,14 +170,21 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    "Middleware.UserAgent.CustomUserAgentMiddleware",
+    "Middleware.timing_middleware.TimingMiddleware",
+    "Middleware.rate_limit.RateLimitMiddleware",
+    "Middleware.pagination_middleware.PaginationMiddleware",
+    
+    
+
+
+  
 ]
 
 
 
-
-
 # Celery settings
-CELERY_BROKER_URL = "redis://127.0.0.1:6379"  # mac air -> redis server
+CELERY_BROKER_URL = "redis://127.0.0.1:6379"  # mac local, server air -> redis server
 CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379"
 CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_RESULT_SERIALIZER = "json"
@@ -257,8 +264,6 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = os.environ.get("EMAIL_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASS")
 EMAIL_USE_TLS = True
-
-
 
 
 

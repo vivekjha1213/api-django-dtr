@@ -7,22 +7,24 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "sfdfghjklmkmdnu%%vgq123091hoke
 DEBUG = False
 
 
-ALLOWED_HOSTS = ["your-production-domain.com", "www.your-production-domain.com"]
+ALLOWED_HOSTS = ["iyrajewels.com", "www.iyrajewels.com", "194.163.40.231"]
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 
 # Configure your production database here (e.g., PostgreSQL or MySQL)
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.mysql",
-#         "NAME": "u714077623_HMS_API_TEST",
-#         "USER": "u714077623_HMS_API_TEST",
-#         "PASSWORD": "n46Q@6&XLh3nd5N",
-#         "HOST": "217.21.88.8",  # Change if your MySQL server is running on a different host
-#         "PORT": "3306",  # Change if your MySQL server is running on a different port
-#     }
-# }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "u714077623_HMS_API_TEST",
+        "USER": "u714077623_HMS_API_TEST",
+        "PASSWORD": "n46Q@6&XLh3nd5N",
+        "HOST": "217.21.88.8", # Change if your MySQL server is running on a different host
+        "PORT": "3306",  #Change if your MySQL server is running on a different port
+    }
+}
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 LOGGING = {

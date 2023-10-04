@@ -5,6 +5,7 @@ from .base import *
 
 DEBUG = True
 
+ALLOWED_HOSTS = ["*"]
 
 SECRET_KEY = "django-insecure-key&2z!x5fequ-qc2hm*#akrkst52al*g==0n&n#d&m27"
 
@@ -40,6 +41,7 @@ LOGGING = {
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
+
 
 
 CORS_ALLOW_ALL_ORIGINS = True
