@@ -1,13 +1,17 @@
-# base.py
-
 import os
-from pathlib import Path
-
 from datetime import timedelta
+from pathlib import Path
+import os.path
+import pymysql
 
-# ...
+pymysql.install_as_MySQLdb()
 
-# Secret key (change this in production)
+
+
+
+
+
+# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-b&2z!x5fequ-qc2hm*czn04yj#akrkst52al*g==0n&n#d&m27"
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -15,52 +19,60 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-# ...
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
+
+# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
+
+# ALLOWED_HOSTS = ["iyrajewels.com", "www.iyrajewels.com", "194.163.40.231"]
+
+ALLOWED_HOSTS = ["*"]
+
+# image and logo, config...
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Application definition
 
 INSTALLED_APPS = [
-    # Django apps
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    
-    # Third-party apps
-    'rest_framework',
-    'corsheaders',
-    'rest_framework_simplejwt',
-    'django_filters',
-    'rest_framework_swagger',
-    'drf_yasg',  # <-- Swagger-ui
-    
-    # Your custom apps
-    'Hospitals',
-    'patients',
-    'doctors',
-    'Departments',
-    'Nurses',
-    'Medicines',
-    'Appointments',
-    'Beds',
-    'Prescriptions',
-    'PrescriptionDetails',
-    'Invoices',
-    'Payments',
-    'LabTests',
-    'feedbacks',
-    'notifications',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "rest_framework",
+    "rest_framework_simplejwt",
+    "django_filters",
+    "corsheaders",
+    "rest_framework_swagger",
+    "drf_yasg",  # <-- Swagger-ui
+    # Internal Apps,
+    "Hospitals",
+    "patients",
+    "doctors",
+    "Departments",
+    "Nurses",
+    "Medicines",
+    "Appointments",
+    "Beds",
+    "Prescriptions",
+    "PrescriptionDetails",
+    "Invoices",
+    "Payments",
+    "LabTests",
+    "feedbacks",
+    "notifications",
 ]
-
-
 
 
 AUTH_USER_MODEL = "Hospitals.Hospital"
@@ -68,6 +80,19 @@ AUTH_USER_MODEL = "Hospitals.Hospital"
 
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",  # Default Django backend
+]
+
+
+MIDDLEWARE = [
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = "MAIN.urls"
@@ -102,7 +127,12 @@ CACHES = {
 }
 
 
+# Database
+# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+
+# Password validation
+# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -146,22 +176,16 @@ STATIC_URL = "/static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-
-
-
-MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
-]
-
-
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.mysql",
+#         "NAME": "u714077623_HMS_API_TEST",
+#         "USER": "u714077623_HMS_API_TEST",
+#         "PASSWORD": "n46Q@6&XLh3nd5N",
+#         "HOST": "217.21.88.8",  # Change if your MySQL server is running on a different host
+#         "PORT": "3306",  # Change if your MySQL server is running on a different port
+#     }
+# }
 
 
 
@@ -228,6 +252,8 @@ SIMPLE_JWT = {
 }
 
 
+CORS_ORIGIN_ALLOW_ALL = True
+
 CORS_ALLOW_METHODS = [
     "GET",
     "POST",
@@ -237,7 +263,39 @@ CORS_ALLOW_METHODS = [
     "OPTIONS",
 ]
 
+''' 
+
+CORS_ALLOWED_ORIGINS = [
+    "http://194.163.40.231:8080",  # -> production
+    "http://127.0.0.1:8000",  # -> local
+    "http://172.20.10.11:3000",  # -> pragati
+    "http://localhost:8000",
+]
+
+'''
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+
 PASSWORD_RESET_TIMEOUT = 900  # 900 Sec = 15 Min
+
+
+# logger: config
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "handlers": {
+#         "file": {
+#             "level": "DEBUG",
+#             "class": "logging.FileHandler",
+#            "filename": "api.log",
+#         },
+#     },
+#     "root": {
+#         "handlers": ["file"],
+#         "level": "DEBUG",
+#     },
+# }
 
 
 # Email-Configuration......
@@ -249,4 +307,6 @@ EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASS")
 EMAIL_USE_TLS = True
 
 
+# EMAIL_HOST_USER = "vivek.jha@dtroffle.com"
+# EMAIL_HOST_PASSWORD = "gsyvamddfrpihzdo"
 
