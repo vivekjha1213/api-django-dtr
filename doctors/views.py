@@ -261,11 +261,33 @@ class ClientDoctorSearchView(APIView):
 #         return Response({"Data": serializer.data})
 
 
+
+
 # cache redis implement here
-@method_decorator(cache_page(60), name="get")
+''' 
 class DoctorListView(APIView):
     permission_classes = [UnrestrictedPermission]
 
+
+    def get(self, request, format=None):
+        
+        redis_cache_middleware = RedisQueryCacheMiddleware(self.get_response, cache_duration=600)  # 600 seconds = 10 minutes
+        response = redis_cache_middleware(request)
+        
+        doctors = Doctor.objects.all()
+        serializer = DoctorListSerializer(doctors, many=True)
+        # Return the serialized data as a JSON response
+        return Response({"Data": serializer.data})
+
+'''
+
+
+#@cache example......
+
+class DoctorListView(APIView):
+    permission_classes = [UnrestrictedPermission]
+
+    @method_decorator(cache_page(600))  
     def get(self, request, format=None):
         doctors = Doctor.objects.all()
         serializer = DoctorListSerializer(doctors, many=True)
