@@ -163,11 +163,11 @@ MIDDLEWARE = [
     "Middleware.timing_middleware.TimingMiddleware",
     "Middleware.rate_limit.RateLimitMiddleware",
     "Middleware.pagination_middleware.PaginationMiddleware",
-    "Middleware.notification_middleware.AdminNotificationMiddleware",
+    # "Middleware.notification_middleware.AdminNotificationMiddleware", ->> super admin notification middleware grobally..
 ]
 
 
-# Celery settings
+# Celery config........
 CELERY_BROKER_URL = "redis://127.0.0.1:6379"  # mac local, server air -> redis server
 CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379"
 CELERY_ACCEPT_CONTENT = ["application/json"]
