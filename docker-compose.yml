@@ -8,11 +8,12 @@ services:
     environment:
       - DJANGO_SETTINGS_MODULE=MAIN.settings.production
     env_file:
-      - .env  # This line specifies to use the .env file for environment variables
+      - .env  # This line specifies to use the .env file for environment. variables
     ports:
       - "8000:8000"
     depends_on:
       - db
+  
 
   db:
     image: mysql:5.7
