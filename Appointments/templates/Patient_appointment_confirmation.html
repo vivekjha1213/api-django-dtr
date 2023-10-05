@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Appointment Confirmation</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Appointment Confirmation</h1>
+
+      <p>Dear {{ full_name }},</p>
+
+      <p>
+        We are pleased to confirm your upcoming appointment with us. Your
+        reservation details are as follows:
+      </p>
+
+      <ul>
+        <li>Doctor's Name: {{ doctor_name }}</li>
+        <li>Doctor's Title/Position: {{ doctor_specialty }}</li>
+        <li>Doctor's Clinic/Hospital Name: {{ hospital_name }}</li>
+        <li>Doctor's email: {{ doctor_email }}</li>
+        <li>Doctor's Contact Information: {{ doctor_contact_number }}</li>
+        <li>Appointment Date: {{ appointment_date }}</li>
+        <li>Appointment start Time: {{ start_time }}</li>
+         <li>Appointment end Time: {{ end_time }}</li>
+
+        <li>Location: {{ address }}</li>
+      </ul>
+
+      <p>
+        Please arrive on time for your appointment to ensure that we can provide
+        you with the best possible service. If, for any reason, you need to
+        reschedule or cancel your appointment, kindly notify us at least 24
+        hours in advance by calling {{ clinic_hospital_phone_number }}.
+      </p>
+
+      <p>
+        Before your visit, please prepare any relevant medical records, test
+        results, or questions you may have for Dr. {{ doctor_name }}. This will
+        help make your appointment as productive as possible.
+      </p>
+
+      <p>
+        If you have any concerns, require additional information, or need
+        assistance with directions, please feel free to contact us at
+        {{ clinic_hospital_contact_number }}.
+      </p>
+
+      <p>
+        Thank you for choosing {{ clinic_hospital_name }} for your healthcare needs.
+        We look forward to providing you with exceptional care and service
+        during your appointment.
+      </p>
+
+      <p class="footer">Best Regards,</p>
+      <p class="footer">Your Company Name</p>
+      <p class="footer">Contact us: support@example.com</p>
+    </div>
+  </body>
+</html>
