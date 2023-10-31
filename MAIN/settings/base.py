@@ -1,5 +1,3 @@
-
-
 import os
 from pathlib import Path
 
@@ -38,40 +36,36 @@ DEBUG = True
 
 INSTALLED_APPS = [
     # Django apps
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
     # Third-party apps
-    'rest_framework',
-    'corsheaders',
-    'rest_framework_simplejwt',
-    'django_filters',
-    'rest_framework_swagger',
-    'drf_yasg',  # <-- Swagger-ui
-    
+    "rest_framework",
+    "corsheaders",
+    "rest_framework_simplejwt",
+    "django_filters",
+    "rest_framework_swagger",
+    "drf_yasg",  # <-- Swagger-ui
     # custom apps
-    'Hospitals',
-    'patients',
-    'doctors',
-    'Departments',
-    'Nurses',
-    'Medicines',
-    'Appointments',
-    'Beds',
-    'Prescriptions',
-    'PrescriptionDetails',
-    'Invoices',
-    'Payments',
-    'LabTests',
-    'feedbacks',
-    'notifications',
+    "Hospitals",
+    "patients",
+    "doctors",
+    "Departments",
+    "Nurses",
+    "Medicines",
+    "Appointments",
+    "Beds",
+    "Prescriptions",
+    "PrescriptionDetails",
+    "Invoices",
+    "Payments",
+    "LabTests",
+    "feedbacks",
+    "packages",
 ]
-
-
 
 
 AUTH_USER_MODEL = "Hospitals.Hospital"
@@ -111,8 +105,6 @@ CACHES = {
         },
     }
 }
-
-
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -157,9 +149,6 @@ STATIC_URL = "/static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-
-
-
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -174,16 +163,12 @@ MIDDLEWARE = [
     "Middleware.timing_middleware.TimingMiddleware",
     "Middleware.rate_limit.RateLimitMiddleware",
     "Middleware.pagination_middleware.PaginationMiddleware",
-    
-    
-
-
-  
 ]
 
 
 
-# Celery settings
+''' 
+# Celery config........
 CELERY_BROKER_URL = "redis://127.0.0.1:6379"  # mac local, server air -> redis server
 CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379"
 CELERY_ACCEPT_CONTENT = ["application/json"]
@@ -191,6 +176,7 @@ CELERY_RESULT_SERIALIZER = "json"
 CELERY_TASK_SERIALIZER = "json"
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
+'''
 
 SWAGGER_SETTINGS = {
     "DOC_EXPANSION": "list",
@@ -264,7 +250,6 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = os.environ.get("EMAIL_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASS")
 EMAIL_USE_TLS = True
-
 
 
 # python3 manage.py runserver --settings=MAIN.settings.production

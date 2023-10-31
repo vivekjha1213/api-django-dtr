@@ -10,37 +10,15 @@ from .views import (
     TotalDepartmentCountView,
 )
 
-urlpatterns = [
-    path("add/", DepartmentRegisterView.as_view(), name="register"),
-    
-    
+PREFIX ='department'
 
-    
-    path("details/", ClientDepartmentListView.as_view(), name="client-depratment_list"),
-    path(
-        "details-By/",
-        ClientDepartmentListByIDView.as_view(),
-        name="client-ID-depratment_list",
-    ),
-    path(
-        "counter/",
-        TotalDepartmentCountView.as_view(),
-        name="Department-ClientiD--retrieve-total",
-    ),
-    path(
-        "deleteBy/",
-        ClientDepartmentDeleteByIDView.as_view(),
-        name="Department-ClientiD--Delete-Data",
-    ),
-    path(
-        "Updated/",
-        ClientDepartmentUpdateIDView.as_view(),
-        name="Department-Update-Client",
-    ),
-    
-     path(
-        "search-filter",
-        ClientDepartmentSearchView.as_view(),
-        name="Deparment-search-client-Id",
-    ),
+
+urlpatterns = [
+    path(f"{PREFIX}/add", DepartmentRegisterView.as_view(), name="register"),
+    path(f"{PREFIX}/details", ClientDepartmentListView.as_view(), name="client-department_list"),
+    path(f"{PREFIX}/details-By", ClientDepartmentListByIDView.as_view(), name="client-ID-department_list"),
+    path(f"{PREFIX}/counter", TotalDepartmentCountView.as_view(), name="department-client-id-retrieve-total"),
+    path(f"{PREFIX}/deleteBy", ClientDepartmentDeleteByIDView.as_view(), name="department-client-id-delete-data"),
+    path(f"{PREFIX}/Updated", ClientDepartmentUpdateIDView.as_view(), name="department-update-client"),
+    path(f"{PREFIX}/search-filter", ClientDepartmentSearchView.as_view(), name="department-search-client-id"),
 ]

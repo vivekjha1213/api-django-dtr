@@ -9,29 +9,13 @@ from .views import (
     TotalInvoiceCountView,
 )
 
+PREFIX ='invoice'
+
 urlpatterns = [
-    path("add/", InvoiceDetailsCreateView.as_view(), name="add"),
-    path(
-        "details/", ClientInvoiceDetailsListView.as_view(), name="client-Invoices_list"
-    ),
-    path(
-        "details-By/",
-        ClientInvoiceDetailsListByIdView.as_view(),
-        name="clientId-InvoiceId-Invoices_list",
-    ),
-    path(
-        "counter/",
-        TotalInvoiceCountView.as_view(),
-        name="Invoice-ClientiD--retrieve-total",
-    ),
-    path(
-        "delete-By/",
-        ClientInvoiceDeleteByIDView.as_view(),
-        name="Invoice-ClientiD--Delete-Data",
-    ),
-    path(
-        "Updated/",
-        ClientInvoiceUpdateIDView.as_view(),
-        name="Invoice-Update-Client",
-    ),
+    path(f"{PREFIX}/add", InvoiceDetailsCreateView.as_view(), name="add"),
+    path(f"{PREFIX}/details", ClientInvoiceDetailsListView.as_view(), name="client-invoices-list"),
+    path(f"{PREFIX}/details-By", ClientInvoiceDetailsListByIdView.as_view(), name="clientid-invoiceid-invoices-list"),
+    path(f"{PREFIX}/counter", TotalInvoiceCountView.as_view(), name="invoice-clientid-retrieve-total"),
+    path(f"{PREFIX}/delete-By", ClientInvoiceDeleteByIDView.as_view(), name="invoice-clientid-delete-data"),
+    path(f"{PREFIX}/Updated", ClientInvoiceUpdateIDView.as_view(), name="invoice-update-client"),
 ]

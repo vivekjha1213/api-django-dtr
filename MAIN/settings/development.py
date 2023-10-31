@@ -11,6 +11,7 @@ SECRET_KEY = "django-insecure-key&2z!x5fequ-qc2hm*#akrkst52al*g==0n&n#d&m27"
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -28,7 +29,7 @@ LOGGING = {
         "file": {
             "level": "DEBUG",
             "class": "logging.FileHandler",
-           "filename": "logs/development.log",
+           "filename": "dev-logs/debug.log",
         },
     },
     "root": {

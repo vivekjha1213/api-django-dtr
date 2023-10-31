@@ -2,7 +2,7 @@
 
 import time  
 from django.core.mail import EmailMessage
-from celery import shared_task
+from settings.celery import shared_task
 
 @shared_task
 def send_email_with_delay(subject, body, from_email, to_email, delay_seconds=1):

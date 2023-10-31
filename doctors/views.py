@@ -327,5 +327,24 @@ class AllClientDoctorListView(APIView):
      
             )
             
+
+
+class ClientDoctorCompaign(APIView):
+    permission_classes = [UnrestrictedPermission]
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        client_id = data.get("client_id")
+        doctor_id = data.get("doctor_id")
+        
+        if not (doctor_id and client_id):
+            return Response({"error": "Both doctor_id and client_id are required in the request data"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        doctors = Doctor.objects.filter(client_id=client_id)
+        
+        if doctor_id:
+            doctors = doctors.filter(doctor_id=doctor_id)
             
+        serializer = DoctorListSerializer(doctors, many=True)
+        return Response({"Data": serializer.data})
+    
             

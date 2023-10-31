@@ -39,21 +39,28 @@ urlpatterns = [
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
     path("", index, name="index"),  # Add this line for the root URL
     path("platform/", admin.site.urls),
-    path("Hospital/", include("Hospitals.urls")),
-    path("Patient/", include("patients.urls")),
-    path("Doctor/", include("doctors.urls")),
-    path("Department/", include("Departments.urls")),
-    path("Nurse/", include("Nurses.urls")),
-    path("Medicine/", include("Medicines.urls")),
-    path("Appointment/", include("Appointments.urls")),
-    path("Bed/", include("Beds.urls")),
-    path("Prescription/", include("Prescriptions.urls")),
-    path("PrescriptionDetail/", include("PrescriptionDetails.urls")),
-    path("Invoice/", include("Invoices.urls")),
-    path("Payment/", include("Payments.urls")),
-    path("LabTest/", include("LabTests.urls")),
-    path("Feedback/", include("feedbacks.urls")),
-    path("notification/", include("notifications.urls")),
+    
+    
+    #DRF API
+    path("api/", include("Hospitals.urls")),
+    path("api/", include("patients.urls")),
+    path("api/", include("doctors.urls")),
+    path("api/", include("Departments.urls")),
+    path("api/", include("Nurses.urls")),
+    path("api/", include("Medicines.urls")),
+    path("api/", include("Appointments.urls")),
+    path("api/", include("Beds.urls")),
+    path("api/", include("Prescriptions.urls")),
+    path("api/", include("PrescriptionDetails.urls")),
+    path("api/", include("Invoices.urls")),
+    path("api/", include("Payments.urls")),
+    path("api/", include("LabTests.urls")),
+    path("api/", include("feedbacks.urls")),
+    path("api/", include("packages.urls")),
+    
+    
+    
+    
     re_path(r"^media/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
     re_path(r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}),
 ]

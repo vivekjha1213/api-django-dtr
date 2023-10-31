@@ -20,6 +20,7 @@ logger = logging.getLogger("patients.patient")
 
 # - Endpoint: POST `/api/patients/register`
 # -Description: Creates a new patient with the provided details.
+
 class PatientRegistrationView(APIView):
     def post(self, request, format=None):
         serializer = PatientRegistrationSerializer(data=request.data)
@@ -238,3 +239,5 @@ class PatientCompaignAPIView(APIView):
             return Response({"message": "Registration successful"}, status=status.HTTP_201_CREATED)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    

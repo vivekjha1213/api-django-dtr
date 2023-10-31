@@ -8,28 +8,14 @@ from .views import (
     ClientPaymentDeleteByIDView,
     TotalPaymentCountView,
 )
+PREFIX = "patient"
 
 urlpatterns = [
-    path("add/", PaymentDetailsCreateView.as_view(), name="add"),
-    path("details/", ClientPaymentDetailsListView.as_view(), name="client-Nurse-list"),
-    path(
-        "details-By/",
-        ClientPaymentDetailsListByIdView.as_view(),
-        name="clientId-Payment-list",
-    ),
-    path(
-        "counter/",
-        TotalPaymentCountView.as_view(),
-        name="Payment-ClientiD--retrieve-total",
-    ),
-    path(
-        "delete-By/",
-        ClientPaymentDeleteByIDView.as_view(),
-        name="Nurse-ClientiD--Delete-Data",
-    ),
-    path(
-        "Updated/",
-        ClientPayementUpdateIDView.as_view(),
-        name="Nurse-Update-Client",
-    ),
+    path(f"{PREFIX}/add", PaymentDetailsCreateView.as_view(), name="add"),
+    path(f"{PREFIX}/details", ClientPaymentDetailsListView.as_view(), name="client-payment-list"),
+    path(f"{PREFIX}/details-By", ClientPaymentDetailsListByIdView.as_view(), name="clientid-payment-list"),
+    path(f"{PREFIX}/counter", TotalPaymentCountView.as_view(), name="payment-clientid-retrieve-total"),
+    path(f"{PREFIX}/delete-By", ClientPaymentDeleteByIDView.as_view(), name="payment-clientid-delete-data"),
+    path(f"{PREFIX}/updated", ClientPayementUpdateIDView.as_view(), name="payment-update-client"),
 ]
+
