@@ -11,8 +11,7 @@ from rest_framework import generics
 #     send_patient_appointment_confirmation,
 # )
 from Appointments.utils import Util
-from notifications.models import Notification
-
+from Hospitals.permissions import UnrestrictedPermission
 
 from .models import Appointment
 from .serializers import (
@@ -100,14 +99,6 @@ class AppointmentRegisterView(APIView):
             # )
 
             # Create a notification for the appointment booking
-
-            notification = Notification.objects.create(
-                recipient=hospital,  # The hospital receives the notification
-                notification_type="appointment_booking",  # Set the notification type
-                message=f"Appointment booked for {patient} with {doctor} on {appointment_date}.",
-            )
-            # Save the notification instance
-            notification.save()
 
             return Response(
                 {"message": "Appointment booked successfully"},
@@ -320,3 +311,52 @@ class ClientAppointmentUpdateView(APIView):
 
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class AppointmentCompaign(APIView):
+    permission_classes = [UnrestrictedPermission]
+    def post(self, request, format=None):
+        serializer = AppointmentRegisterSerializer(data=request.data)
+
+        if serializer.is_valid():
+            doctor = serializer.validated_data["doctor"]
+            patient = serializer.validated_data["patient"]
+            appointment_date = serializer.validated_data["appointment_date"]
+
+            # Check if the user has already booked an appointment with the same doctor on the same day
+            if Appointment.objects.filter(
+                doctor=doctor,
+                patient=patient,
+                appointment_date=appointment_date,  # Compare the entire datetime
+            ).exists():
+                return Response(
+                    {"error": "Appointment already booked on the same day."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            # Create the appointment and set status to "Scheduled"
+            appointment = serializer.save(status="Scheduled")
+
+            # Get hospital information (you need to implement this)
+            hospital = appointment.client
+
+            # Send confirmation emails to doctor and patient
+            Util.send_doctor_appointment_confirmation(
+                doctor, appointment, patient, hospital
+            )
+            Util.send_patient_appointment_confirmation(
+                patient, appointment, doctor, hospital
+            )
+
+            # send_doctor_appointment_confirmation.delay(doctor, appointment, patient, hospital)
+            # send_patient_appointment_confirmation.delay(
+            #     patient, appointment, doctor, hospital
+            # )
+
+            # Create a notification for the appointment booking
+
+            return Response(
+                {"message": "Appointment booked successfully"},
+                status=status.HTTP_201_CREATED,
+            )
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

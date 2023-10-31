@@ -8,29 +8,13 @@ from Medicines.views import (
     ClientTotalMedicineCountView,
     MedicineRegisterView,
 )
-
+PREFIX = "medicine"
 
 urlpatterns = [
-    path("register/", MedicineRegisterView.as_view(), name="register"),
-    path("details/", ClientMedicineListView.as_view(), name="client-Medicine-list"),
-    path(
-        "details-By/",
-        ClientMedicineListByIdView.as_view(),
-        name="clientId-Medicine-list",
-    ),
-    path(
-        "counter/",
-        ClientTotalMedicineCountView.as_view(),
-        name="Medicine-ClientiD--retrieve-total",
-    ),
-    path(
-        "delete-By/",
-        ClientMedicineDeleteByIDView.as_view(),
-        name="Medicine-ClientiD--Delete-Data",
-    ),
-    path(
-        "Updated/",
-        ClientMedicineUpdateIDView.as_view(),
-        name="Medicine-Update-Client",
-    ),
+    path(f"{PREFIX}/register", MedicineRegisterView.as_view(), name="register"),
+    path(f"{PREFIX}/details", ClientMedicineListView.as_view(), name="client-medicine-list"),
+    path(f"{PREFIX}/details-By", ClientMedicineListByIdView.as_view(), name="clientid-medicine-list"),
+    path(f"{PREFIX}/counter", ClientTotalMedicineCountView.as_view(), name="medicine-clientid-retrieve-total"),
+    path(f"{PREFIX}/delete-By", ClientMedicineDeleteByIDView.as_view(), name="medicine-clientid-delete-data"),
+    path(f"{PREFIX}/updated", ClientMedicineUpdateIDView.as_view(), name="medicine-update-client"),
 ]

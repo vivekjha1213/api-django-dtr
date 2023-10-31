@@ -64,7 +64,7 @@ INSTALLED_APPS = [
     "Payments",
     "LabTests",
     "feedbacks",
-    "notifications",
+    "packages",
 ]
 
 
@@ -163,10 +163,11 @@ MIDDLEWARE = [
     "Middleware.timing_middleware.TimingMiddleware",
     "Middleware.rate_limit.RateLimitMiddleware",
     "Middleware.pagination_middleware.PaginationMiddleware",
-    # "Middleware.notification_middleware.AdminNotificationMiddleware", ->> super admin notification middleware grobally..
 ]
 
 
+
+''' 
 # Celery config........
 CELERY_BROKER_URL = "redis://127.0.0.1:6379"  # mac local, server air -> redis server
 CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379"
@@ -175,6 +176,7 @@ CELERY_RESULT_SERIALIZER = "json"
 CELERY_TASK_SERIALIZER = "json"
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
+'''
 
 SWAGGER_SETTINGS = {
     "DOC_EXPANSION": "list",
