@@ -4,27 +4,26 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.static import serve
 from rest_framework.permissions import IsAuthenticated
-from Hospitals.views import index  # Import your index view
-
-# drf_yasg code starts here
+from Hospitals.permissions import UnrestrictedPermission
+from Hospitals.views import index  
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Hospital Management System API",
-        default_version="v1",
-        description="This API is only for Testing..",
-        terms_of_service="Hms",
+        title="Orionqo",
+        default_version="v1.o",
+        description="Stage Restservice",
+        terms_of_service="Orionqo TM",
         contact=openapi.Contact(email="vivek.jha@dtroffle.com"),
-        license=openapi.License(name="RestFul API's"),
+        license=openapi.License(name="DRF"),
     ),
     public=True,
-    permission_classes=(IsAuthenticated,),  # Require authentication to access
+    permission_classes=[UnrestrictedPermission]
 )
 
 
-# ... rest of your code ...
+#DRF
 urlpatterns = [
     re_path(
         r"^doc(?P<format>\.json|\.yaml)$",
@@ -37,8 +36,8 @@ urlpatterns = [
         name="schema-swagger-ui",
     ),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
-    path("", index, name="index"),  # Add this line for the root URL
-    path("platform/", admin.site.urls),
+    path("", index, name="index"),  
+    path("admin/", admin.site.urls),
     
     
     #DRF API
@@ -57,9 +56,6 @@ urlpatterns = [
     path("api/", include("LabTests.urls")),
     path("api/", include("feedbacks.urls")),
     path("api/", include("packages.urls")),
-    
-    
-    
     
     re_path(r"^media/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
     re_path(r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}),
