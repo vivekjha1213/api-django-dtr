@@ -1,12 +1,10 @@
 from django.db import models
 from Hospitals.models import Hospital
 
-
 CURRENT_PACKAGE_CHOICES = [
         ('Monthly', 'Monthly'),
         ('Yearly', 'Yearly'),
     ]
-
 
 class Package(models.Model):
     package_id =models.AutoField(primary_key=True,unique=True)
@@ -25,5 +23,9 @@ class Package(models.Model):
     
     def __str__(self):
         return self.package_name
+    
+    
+    class Meta:
+        unique_together = ('package_name', 'client')
 
     
