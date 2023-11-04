@@ -1,6 +1,6 @@
 from django.urls import path
 
-from packages import api
+from packages.api import api
 
 
 PREFIX = "amount"

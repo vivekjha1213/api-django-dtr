@@ -2,8 +2,8 @@ from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Package
-from .serializers import PackageCreateSerializer, PackageListSerializer
+from ..models import Package
+from ..serializers import PackageCreateSerializer, PackageListSerializer
 
 class PackageCreateView(APIView):
     def post(self, request, format=None):
