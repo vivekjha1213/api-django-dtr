@@ -9,7 +9,7 @@ class AdminNotificationMiddleware:
         # Get the path of the endpoint that was requested
         endpoint_path = request.path
 
-        # Log or process the endpoint_path as needed
+     
         print(f"Endpoint Path: {endpoint_path}")
 
         if request.method in ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']:

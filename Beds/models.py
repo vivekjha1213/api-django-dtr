@@ -12,7 +12,7 @@ class Bed(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     client = models.ForeignKey(Hospital, on_delete=models.CASCADE)
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, blank=True, null=True)
 
     def generate_bed_number(self):
         last_bed = Bed.objects.order_by("-bed_id").first()
