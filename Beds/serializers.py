@@ -35,6 +35,7 @@ class BedListSerializer(serializers.ModelSerializer):
             "updated_at",
             "department_id",
             "client_id",
+            "patient",
         ]
 
 

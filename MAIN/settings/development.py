@@ -20,6 +20,18 @@ DATABASES = {
 }
 
 
+# Configure  production Stage MySQL)
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.mysql",
+#         "NAME": "u714077623_stagedb",
+#         "USER": "u714077623_stagedb",
+#         "PASSWORD": "zVaUCU^6Ex@",
+#         "HOST": "217.21.88.8", 
+#         "PORT": "3306",  
+#     }
+# }
+
 
 # logger: config
 LOGGING = {

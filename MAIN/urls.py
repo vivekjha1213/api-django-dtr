@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 from django.views.static import serve
 from rest_framework.permissions import IsAuthenticated
 from Hospitals.permissions import UnrestrictedPermission
-from Hospitals.views import index  
+from Hospitals.api import index  
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 

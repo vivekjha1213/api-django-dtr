@@ -16,6 +16,7 @@ logger = logging.getLogger("Beds.Bed")
 class BedRegisterView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = BedRegisterSerializer(data=request.data)
+        
         if serializer.is_valid():
             bed_number = serializer.validated_data.get("bed_number")
 
