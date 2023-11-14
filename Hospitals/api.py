@@ -615,8 +615,7 @@ class VerifyOTPView(APIView):
                    
                     # Update the first_login flag
                     hospital.first_login = False
-                
-                
+
                 # Generate tokens
                 refresh = RefreshToken.for_user(hospital)
                 access_token = str(refresh.access_token)
