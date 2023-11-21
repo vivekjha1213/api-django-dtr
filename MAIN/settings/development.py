@@ -20,7 +20,6 @@ DATABASES = {
 }
 
 
-# Configure  production Stage MySQL)
 # DATABASES = {
 #     "default": {
 #         "ENGINE": "django.db.backends.mysql",
@@ -31,7 +30,6 @@ DATABASES = {
 #         "PORT": "3306",  
 #     }
 # }
-
 
 # logger: config
 LOGGING = {

@@ -4,14 +4,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.generics import DestroyAPIView
 from rest_framework import generics
-
-#@Task celery used for scale..
-# from Appointments.tasks import (
-#     send_doctor_appointment_confirmation,
-#     send_patient_appointment_confirmation,
-# )
 from Appointments.utils import Util
 from Hospitals.permissions import UnrestrictedPermission
+from Middleware.CustomPagination import PagePagination
 
 from .models import Appointment
 from .serializers import (
@@ -21,43 +16,7 @@ from .serializers import (
 )
 
 
-logger = logging.getLogger("Appointments.Appointment")
-
-
-"""
-class AppointmentRegisterView(APIView):
-    def post(self, request, format=None):
-        serializer = AppointmentRegisterSerializer(data=request.data)
-
-        if serializer.is_valid():
-            doctor_id = serializer.validated_data["doctor"]
-            patient_id = serializer.validated_data["patient"]
-            appointment_date = serializer.validated_data["appointment_date"]
-
-            # Check if the user has already booked an appointment with the same doctor on the same day
-            if Appointment.objects.filter(
-                doctor_id=doctor_id,
-                patient_id=patient_id,
-                appointment_date=appointment_date,  # Compare the entire datetime
-            ).exists():
-                return Response(
-                    {"error": "Appointment already booked on the same day."},
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
-
-            # Create the appointment and set status to "Scheduled"
-            appointment = serializer.save(status="Scheduled")
-
-            return Response(
-                {"message": "Appointment booked successfully"},
-                status=status.HTTP_201_CREATED,
-            )
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-"""
-
+# logger = logging.getLogger("Appointments.Appointment")
 
 class AppointmentRegisterView(APIView):
     def post(self, request, format=None):
@@ -116,6 +75,8 @@ class AppointmentRegisterView(APIView):
 
 class JoinListAppointmentView(generics.ListAPIView):
     serializer_class = None
+    pagination_class =PagePagination
+    
 
     def get_queryset(self):
         queryset = Appointment.objects.select_related("patient", "doctor").values(
@@ -135,7 +96,7 @@ class JoinListAppointmentView(generics.ListAPIView):
 
     def post(self, request, *args, **kwargs):
         client_id = request.data.get("client_id")  # Get client_id from request data
-
+        
         if client_id is not None:
             queryset = self.get_queryset().filter(client_id=client_id)
             data = list(queryset)

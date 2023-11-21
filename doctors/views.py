@@ -8,6 +8,7 @@ from django.utils.decorators import method_decorator
 
 from rest_framework.views import APIView
 from Hospitals.permissions import UnrestrictedPermission
+from Middleware.CustomPagination import PagePagination
 from doctors.models import Doctor
 from doctors.serializers import (
     DoctorListSerializer,
@@ -62,6 +63,7 @@ def get_doctors_by_client_id(client_id):
 
 
 class ClientDoctorListView(APIView):
+    pagination_class =PagePagination
     def post(self, request, *args, **kwargs):
         data = request.data
         client_id = data.get("client_id")

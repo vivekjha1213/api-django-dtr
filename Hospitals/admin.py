@@ -10,6 +10,7 @@ admin.sites.AdminSite.index_title = 'Orionqo.com'
 @admin.register(Hospital)
 class HospitalAdmin(admin.ModelAdmin):
     list_display = (
+        "client_id",
         "hospital_name",
         "owner_name",
         "display_profile_image",
