@@ -162,7 +162,7 @@ MIDDLEWARE = [
     "Middleware.UserAgent.CustomUserAgentMiddleware",
     "Middleware.timing_middleware.TimingMiddleware",
     "Middleware.rate_limit.RateLimitMiddleware",
-    "Middleware.pagination_middleware.PaginationMiddleware",
+    
 ]
 
 
@@ -253,14 +253,3 @@ EMAIL_USE_TLS = True
 
 
 # python3 manage.py runserver --settings=MAIN.settings.production
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "u714077623_stagedb",
-        "USER": "u714077623_stagedb",
-        "PASSWORD": "zVaUCU^6Ex@",
-        "HOST": "217.21.88.8", 
-        "PORT": "3306",  
-    }
-}
