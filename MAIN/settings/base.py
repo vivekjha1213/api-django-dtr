@@ -34,14 +34,18 @@ DEBUG = True
 
 # Application definition
 
-INSTALLED_APPS = [
-    # Django apps
+DEFAULT_APPS=[
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+]
+
+THIRD_PARTY_APPS = [
+    # Django apps
+
     # Third-party apps
     "rest_framework",
     "corsheaders",
@@ -49,23 +53,30 @@ INSTALLED_APPS = [
     "django_filters",
     "rest_framework_swagger",
     "drf_yasg",  # <-- Swagger-ui
-    # custom apps
-    "Hospitals",
-    "patients",
-    "doctors",
-    "Departments",
-    "Nurses",
-    "Medicines",
-    "Appointments",
-    "Beds",
-    "Prescriptions",
-    "PrescriptionDetails",
-    "Invoices",
-    "Payments",
-    "LabTests",
-    "feedbacks",
-    "packages",
+   
 ]
+
+LOCAL_APPS = [
+ # custom apps
+    "apps.Hospitals",
+    "apps.patients",
+    "apps.doctors",
+    "apps.Departments",
+    "apps.Nurses",
+    "apps.Medicines",
+    "apps.Appointments",
+    "apps.Beds",
+    "apps.Prescriptions",
+    "apps.PrescriptionDetails",
+    "apps.Invoices",
+    "apps.Payments",
+    "apps.LabTests",
+    "apps.feedbacks",
+    "apps.packages",
+
+]
+
+INSTALLED_APPS =DEFAULT_APPS+THIRD_PARTY_APPS +LOCAL_APPS
 
 
 AUTH_USER_MODEL = "Hospitals.Hospital"
@@ -159,9 +170,9 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
-    "Middleware.UserAgent.CustomUserAgentMiddleware",
-    "Middleware.timing_middleware.TimingMiddleware",
-    "Middleware.rate_limit.RateLimitMiddleware",
+    "apps.Middleware.UserAgent.CustomUserAgentMiddleware",
+    "apps.Middleware.timing_middleware.TimingMiddleware",
+    "apps.Middleware.rate_limit.RateLimitMiddleware",
     
 ]
 

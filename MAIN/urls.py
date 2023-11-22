@@ -4,8 +4,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.static import serve
 from rest_framework.permissions import IsAuthenticated
-from Hospitals.permissions import UnrestrictedPermission
-from Hospitals.api import index  
+from apps.Hospitals.permissions import UnrestrictedPermission
+from apps.Hospitals.api import index  
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
@@ -41,21 +41,21 @@ urlpatterns = [
     
     
     #DRF API
-    path("api/", include("Hospitals.urls")),
-    path("api/", include("patients.urls")),
-    path("api/", include("doctors.urls")),
-    path("api/", include("Departments.urls")),
-    path("api/", include("Nurses.urls")),
-    path("api/", include("Medicines.urls")),
-    path("api/", include("Appointments.urls")),
-    path("api/", include("Beds.urls")),
-    path("api/", include("Prescriptions.urls")),
-    path("api/", include("PrescriptionDetails.urls")),
-    path("api/", include("Invoices.urls")),
-    path("api/", include("Payments.urls")),
-    path("api/", include("LabTests.urls")),
-    path("api/", include("feedbacks.urls")),
-    path("api/", include("packages.urls")),
+    path("api/", include("apps.Hospitals.urls")),
+    path("api/", include("apps.patients.urls")),
+    path("api/", include("apps.doctors.urls")),
+    path("api/", include("apps.Departments.urls")),
+    path("api/", include("apps.Nurses.urls")),
+    path("api/", include("apps.Medicines.urls")),
+    path("api/", include("apps.Appointments.urls")),
+    path("api/", include("apps.Beds.urls")),
+    path("api/", include("apps.Prescriptions.urls")),
+    path("api/", include("apps.PrescriptionDetails.urls")),
+    path("api/", include("apps.Invoices.urls")),
+    path("api/", include("apps.Payments.urls")),
+    path("api/", include("apps.LabTests.urls")),
+    path("api/", include("apps.feedbacks.urls")),
+    path("api/", include("apps.packages.urls")),
     
     re_path(r"^media/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
     re_path(r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}),

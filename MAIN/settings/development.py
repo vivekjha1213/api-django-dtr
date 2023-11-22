@@ -20,16 +20,22 @@ DATABASES = {
 }
 
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.mysql",
-#         "NAME": "u714077623_stagedb",
-#         "USER": "u714077623_stagedb",
-#         "PASSWORD": "zVaUCU^6Ex@",
-#         "HOST": "217.21.88.8", 
-#         "PORT": "3306",  
-#     }
-# }
+'''
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'mysql.connector.django',
+        'NAME': 'u428490017_stagehub',
+        'USER': 'u428490017_stagehub',
+       'PASSWORD': '?aTJZZSL>0k',
+        'HOST': '217.21.88.8', 
+        'PORT': '3306',
+    }
+}
+
+
+'''
+
 
 # logger: config
 LOGGING = {
@@ -39,7 +45,7 @@ LOGGING = {
         "file": {
             "level": "DEBUG",
             "class": "logging.FileHandler",
-           "filename": "dev-logs/debug.log",
+           "filename": "deb/debug.log",
         },
     },
     "root": {
