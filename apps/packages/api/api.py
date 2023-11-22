@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from apps.Hospitals.permissions import UnrestrictedPermission
-from ..models import Subscription
+from ..models import Package
 from ..serializers import PackageCreateSerializer, PackageListSerializer
 
 class PackageCreateView(APIView):
@@ -24,31 +24,31 @@ class PackageCreateView(APIView):
         
 class PackageListView(generics.ListAPIView):
     permission_classes=[UnrestrictedPermission]
-    queryset = Subscription.objects.all()
+    queryset = Package.objects.all()
     serializer_class = PackageListSerializer
 
 class PackagedetailView(generics.ListAPIView):
     permission_classes=[UnrestrictedPermission]
-    queryset=Subscription.objects.all()
+    queryset=Package.objects.all()
     serializer_class=PackageListSerializer
     
     def get_queryset(self):
         package_id = self.request.query_params.get('package_id')
         if package_id:
-            return Subscription.objects.filter(package_id=package_id)
-        return Subscription.objects.none()
+            return Package.objects.filter(package_id=package_id)
+        return Package.objects.none()
 
 
 class PackageDeleteView(APIView):
     def post(self, request, package_id, format=None):
         try:
-            package = Subscription.objects.get(package_id=package_id)
+            package = Package.objects.get(package_id=package_id)
             package.delete()
             return Response(
                 {"message": "Package deleted Successfully"},
                 status=status.HTTP_204_NO_CONTENT,
             )
-        except Subscription.DoesNotExist:
+        except Package.DoesNotExist:
             return Response(
                 {"message": "Package not found"},
                 status=status.HTTP_404_NOT_FOUND,
@@ -59,8 +59,8 @@ class PackageUpdateView(APIView):
     def put(self, request,package_id,format=None):
         
         try:
-            package = Subscription.objects.get(package_id=package_id)
-        except Subscription.DoesNotExist:
+            package = Package.objects.get(package_id=package_id)
+        except Package.DoesNotExist:
             return Response({"error": "Package not found"}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = PackageCreateSerializer(package, data=request.data)
