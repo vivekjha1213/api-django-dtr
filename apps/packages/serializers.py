@@ -1,10 +1,10 @@
 from rest_framework import serializers
-from .models import Package
+from .models import Subscription
 
 
 class PackageCreateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Package
+        model = Subscription
         fields = [
             "package_name",
             "client",
@@ -17,7 +17,7 @@ class PackageCreateSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
-        package = Package.objects.create(**validated_data)
+        package = Subscription.objects.create(**validated_data)
         return package
 
     def update(self, instance, validated_data):
@@ -43,7 +43,7 @@ class PackageCreateSerializer(serializers.ModelSerializer):
 
 class PackageListSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Package
+        model = Subscription
         fields = [
             "package_id",
             "package_name",

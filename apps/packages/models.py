@@ -6,8 +6,7 @@ CURRENT_PACKAGE_CHOICES = [
         ('Yearly', 'Yearly'),
     ]
 
-class Package(models.Model):
-    package_id =models.AutoField(primary_key=True,unique=True)
+class Subscription(models.Model):
     package_name = models.CharField(max_length=200)
     client = models.ForeignKey(Hospital, on_delete=models.CASCADE)
     current_package = models.CharField(

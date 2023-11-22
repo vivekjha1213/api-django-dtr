@@ -1,4 +1,4 @@
-from MAIN.settings.celery import app as celery_app
+from core.settings.celery import app as celery_app
 from celery import shared_task
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string

@@ -12,29 +12,14 @@ SECRET_KEY = "django-insecure-key&2z!x5fequ-qc2hm*#akrkst52al*g==0n&n#d&m27"
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 
 
-'''
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'mysql.connector.django',
-        'NAME': 'u428490017_stagehub',
-        'USER': 'u428490017_stagehub',
-       'PASSWORD': '?aTJZZSL>0k',
-        'HOST': '217.21.88.8', 
-        'PORT': '3306',
-    }
-}
-
-
-'''
 
 
 # logger: config
