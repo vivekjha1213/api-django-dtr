@@ -1,25 +1,19 @@
 import os
-from pathlib import Path
 
 from datetime import timedelta
 
 # ...
 
-# Secret key (change this in production)
+# Secret key-(change this in production)
 SECRET_KEY = "django-insecure-b&2z!x5fequ-qc2hm*czn04yj#akrkst52al*g==0n&n#d&m27"
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Build paths inside the project like this: BASE_DIR-/-'subdir'.
 # BASE_DIR = Path(__file__).resolve().parent.parent
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
-
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
@@ -31,9 +25,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEBUG = True
 
-
-# Application definition
-
 DEFAULT_APPS=[
     "django.contrib.admin",
     "django.contrib.auth",
@@ -44,20 +35,15 @@ DEFAULT_APPS=[
 ]
 
 THIRD_PARTY_APPS = [
-    # Django apps
-
-    # Third-party apps
     "rest_framework",
     "corsheaders",
     "rest_framework_simplejwt",
     "django_filters",
     "rest_framework_swagger",
-    "drf_yasg",  # <-- Swagger-ui
-   
+    "drf_yasg", 
 ]
 
 LOCAL_APPS = [
- # custom apps
     "apps.Hospitals",
     "apps.patients",
     "apps.doctors",
@@ -73,21 +59,14 @@ LOCAL_APPS = [
     "apps.LabTests",
     "apps.feedbacks",
     "apps.packages",
-
 ]
-
 INSTALLED_APPS =DEFAULT_APPS+THIRD_PARTY_APPS +LOCAL_APPS
 
-
 AUTH_USER_MODEL = "Hospitals.Hospital"
-
-
 AUTHENTICATION_BACKENDS = [
-    "django.contrib.auth.backends.ModelBackend",  # Default Django backend
+    "django.contrib.auth.backends.ModelBackend", 
 ]
-
-ROOT_URLCONF = "MAIN.urls"
-
+ROOT_URLCONF = "core.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -103,8 +82,21 @@ TEMPLATES = [
         },
     },
 ]
+WSGI_APPLICATION = "core.wsgi.application"
 
-WSGI_APPLICATION = "MAIN.wsgi.application"
+
+
+
+DATABASES = {
+	'default': {
+		'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'u428490017_stagehub',
+        'USER': 'u428490017_stagehub',
+       'PASSWORD': '?aTJZZSL>0k',
+        'HOST': '217.21.88.8', 
+        'PORT': '3306',
+	}
+}
 
 
 CACHES = {
@@ -116,8 +108,6 @@ CACHES = {
         },
     }
 }
-
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -132,19 +122,13 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
-
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
-
 TIME_ZONE = "Asia/Kolkata"
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 
@@ -263,4 +247,5 @@ EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASS")
 EMAIL_USE_TLS = True
 
 
-# python3 manage.py runserver --settings=MAIN.settings.production
+# python3 manage.py runserver --settings=core.settings.production
+
