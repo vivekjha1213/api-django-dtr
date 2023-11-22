@@ -15,8 +15,8 @@ schema_view = get_schema_view(
         default_version="v1.o",
         description="Stage Restservice",
         terms_of_service="Orionqo TM",
-        contact=openapi.Contact(email="vivek.jha@dtroffle.com"),
-        license=openapi.License(name="DRF"),
+        contact=openapi.Contact(email="support@orionqo.com"),
+        license=openapi.License(name="orionqo.com"),
     ),
     public=True,
     permission_classes=[UnrestrictedPermission]

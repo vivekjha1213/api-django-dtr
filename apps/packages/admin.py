@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Subscription
+from .models import Package
 from django import forms
 
 
@@ -10,10 +10,10 @@ class PackageAdminForm(forms.ModelForm):
         self.fields['client'].widget.can_add_related = True
 
     class Meta:
-        model = Subscription
+        model = Package
         fields = '__all__'
 
-@admin.register(Subscription)
+@admin.register(Package)
 class PackageAdmin(admin.ModelAdmin):
     list_display = (
         "package_name",
