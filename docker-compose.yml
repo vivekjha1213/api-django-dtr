@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      - DJANGO_SETTINGS_MODULE=MAIN.settings.production
+      - DJANGO_SETTINGS_MODULE=core.settings.devlopement
     env_file:
       - .env  
     ports:

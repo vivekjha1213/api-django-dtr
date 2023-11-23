@@ -87,16 +87,16 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 
 
-DATABASES = {
-	'default': {
-		'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'u428490017_stagehub',
-        'USER': 'u428490017_stagehub',
-       'PASSWORD': '?aTJZZSL>0k',
-        'HOST': '217.21.88.8', 
-        'PORT': '3306',
-	}
-}
+# DATABASES = {
+# 	'default': {
+# 		'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'u428490017_stagehub',
+#         'USER': 'u428490017_stagehub',
+#        'PASSWORD': '?aTJZZSL>0k',
+#         'HOST': '217.21.88.8', 
+#         'PORT': '3306',
+# 	}
+# }
 
 
 CACHES = {
