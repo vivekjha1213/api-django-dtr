@@ -19,7 +19,24 @@ from .serializers import (
 # logger = logging.getLogger("Appointments.Appointment")
 
 class AppointmentRegisterView(APIView):
+    """
+    API endpoint for registering an appointment.
+
+    Accepts POST requests with appointment details.
+    """
     def post(self, request, format=None):
+        """
+        Handle POST requests to register an appointment.
+
+        Validates the appointment details and books the appointment if valid.
+
+        Args:
+            request: The HTTP request object.
+            format: The format of the request data (default is None).
+
+        Returns:
+            Response: JSON response with success or error messages.
+        """
         serializer = AppointmentRegisterSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -67,18 +84,24 @@ class AppointmentRegisterView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-# @ get all data by pasisinG, CLient-Id
-
-
 class JoinListAppointmentView(generics.ListAPIView):
+    """
+    API endpoint to retrieve a list of appointments for a specific client.
+
+    Supports GET and POST requests. For GET requests, it fetches a list of appointments for the provided client_id.
+    """
     serializer_class = None
     pagination_class =PagePagination
     
 
     def get_queryset(self):
+        """
+        Retrieve the queryset for appointments with related patient and doctor information.
+
+        Returns:
+            queryset: Queryset containing appointment details.
+        """
+        
         queryset = Appointment.objects.select_related("patient", "doctor").values(
             "appointment_id",
             "patient_id",
@@ -95,6 +118,17 @@ class JoinListAppointmentView(generics.ListAPIView):
         return queryset
 
     def post(self, request, *args, **kwargs):
+        """
+        Handle POST requests to retrieve appointments for a specific client.
+
+        Args:
+            request: The HTTP request object containing client_id.
+            args: Additional positional arguments.
+            kwargs: Additional keyword arguments.
+
+        Returns:
+            Response: List of appointments for the provided client_id or appropriate error response.
+        """
         client_id = request.data.get("client_id")  # Get client_id from request data
         
         if client_id is not None:
@@ -114,12 +148,20 @@ class JoinListAppointmentView(generics.ListAPIView):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
 class CountClientAppointmentView(APIView):
+    """
+    API endpoint to count appointments for a client.
+    """
     def post(self, request):
+        """
+        Count appointments for a specific client.
+
+        Parameters:
+        - request (Request): Django request object containing data.
+
+        Returns:
+        - Response: JSON response containing the total count of appointments for the client.
+        """
         client_id = request.data.get("client_id")  # Get client_id from request data
 
         if client_id is not None:
@@ -135,14 +177,25 @@ class CountClientAppointmentView(APIView):
             )
 
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-# @delete Appointment by clientId and Appointment Id .....
 class ClientDeleteAppointmentView(DestroyAPIView):
+    """
+    API endpoint to delete a client's appointment.
+    """
     queryset = Appointment.objects.all()
 
     def post(self, request, *args, **kwargs):
+        """
+        Delete a specific appointment for a client.
+
+        Parameters:
+        - request (Request): Django request object containing data.
+        - args: Variable-length argument list.
+        - kwargs: Arbitrary keyword arguments.
+
+        Returns:
+        - Response: JSON response confirming the success or failure of the deletion process.
+        """
+        
         appointment_id = request.data.get("appointment_id")
         client_id = request.data.get("client_id")
 
@@ -169,13 +222,20 @@ class ClientDeleteAppointmentView(DestroyAPIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-# @cancel Appontment by Appointment id and client id.................................
 class ClientCancelAppointmentView(APIView):
+    """
+    API endpoint to cancel a client's appointment.
+    """
     def put(self, request):
+        """
+        Cancel a specific appointment for a client.
+
+        Parameters:
+        - request (Request): Django request object containing data.
+
+        Returns:
+        - Response: JSON response confirming the success or failure of the cancellation process.
+        """
         appointment_id = request.data.get("appointment_id")
         client_id = request.data.get("client_id")
 
@@ -209,12 +269,22 @@ class ClientCancelAppointmentView(APIView):
             )
 
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-
-# @ Update Appointment by client id and appointment Id
 class ClientAppointmentUpdateView(APIView):
+    """
+    API endpoint to update a client's appointment.
+    """
     def update_appointment(self, appointment, data):
+        """
+        Helper method to update and reschedule an appointment.
+
+        Parameters:
+        - appointment (Appointment): Appointment instance to update.
+        - data (dict): Data containing the updated appointment information.
+
+        Returns:
+        - Response: JSON response indicating the success or failure of the update.
+        """
         serializer = UpdateAppointmentSerializer(appointment, data=data, partial=True)
         if serializer.is_valid():
             updated_appointment = serializer.save()
@@ -227,6 +297,17 @@ class ClientAppointmentUpdateView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, *args, **kwargs):
+        """
+        Update and reschedule an appointment using PUT method.
+
+        Parameters:
+        - request (Request): Django request object containing data.
+        - args (list): Additional positional arguments.
+        - kwargs (dict): Additional keyword arguments.
+
+        Returns:
+        - Response: JSON response confirming the success or failure of the update.
+        """
         appointment_id = request.data.get("appointment_id")
         client_id = request.data.get("client_id")
 
@@ -249,6 +330,17 @@ class ClientAppointmentUpdateView(APIView):
             )
 
     def patch(self, request, *args, **kwargs):
+        """
+        Update and reschedule an appointment using PATCH method.
+
+        Parameters:
+        - request (Request): Django request object containing data.
+        - args (list): Additional positional arguments.
+        - kwargs (dict): Additional keyword arguments.
+
+        Returns:
+        - Response: JSON response confirming the success or failure of the update.
+        """
         appointment_id = request.data.get("appointment_id")
         client_id = request.data.get("client_id")
 
@@ -271,11 +363,22 @@ class ClientAppointmentUpdateView(APIView):
             )
 
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 class AppointmentCompaign(APIView):
+    """
+    API endpoint to handle appointment booking for a campaign.
+    """
     permission_classes = [UnrestrictedPermission]
     def post(self, request, format=None):
+        """
+        Create an appointment for a campaign.
+
+        Parameters:
+        - request (Request): Django request object containing appointment data.
+        - format (str, optional): Format of the request data.
+
+        Returns:
+        - Response: JSON response confirming the success or failure of the appointment booking.
+        """
         serializer = AppointmentRegisterSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -283,7 +386,7 @@ class AppointmentCompaign(APIView):
             patient = serializer.validated_data["patient"]
             appointment_date = serializer.validated_data["appointment_date"]
 
-            # Check if the user has already booked an appointment with the same doctor on the same day
+          
             if Appointment.objects.filter(
                 doctor=doctor,
                 patient=patient,
