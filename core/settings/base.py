@@ -87,27 +87,27 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 
 
-# DATABASES = {
-# 	'default': {
-# 		'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'u428490017_stagehub',
-#         'USER': 'u428490017_stagehub',
-#        'PASSWORD': '?aTJZZSL>0k',
-#         'HOST': '217.21.88.8', 
-#         'PORT': '3306',
-# 	}
-# }
-
-
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        },
-    }
+DATABASES = {
+	'default': {
+		'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'u428490017_stagehub',
+        'USER': 'u428490017_stagehub',
+       'PASSWORD': '?aTJZZSL>0k',
+        'HOST': '217.21.88.8', 
+        'PORT': '3306',
+	}
 }
+
+
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://127.0.0.1:6379/1",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         },
+#     }
+# }
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",

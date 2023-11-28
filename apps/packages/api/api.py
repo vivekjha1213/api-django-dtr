@@ -33,16 +33,16 @@ class PackagedetailView(generics.ListAPIView):
     serializer_class=PackageListSerializer
     
     def get_queryset(self):
-        package_id = self.request.query_params.get('package_id')
-        if package_id:
-            return Package.objects.filter(package_id=package_id)
+        id = self.request.query_params.get('id')
+        if id:
+            return Package.objects.filter(id=id)
         return Package.objects.none()
 
 
 class PackageDeleteView(APIView):
-    def post(self, request, package_id, format=None):
+    def post(self, request, id, format=None):
         try:
-            package = Package.objects.get(package_id=package_id)
+            package = Package.objects.get(id=id)
             package.delete()
             return Response(
                 {"message": "Package deleted Successfully"},
@@ -56,10 +56,10 @@ class PackageDeleteView(APIView):
             
 class PackageUpdateView(APIView):
     permission_classes = [UnrestrictedPermission]
-    def put(self, request,package_id,format=None):
+    def put(self, request,id,format=None):
         
         try:
-            package = Package.objects.get(package_id=package_id)
+            package = Package.objects.get(id=id)
         except Package.DoesNotExist:
             return Response({"error": "Package not found"}, status=status.HTTP_404_NOT_FOUND)
 
