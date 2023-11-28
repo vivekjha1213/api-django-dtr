@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="Package",
             fields=[
-                ("package_id", models.AutoField(primary_key=True, serialize=False)),
+                ("id", models.AutoField(primary_key=True, serialize=False)),
                 ("package_name", models.CharField(max_length=200)),
                 (
                     "current_package",
