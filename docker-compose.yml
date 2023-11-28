@@ -6,21 +6,8 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      - DJANGO_SETTINGS_MODULE=core.settings.devlopement
+      - DJANGO_SETTINGS_MODULE=core.settings.development  
     env_file:
       - .env  
     ports:
       - "8000:8000"
-    depends_on:
-      - db
-  
-
-  db:
-    image: mysql:5.7
-    environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: mydb
-      MYSQL_USER: myuser
-      MYSQL_PASSWORD: mypassword
-    ports:
-      - "3306:3306"
