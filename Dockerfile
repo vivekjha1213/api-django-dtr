@@ -13,17 +13,15 @@ ENV PATH="/venv/bin:$PATH"
 # Copy project files and install requirements
 COPY . /app/
 
-RUN source venv/bin/activate
-
-RUN pip install --no-cache-dir -r requirements.txt
-
+# Activate the virtual environment and install requirements
+RUN /venv/bin/pip install --no-cache-dir -r requirements.txt
 
 # Collect static files and run database migrations
-RUN source /venv/bin/activate && python manage.py collectstatic --noinput
-RUN source /venv/bin/activate && python manage.py makemigrations
-RUN source /venv/bin/activate && python manage.py migrate
+RUN /venv/bin/python manage.py collectstatic --noinput
+RUN /venv/bin/python manage.py makemigrations
+RUN /venv/bin/python manage.py migrate
 
 EXPOSE 8000
 
 # Start the Django development server
-CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["/venv/bin/python", "manage.py", "runserver", "0.0.0.0:8000"]
