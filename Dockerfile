@@ -12,10 +12,15 @@ ENV PATH="/venv/bin:$PATH"
 
 # Copy project files and install requirements
 COPY . /app/
-RUN source /venv/bin/activate && pip install --no-cache-dir -r requirements.txt
+
+RUN source venv/bin/activate
+
+RUN pip install --no-cache-dir -r requirements.txt
+
 
 # Collect static files and run database migrations
 RUN source /venv/bin/activate && python manage.py collectstatic --noinput
+RUN source /venv/bin/activate && python manage.py makemigrations
 RUN source /venv/bin/activate && python manage.py migrate
 
 EXPOSE 8000
