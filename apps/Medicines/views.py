@@ -14,10 +14,7 @@ from .serializers import (
 
 
 
-logger = logging.getLogger("Medicines.Medicine")
-
-
-
+# logger = logging.getLogger("Medicines.Medicine")
 
 class MedicineRegisterView(APIView):
     def post(self, request, *args, **kwargs):
@@ -37,10 +34,6 @@ class MedicineRegisterView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     
-    
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
 class ClientMedicineListView(APIView):
     def post(self, request, *args, **kwargs):
         data = request.data
@@ -63,9 +56,6 @@ class ClientMedicineListView(APIView):
         serializer = MedicineListSerializer(medicine, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class ClientMedicineListByIdView(APIView):
     def post(self, request, *args, **kwargs):
@@ -95,9 +85,6 @@ class ClientMedicineListByIdView(APIView):
         return Response({"Data": serializer.data})
 
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
 # @get Toatl Count Medicine -Api by cliendID
 class ClientTotalMedicineCountView(APIView):
     def post(self, request):
@@ -116,10 +103,6 @@ class ClientTotalMedicineCountView(APIView):
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
-
-
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 class ClientMedicineUpdateIDView(APIView):
@@ -185,10 +168,6 @@ class ClientMedicineUpdateIDView(APIView):
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class ClientMedicineDeleteByIDView(APIView):
     def post(self, request, *args, **kwargs):

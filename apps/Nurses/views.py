@@ -7,10 +7,7 @@ from .serializers import NurseListSerializer, NurseRegisterSerializer, NurseUpda
 from .models import Nurse
 
 
-
-
-
-logger = logging.getLogger("Nurses.Nurse")
+# logger = logging.getLogger("Nurses.Nurse")
 
 
 
@@ -24,9 +21,6 @@ class NurseRegisterView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({"message": "Nurse registered successfully"}, status=status.HTTP_201_CREATED)
-
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class ClientNurseDetailsListView(APIView):
     def post(self, request, *args, **kwargs):
@@ -50,9 +44,6 @@ class ClientNurseDetailsListView(APIView):
         serializer = NurseListSerializer(nurses, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 class ClientNurseDetailsListByIdView(APIView):
     def post(self, request, *args, **kwargs):
         data = request.data
@@ -80,11 +71,6 @@ class ClientNurseDetailsListByIdView(APIView):
         serializer = NurseListSerializer(client_nurse)
         return Response({"Data": serializer.data})
     
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-# @get Toatl Count Nurse-Api by cliendID
 class TotalNurseCountView(APIView):
     def post(self, request):
         client_id = request.data.get("client_id")  # Get client_id from request data
@@ -102,11 +88,6 @@ class TotalNurseCountView(APIView):
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
-
-
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 
 class ClientNurseUpdateIDView(APIView):
     def get_nurse(self, client_id, nurse_id):
@@ -171,11 +152,6 @@ class ClientNurseUpdateIDView(APIView):
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
 class ClientNurseDeleteByIDView(APIView):
     def post(self, request, *args, **kwargs):
         data = request.data
@@ -202,6 +178,3 @@ class ClientNurseDeleteByIDView(APIView):
                 {"error": "Nurse not found"}, status=status.HTTP_404_NOT_FOUND
             )
             
-            
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

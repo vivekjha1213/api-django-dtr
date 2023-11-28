@@ -15,10 +15,9 @@ from .serializers import (
 )
 
 
-logger = logging.getLogger("")
+# logger = logging.getLogger("")
 
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class DepartmentRegisterView(APIView):
     def post(self, request, *args, **kwargs):
@@ -50,10 +49,6 @@ class DepartmentRegisterView(APIView):
         )
 
 
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-# @Get Data by Client Id.....
 def get_department_by_client_id(client_id):
     return Department.objects.filter(client_id=client_id)
 
@@ -79,9 +74,6 @@ class ClientDepartmentListView(APIView):
                 {"error": "client_id is missing in the request data"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class ClientDepartmentListByIDView(APIView):
     def post(self, request, *args, **kwargs):
@@ -113,10 +105,6 @@ class ClientDepartmentListByIDView(APIView):
         serializer = DepartmentListSerializer(departments, many=True)
         return Response({"Data": serializer.data})
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-# @get Toatl Count Department api by cliendID
 class TotalDepartmentCountView(APIView):
     def post(self, request):
         client_id = request.data.get("client_id")  # Get client_id from request data
@@ -135,7 +123,6 @@ class TotalDepartmentCountView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class ClientDepartmentUpdateIDView(APIView):
     def get_department(self, client_id, department_id):
@@ -203,9 +190,6 @@ class ClientDepartmentUpdateIDView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
 class ClientDepartmentDeleteByIDView(APIView):
     def post(self, request, *args, **kwargs):
         data = request.data
@@ -234,10 +218,6 @@ class ClientDepartmentDeleteByIDView(APIView):
                 {"error": "Department not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-# Search Api...................... by client id and    Department id...
 class ClientDepartmentSearchView(APIView):
     def get(self, request):
         search_query = request.GET.get("query")
@@ -272,5 +252,3 @@ class ClientDepartmentSearchView(APIView):
             "results": serializer.data,
         }
         return Response(response_data, status=status.HTTP_200_OK)
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

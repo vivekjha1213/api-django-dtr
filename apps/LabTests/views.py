@@ -28,8 +28,6 @@ class LabTestCreateView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 
 class ClientLabTestDetailsListView(APIView):
     def post(self, request, *args, **kwargs):
@@ -53,8 +51,6 @@ class ClientLabTestDetailsListView(APIView):
 
         serializer = LabTestListSerializer(labTest, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class ClientTestDetailsListByIdView(APIView):
     def post(self, request, *args, **kwargs):
@@ -83,9 +79,7 @@ class ClientTestDetailsListByIdView(APIView):
         serializer = LabTestListSerializer(client_lab_test)
         return Response({"Data": serializer.data})
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-# @get Toatl Count LABTEST api by cliendID
 class TotalLabTestCountView(APIView):
     def post(self, request):
         client_id = request.data.get("client_id")  # Get client_id from request data
@@ -103,8 +97,6 @@ class TotalLabTestCountView(APIView):
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 class ClientLabTestUpdateIDView(APIView):
@@ -172,10 +164,6 @@ class ClientLabTestUpdateIDView(APIView):
 
 
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-
 class ClientLabTestDeleteByIDView(APIView):
     def post(self, request, *args, **kwargs):
         data = request.data
@@ -201,5 +189,3 @@ class ClientLabTestDeleteByIDView(APIView):
             return Response(
                 {"error": "Lab test not found"}, status=status.HTTP_404_NOT_FOUND
             )
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

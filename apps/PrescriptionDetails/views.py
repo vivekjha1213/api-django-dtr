@@ -13,7 +13,7 @@ from .serializers import (
 )
 
 
-logger = logging.getLogger("PrescriptionDetails.PrescriptionDetail")
+# logger = logging.getLogger("PrescriptionDetails.PrescriptionDetail")
 
 
 class PrescriptionDetailsCreateView(APIView):
@@ -26,9 +26,6 @@ class PrescriptionDetailsCreateView(APIView):
                 status=status.HTTP_201_CREATED,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 class ClientPrescriptionDetailsListView(APIView):
@@ -52,9 +49,6 @@ class ClientPrescriptionDetailsListView(APIView):
 
         serializer = PrescriptionListSerializer(prepsciptions, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 class ClientPrescriptionDetailsListByIdView(APIView):
@@ -84,11 +78,6 @@ class ClientPrescriptionDetailsListByIdView(APIView):
         serializer = PrescriptionListSerializer(prescriptionDetail)
         return Response({"Data": serializer.data})
 
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-# @get Toatl Count PrescriptionDetail -Api by cliendID
 class TotalPrescriptionDetailCountView(APIView):
     def post(self, request):
         client_id = request.data.get("client_id")  # Get client_id from request data
@@ -106,10 +95,6 @@ class TotalPrescriptionDetailCountView(APIView):
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
-
-
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 
 class ClientPrescriptionDetailUpdateIDView(APIView):
     def get_PrescriptionDetail(self, client_id, prescription_detail_id):
@@ -182,10 +167,6 @@ class ClientPrescriptionDetailUpdateIDView(APIView):
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
 class ClientPrescriptionDetailDeleteByIDView(APIView):
     def post(self, request, *args, **kwargs):
         data = request.data
@@ -214,9 +195,7 @@ class ClientPrescriptionDetailDeleteByIDView(APIView):
                 {"error": "PrescriptionDetail not found"},
                 status=status.HTTP_404_NOT_FOUND,
             )
-
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            
 class PrescriptionDetailPrescriptionsJoin(generics.ListAPIView):
     serializer_class = None
     

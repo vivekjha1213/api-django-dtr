@@ -11,7 +11,7 @@ from .serializers import (
     PaymentUpdateSerializer,
 )
 
-logger = logging.getLogger("Payments.Payment")
+# logger = logging.getLogger("Payments.Payment")
 
 
 class PaymentDetailsCreateView(APIView):
@@ -25,9 +25,6 @@ class PaymentDetailsCreateView(APIView):
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class ClientPaymentDetailsListView(APIView):
     def post(self, request, *args, **kwargs):
@@ -51,10 +48,6 @@ class ClientPaymentDetailsListView(APIView):
         serializer = PaymentListSerializer(payments, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 class ClientPaymentDetailsListByIdView(APIView):
     def post(self, request, *args, **kwargs):
         data = request.data
@@ -83,11 +76,6 @@ class ClientPaymentDetailsListByIdView(APIView):
         return Response({"Data": serializer.data})
 
 
-
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-# @get Toatl Count Payment-Api by cliendID
 class TotalPaymentCountView(APIView):
     def post(self, request):
         client_id = request.data.get("client_id")  # Get client_id from request data
@@ -105,9 +93,6 @@ class TotalPaymentCountView(APIView):
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
-
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 
 class ClientPayementUpdateIDView(APIView):
     def get_Payment(self, client_id, payment_id):
@@ -172,11 +157,6 @@ class ClientPayementUpdateIDView(APIView):
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-
 class ClientPaymentDeleteByIDView(APIView):
     def post(self, request, *args, **kwargs):
         data = request.data
@@ -203,6 +183,3 @@ class ClientPaymentDeleteByIDView(APIView):
                 {"error": "payment not found"}, status=status.HTTP_404_NOT_FOUND
             )
             
-            
-            
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
