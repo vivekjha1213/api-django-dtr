@@ -37,10 +37,6 @@ class BedRegisterView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-# Get all Beds Data by client_id
-
 
 def get_Bed_by_client_and_department(client_id, department_id):
     return Bed.objects.filter(
@@ -77,11 +73,7 @@ class ClienBedsListView(APIView):
 
 
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-
-
-# Get all Beds Data by client_id &  bed_id
 class ClientBedListByIDView(APIView):
     def post(self, request, *args, **kwargs):
         data = request.data
@@ -117,11 +109,7 @@ class ClientBedListByIDView(APIView):
         return Response({"Data": serializer.data})
 
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-
-
-# @get Total Count Beds api by cliendID
 class TotalBedCountView(APIView):
     def post(self, request):
         client_id = request.data.get("client_id")  # Get client_id from request data
@@ -143,10 +131,6 @@ class TotalBedCountView(APIView):
 
 
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-# Update Beds Data by client_id &  bed_id
 class ClientBedUpdateView(APIView):
     def get_bed(self, client_id, department_id, bed_id):
         try:
@@ -200,10 +184,6 @@ class ClientBedUpdateView(APIView):
 
 
 
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-# Delete Bed by clientID , DepartementId and bedId
 class ClientBedDeleteByIDView(APIView):
     def post(self, request, *args, **kwargs):
         data = request.data
@@ -232,11 +212,6 @@ class ClientBedDeleteByIDView(APIView):
             return Response(
                 {"error": "Bed not found"}, status=status.HTTP_404_NOT_FOUND
             )
-
-    # Bed-Avail True or not  request
-
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class AvailableBedsView(APIView):
     def get_available_beds(self, client_id, department_id):
@@ -273,7 +248,6 @@ class AvailableBedsView(APIView):
             )
 
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class BedAssignPatientView(APIView):
     def post(self, request, *args, **kwargs):
@@ -315,8 +289,6 @@ class BedAssignPatientView(APIView):
         except Bed.DoesNotExist:
             return None
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 
 class BedRemovePatientView(APIView):
     def post(self, request, *args, **kwargs):
@@ -344,7 +316,7 @@ class BedRemovePatientView(APIView):
                 {"error": "Bed not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
-        # Check if patient is present in the bed
+      
         if bed.patient_id is None:
             return Response(
                 {"error": "No patient found in the bed"},
@@ -359,10 +331,6 @@ class BedRemovePatientView(APIView):
             {"message": "Patient removed from bed successfully"},
             status=status.HTTP_200_OK,
         )
-
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 
 def get_Bed_by_client(client_id):
     beds = Bed.objects.filter(client_id=client_id)
@@ -391,4 +359,3 @@ class ClienBedsListByClientIdView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

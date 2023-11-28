@@ -14,7 +14,7 @@ from .serializers import (
 
 
 
-logger = logging.getLogger("Invoices.Invoice")
+# logger = logging.getLogger("Invoices.Invoice")
 
 
 
@@ -30,12 +30,6 @@ class InvoiceDetailsCreateView(APIView):
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-
-
-
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 class ClientInvoiceDetailsListView(APIView):
@@ -60,9 +54,7 @@ class ClientInvoiceDetailsListView(APIView):
 
         serializer = InvoiceListSerializer(invoices, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
+   
 class ClientInvoiceDetailsListByIdView(APIView):
     def post(self, request, *args, **kwargs):
         data = request.data
@@ -90,9 +82,6 @@ class ClientInvoiceDetailsListByIdView(APIView):
         serializer = InvoiceListSerializer(client_invoice)
         return Response({"Data": serializer.data})
 
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 # @get Toatl Count Invoice api by cliendID
 class TotalInvoiceCountView(APIView):
     def post(self, request):
@@ -113,8 +102,6 @@ class TotalInvoiceCountView(APIView):
             )
 
 
-    
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
     
     
 class ClientInvoiceUpdateIDView(APIView):
@@ -181,8 +168,6 @@ class ClientInvoiceUpdateIDView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     
-  # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
-    
 
 class ClientInvoiceDeleteByIDView(APIView):
     def post(self, request, *args, **kwargs):
@@ -200,4 +185,3 @@ class ClientInvoiceDeleteByIDView(APIView):
         except Invoice.DoesNotExist:
             return Response({"error": "Invoice not found"}, status=status.HTTP_404_NOT_FOUND)
         
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

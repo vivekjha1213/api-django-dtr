@@ -13,9 +13,7 @@ from rest_framework import status
 from rest_framework import generics
 
 
-logger = logging.getLogger("Prescriptions.Prescription")
-
-
+# logger = logging.getLogger("Prescriptions.Prescription")
 
 
 class PrescriptionCreateView(APIView):
@@ -28,11 +26,6 @@ class PrescriptionCreateView(APIView):
             }
             return Response(response_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class ClientPrescriptionsListView(APIView):
     def post(self, request, *args, **kwargs):
@@ -55,10 +48,6 @@ class ClientPrescriptionsListView(APIView):
 
         serializer = PrescriptionListSerializer(prescriptions, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class ClientPrescriptionsListByIdView(APIView):
     def post(self, request, *args, **kwargs):
@@ -87,11 +76,6 @@ class ClientPrescriptionsListByIdView(APIView):
         serializer = PrescriptionListSerializer(prescriptions)
         return Response({"Data": serializer.data})
 
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-# @get Toatl Count PrescriptionDetail -Api by cliendID
 class TotalPrescriptionSCountView(APIView):
     def post(self, request):
         client_id = request.data.get("client_id")  # Get client_id from request data
@@ -109,13 +93,7 @@ class TotalPrescriptionSCountView(APIView):
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
-
-
-
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-
+            
 
 class ClientPrescriptionUpdateIDView(APIView):
     def get_Prescription(self, client_id, prescription_id):
@@ -180,13 +158,6 @@ class ClientPrescriptionUpdateIDView(APIView):
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-
-
-#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-
 class ClientPrescriptionDeleteByIDView(APIView):
     def post(self, request, *args, **kwargs):
         data = request.data
@@ -214,8 +185,6 @@ class ClientPrescriptionDeleteByIDView(APIView):
             )
             
             
-#-----------------------------------------------------------------------------------------------------------------
-
 
 class JoinListPrescriptionsListView(generics.ListAPIView):
     def get_queryset(self):
@@ -253,5 +222,3 @@ class JoinListPrescriptionsListView(generics.ListAPIView):
 
         return Response(data)
 
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

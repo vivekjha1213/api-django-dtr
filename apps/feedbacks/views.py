@@ -10,10 +10,7 @@ from .serializers import (
 )
 from apps.Hospitals.permissions import UnrestrictedPermission
 
-logger = logging.getLogger("feedbacks.feedback")
-
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# logger = logging.getLogger("feedbacks.feedback")
 
 
 class CreateFeedbackView(APIView):
@@ -30,10 +27,6 @@ class CreateFeedbackView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
 class ListFeedbackView(APIView):
     def get(self, request, id=None, format=None):
         if id is None:
@@ -41,9 +34,6 @@ class ListFeedbackView(APIView):
             feedback = Feedback.objects.all()
             serializer = FeedbackSerializerList(feedback, many=True)
             return Response(serializer.data)
-
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 class RetrieveFeedbackView(APIView):
@@ -61,17 +51,10 @@ class RetrieveFeedbackView(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
 class TotalFeedbackView(APIView):
     def get(self, request, format=None):
         total_feedback_count = Feedback.objects.count()
         return Response({"total_count": total_feedback_count})
-
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 
 class UpdateFeedbackView(APIView):
     def put(self, request, pk, format=None):
@@ -107,9 +90,6 @@ class UpdateFeedbackView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
 class DeleteFeedbackView(APIView):
     def delete(self, request, pk, format=None):
         try:
@@ -130,6 +110,3 @@ class DeleteFeedbackView(APIView):
                 {"error": "Feedback with this ID does not exist"},
                 status=status.HTTP_404_NOT_FOUND,
             )
-
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

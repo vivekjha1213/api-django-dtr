@@ -52,9 +52,6 @@ def index(request):
     return render(request, "index.html")
 
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
 class HospitalRegistrationView(APIView):
     def post(self, request):
         serializer = HospitalRegisterSerializer(data=request.data)
@@ -67,8 +64,6 @@ class HospitalRegistrationView(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 class HospitalUpdateView(UpdateAPIView):
@@ -93,9 +88,6 @@ class HospitalUpdateView(UpdateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
 class HospitalDeleteView(APIView):
     def delete(self, request, client_id, format=None):
         try:
@@ -111,16 +103,10 @@ class HospitalDeleteView(APIView):
             status=status.HTTP_204_NO_CONTENT,
         )
 
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
 class HospitalListAPIView(generics.ListAPIView):
     queryset = Hospital.objects.all()
     serializer_class = HospitalSerializer
 
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 class HospitalRetrieveAPIView(generics.RetrieveAPIView):
@@ -130,16 +116,12 @@ class HospitalRetrieveAPIView(generics.RetrieveAPIView):
     lookup_field = "client_id"
 
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 
 class TotalHospitalView(APIView):
     def get(self, request, format=None):
         total_hospitals = Hospital.objects.count()
         return Response({"total_hospitals": total_hospitals}, status=status.HTTP_200_OK)
 
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 # login api
@@ -197,9 +179,6 @@ class HospitalLoginView(APIView):
             )
 
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
 # logout api.....
 class HospitalLogoutAPIView(APIView):
     def delete(self, request, format=None):
@@ -209,8 +188,6 @@ class HospitalLogoutAPIView(APIView):
             logout(request)  # Logout the user
         return Response({"message": "Logout success"}, status=status.HTTP_200_OK)
 
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 class HospitalChangePasswordView(APIView):
@@ -225,9 +202,6 @@ class HospitalChangePasswordView(APIView):
         return Response(
             {"message": "Password Changed Successfully"}, status=status.HTTP_200_OK
         )
-
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 # @email @Post api for send reset link in front end view ....
@@ -249,8 +223,6 @@ class SendPasswordResetEmailView(APIView):
         )
 
 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 
 # @email for change password redirect
 class HospitalPasswordResetView(APIView):
@@ -263,9 +235,6 @@ class HospitalPasswordResetView(APIView):
         return Response(
             {"message": "Password Reset Successfully"}, status=status.HTTP_200_OK
         )
-
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 class DeatilsHospitalView(generics.ListAPIView):
