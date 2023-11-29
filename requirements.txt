@@ -49,6 +49,8 @@ djangorestframework-simplejwt==5.1.0
 djangotoolbox==1.8.0
 dnspython==2.2.1
 docopt==0.6.2
+doctor==3.13.7
+drf-yasg==1.21.7
 executing==1.2.0
 fastapi==0.88.0
 filelock==3.12.2
@@ -109,6 +111,7 @@ ply==3.11
 prompt-toolkit==3.0.38
 protobuf==3.20.3
 psutil==5.9.5
+psycopg2-binary==2.9.9
 ptyprocess==0.7.0
 pure-eval==0.2.2
 pyasn1==0.5.0
@@ -128,6 +131,7 @@ python-dotenv==1.0.0
 python-slugify==8.0.1
 pytz==2023.3
 pyupgrade==3.9.0
+PyYAML==3.13
 pyzmq==25.0.2
 razorpay==0.2.0
 redis==5.0.0
@@ -170,4 +174,3 @@ whitenoise==6.5.0
 yarg==0.1.9
 zope.event==5.0
 zope.interface==6.0
-mysqlclient==2.1.1
