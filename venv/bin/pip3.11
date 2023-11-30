@@ -1,4 +1,4 @@
-#!/Users/vivek/Desktop/RestApi-hospital/venv/bin/python
+#!/Users/vivek/Desktop/api-django-dtr/venv/bin/python3.11
 # -*- coding: utf-8 -*-
 import re
 import sys
