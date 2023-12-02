@@ -132,6 +132,8 @@ venv.bak/
 
 staticfiles/
 
+logs/
+
 # Spyder project settings
 .spyderproject
 .spyproject
