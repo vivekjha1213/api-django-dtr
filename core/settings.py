@@ -23,8 +23,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
 
-DEBUG = False
-ALLOWED_HOSTS = ['*']
+DEBUG = True
+ALLOWED_HOSTS = ["*"]
+
 
 # ...
 
@@ -49,6 +50,7 @@ THIRD_PARTY_APPS = [
     "django_filters",
     "rest_framework_swagger",
     "drf_yasg", 
+    "django_extensions",
 ]
 
 LOCAL_APPS = [
@@ -93,8 +95,14 @@ TEMPLATES = [
 WSGI_APPLICATION = "core.wsgi.application"
 
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
 
-
+''' 
 DATABASES = {
 	'default': {
 		'ENGINE': 'django.db.backends.mysql',
@@ -106,6 +114,7 @@ DATABASES = {
 	}
 }
 
+'''
 
 # CACHES = {
 #     "default": {
@@ -266,23 +275,37 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "sfdfghjklmkmdnu%%vgq123091hoke
 DEBUG = False
 
 
-ALLOWED_HOST = ['*']
+
 # ALLOWED_HOSTS = ["iyrajewels.com", "www.iyrajewels.com", "194.163.40.231"]
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
-# Configure  production database here (e.g., PostgreSQL or MySQL)
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "u714077623_HMS_API_TEST",
-        "USER": "u714077623_HMS_API_TEST",
-        "PASSWORD": "n46Q@6&XLh3nd5N",
-        "HOST": "217.21.88.8", 
-        "PORT": "3306",  
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
     }
 }
+
+
 
 
 """
