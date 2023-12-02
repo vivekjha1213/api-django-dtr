@@ -23,7 +23,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
 
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 # ...
@@ -49,6 +49,7 @@ THIRD_PARTY_APPS = [
     "django_filters",
     "rest_framework_swagger",
     "drf_yasg", 
+    "django_extensions",
 ]
 
 LOCAL_APPS = [
