@@ -11,20 +11,20 @@ class PrescriptionCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Prescription
-        fields = ["patient", "doctor", "prescription_date", "prescription_time", "notes", "client"]
+        fields = ["patient", "doctor", "prescription_date_time", "notes", "client"]
 
     def validate(self, data):
         patient = data.get("patient")
         doctor = data.get("doctor")
-        prescription_date = data.get("prescription_date")
-        prescription_time = data.get("prescription_time")
+        prescription_date_time = data.get("prescription_date_time")
+       
 
         # Check if a prescription with the same patient, doctor, date, and time already exists
         existing_prescription = Prescription.objects.filter(
             patient=patient,
             doctor=doctor,
-            prescription_date=prescription_date,
-            prescription_time=prescription_time,
+            prescription_date_time=prescription_date_time,
+            
         ).first()
 
         if existing_prescription:
@@ -40,4 +40,4 @@ class PrescriptionListSerializer(serializers.ModelSerializer):
 class PrescriptionUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Prescription
-        fields = ["patient", "doctor", "prescription_date", "prescription_time", "notes"]
+        fields = ["patient", "doctor", "prescription_date_time", "notes"]
