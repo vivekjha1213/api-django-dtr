@@ -271,13 +271,15 @@ EMAIL_USE_TLS = True
 # Secret key (change this in production, use environment variable)
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "sfdfghjklmkmdnu%%vgq123091hokeee~120831-?--/")
 
-# Disable debugging in production
-DEBUG = False
-
-
 
 # ALLOWED_HOSTS = ["iyrajewels.com", "www.iyrajewels.com", "194.163.40.231"]
 
+CORS_ALLOWED_ORIGINS = [
+    'http://172.23.192.1:3000',
+     'http://127.0.0.1:3000',    
+    'http://localhost:3000',
+'https://orionqo-admin-dashboard.vercel.app ',
+]
 
 
 
