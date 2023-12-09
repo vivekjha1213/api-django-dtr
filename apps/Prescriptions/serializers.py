@@ -5,10 +5,6 @@ from apps.patients.models import Patient  #  Patient model
 from apps.doctors.models import Doctor
 
 class PrescriptionCreateSerializer(serializers.ModelSerializer):
-    # Create separate fields for date and time
-    prescription_date = serializers.DateField()
-    prescription_time = serializers.TimeField()
-
     class Meta:
         model = Prescription
         fields = ["patient", "doctor", "prescription_date_time", "notes", "client"]
